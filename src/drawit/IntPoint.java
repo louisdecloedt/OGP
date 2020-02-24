@@ -13,7 +13,7 @@ public class IntPoint {
 	
 	//asDoublePoint
 	public DoublePoint asDoublePoint() {
-		return new DoublePoint(this.xCoordinate, this.yCoordinate);
+		return new DoublePoint(this.xCoordinate, this.yCoordinate); // have to be doubles
 	}
 	
 	//equals(IntPoint)
@@ -58,10 +58,14 @@ public class IntPoint {
 	}
 	
 	//lineSegmentsIntersect(IntPoint, IntPoint, IntPoint, IntPoint)
-	public static Boolean lineSegmentsIntersect(IntPoint point1, IntPoint point2, IntPoint point3, IntPoint point4) {
+	//public static Boolean lineSegmentsIntersect(IntPoint pointA, IntPoint pointB, IntPoint pointC, IntPoint pointD) {
 		
-		return false;
-	}
+	//	if 
+		
+	//	return false;
+	//}
+	
+	
 	//minus(IntPoint)
 	public IntPoint minus(IntPoint point) {
 		return new IntPoint(this.xCoordinate - point.getX(), this.yCoordinate - point.getY());

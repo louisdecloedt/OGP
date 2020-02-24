@@ -34,6 +34,6 @@ public class DoublePoint {
 	
 	//round() !!nearest integer
 	public IntPoint round() {
-		return new IntPoint(Math.round(this.xCoordinate),Math.round(this.yCoordinate));
+		return new IntPoint(Math.toIntExact(Math.round(this.xCoordinate)),Math.toIntExact(Math.round(this.yCoordinate)));
 	}
 }

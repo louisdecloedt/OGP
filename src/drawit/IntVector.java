@@ -38,6 +38,7 @@ public class IntVector {
 	
 	//isCollinearWith(IntVector)
 	
+	
 	//plus(IntVector)
 	public IntVector plus(IntVector vector) {
 		return new IntVector(this.xCoordinate + vector.getX(), this.yCoordinate + vector.getY());

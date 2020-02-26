@@ -12,7 +12,7 @@ public class IntVector {
 	
 	//asDoubleVector
 	public DoubleVector asDoubleVector() {
-		return new DoubleVector(this.xCoordinate, this.yCoordinate); //have to be doubles
+		return new DoubleVector(this.xCoordinate, this.yCoordinate); //have to be doubles --implicit?
 	}
 	
 	

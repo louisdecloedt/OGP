@@ -62,9 +62,8 @@ public class IntPoint {
 		if (pointA.getX() == pointB.getX() || pointA.getX() == pointC.getX()) {
 			return false;
 		}
-		int slopeAB = (pointB.getY() - pointA.getY())/(pointB.getX() - pointA.getX());
-		int slopeBC = (pointC.getY() - pointB.getY())/(pointC.getX() - pointB.getX());
-		if (slopeAB != slopeBC) {
+
+		if ( ! IntVectorAB.isCollinearWith(IntVectorBC)) {
 			return false;
 		}
 		if (  IntVectorAB.dotProduct(IntVectorBC) < IntVectorBC.dotProduct(IntVectorBC) 

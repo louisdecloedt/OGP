@@ -37,7 +37,14 @@ public class IntVector {
 	}
 	
 	//isCollinearWith(IntVector)
-	
+	public Boolean isCollinearWith(IntVector vector) {
+		int slopeA = this.getY()/this.getX();
+		int slopeB = vector.getY()/vector.getX();
+		if (slopeA == slopeB || slopeA == - slopeB) {
+			return true;
+		}
+		return false;
+	}
 	
 	//plus(IntVector)
 	public IntVector plus(IntVector vector) {

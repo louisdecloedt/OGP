@@ -11,8 +11,7 @@ class DoublePointTest {
 		DoublePoint testPoint1 = new DoublePoint(10, -5);
 		assertEquals(10, testPoint1.getX());
 		assertEquals(-5, testPoint1.getY());
-		//assertEquals(-9, testPoint1.getX());
-		
+		//assertEquals(-9, testPoint1.getX());	
 	}
 
 }

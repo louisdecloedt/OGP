@@ -18,5 +18,6 @@ import org.junit.runners.Suite.SuiteClasses;
 
 
 public class AllTests {
-	
+	// the class remains empty,
+	// used only as a holder for the above annotations
 }

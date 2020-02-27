@@ -1,17 +1,25 @@
 package drawit;
 
+
 import static org.junit.jupiter.api.Assertions.*;
+import org.junit.*;
 
-import org.junit.jupiter.api.Test;
-
-class DoublePointTest {
-
+public class DoublePointTest {
+	
+	private DoublePoint doublePoint;
+	
+	@Before
+	public void setUp() {
+		doublePoint = new DoublePoint(10, -5);
+	}
+	
+	//@org.junit.Test
 	@Test
-	void test() {
-		DoublePoint testPoint1 = new DoublePoint(10, -5);
-		assertEquals(10, testPoint1.getX());
-		assertEquals(-5, testPoint1.getY());
+	public void test() {
+		//DoublePoint testPoint1 = new DoublePoint(10, -5);
+		assertEquals(10, doublePoint.getX());
+		assertEquals(-5, doublePoint.getY());
 		//assertEquals(-9, testPoint1.getX());	
 	}
-
 }
+

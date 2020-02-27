@@ -4,7 +4,7 @@ public class RoundedPolygon {
 	
 	private int radius;
 	private IntPoint[] vertices;
-	
+
 	//constructor: RoundedPolygon()
 	public RoundedPolygon() {
 	}

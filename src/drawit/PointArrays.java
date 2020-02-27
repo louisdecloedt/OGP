@@ -1,16 +1,16 @@
 package drawit;
 
-import java.util.Arrays;
+//import java.util.Arrays;
 
 public class PointArrays {
 	
 	//copy(IntPoint[])
-	static public IntPoint[] copy(IntPoint[] points) {
+	public static IntPoint[] copy(IntPoint[] points) {
 		return points; //pass by value
 	}
 
 	//insert(IntPoint[], integer index, IntPoint) 
-	static IntPoint[] insert(IntPoint[] points, int index, IntPoint point) {
+	public static IntPoint[] insert(IntPoint[] points, int index, IntPoint point) {
 		IntPoint[] result = new IntPoint[points.length+1];
 		for (int i = 0; i < index; i++) {
 			result[i] = points[i];
@@ -23,14 +23,14 @@ public class PointArrays {
 	}
 	
 	//update(IntPoint[], int, IntPoint)
-	static IntPoint[] update(IntPoint[] points, int index, IntPoint value) {
+	public static IntPoint[] update(IntPoint[] points, int index, IntPoint value) {
 		IntPoint[] result = new IntPoint[points.length];
 		result[index] = value;
 		return result;
 	}
 	
 	//remove
-	static IntPoint[] remove(IntPoint[] points, int index) {
+	public static IntPoint[] remove(IntPoint[] points, int index) {
 		IntPoint[] result = new IntPoint[points.length-1];
 		for (int i = 0; i < index; i++) {
 			result[i] = points[i];
@@ -40,6 +40,19 @@ public class PointArrays {
 			result[i-1] = points[i];
 			}
 		return result;
+	}
+	
+	//extra function to check if given point is in a given array
+	//this exists for lists
+	public static Boolean in(IntPoint[] points, IntPoint point) {
+		for (int i = 0; i < points.length; i ++) {
+			if (point.getX() == points[i].getX()) {
+				if( point.getY() == points[i].getY()) {
+					return true;
+				}
+			}
+		}
+		return false;
 	}
 	
 	//checkDefinesProperPolygon(IntPoint[]) - Static method in class drawit.PointArrays

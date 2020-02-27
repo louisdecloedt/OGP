@@ -10,13 +10,21 @@ public class RoundedPolygon {
 	}
 	
 	//setRadius(integer)
-	public void setRadius(int radius) {
-		this.radius = radius;
+	public void setRadius(int radius) throws IllegalArgumentException {
+		if (radius < 0) {
+			throw new IllegalArgumentException();
+		}else {
+			this.radius = radius;
+		}
 	}
 	
 	//setVertices(IntPoint[])
-	public void setRadius(IntPoint[] points) {
-		this.vertices = points;
+	public void setVertices(IntPoint[] points) throws IllegalArgumentException {
+		if (PointArrays.checkDefinesProperPolygon(points) != null) {
+			throw new IllegalArgumentException();
+		}else {
+			this.vertices = points;
+		}
 	}
 	
 	//getRadius()
@@ -31,14 +39,43 @@ public class RoundedPolygon {
 	
 	//contains(intPoint)
 	public Boolean contains(IntPoint point) {
+		//point at a vertex
+		if (PointArrays.in(this.vertices, point)) {
+			return true;
+		}
+		//point at an edge
+		for (int i = 0; i < this.vertices.length - 1; i++) {
+			if (point.isOnlineSegment(this.vertices[i], this.vertices[i+1])) {
+				return true;
+			}
+		}
+		if (point.isOnlineSegment(this.vertices[0], this.vertices[this.vertices.length-1])) {
+			return true;
+		}
 		
-		return true;
+		return false;
 	}
 	
 	//getDrawingCommands()
+	public String getDrawingCommands() {
+		String result = "";
+		if (this.vertices.length < 3) {
+			return result;
+		}
+		
+		for (int i = 0; i < this.vertices.length - 1; i++) {
+			IntVector vector1 = this.vertices[i+1].minus(this.vertices[i]);
+			IntVector vector2 = this.vertices[i+2].minus(this.vertices[i+1]);
+			int radius = max(this.radius, )
+			
+		}
+		//connecting first and last point
+		
+		return result;
+	}
 	
 	
-	//insert(int, intPoint)
+	//insert(integer, intPoint)
 	public void insert(int index, IntPoint point) {
 		this.vertices = PointArrays.insert(this.vertices, index, point);
 	}

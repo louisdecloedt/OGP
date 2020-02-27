@@ -5,7 +5,7 @@ import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
 
 @RunWith(Suite.class)
-@SuiteClasses({
+/*@SuiteClasses({
 	DoubleVectorTest.class,
 	DoublePointTest.class,
 	IntVectorTest.class,
@@ -13,8 +13,10 @@ import org.junit.runners.Suite.SuiteClasses;
 	PointArraysTest.class,
 	RoundedPolygon.class
 })
+*/
+@SuiteClasses({DoublePointTest.class})
 
 
 public class AllTests {
-
+	
 }

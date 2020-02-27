@@ -52,27 +52,23 @@ public class RoundedPolygon {
 		if (point.isOnlineSegment(this.vertices[0], this.vertices[this.vertices.length-1])) {
 			return true;
 		}
-		
+		//////////////// extra
 		return false;
 	}
 	
 	//getDrawingCommands()
-	public String getDrawingCommands() {
-		String result = "";
-		if (this.vertices.length < 3) {
-			return result;
-		}
-		
-		for (int i = 0; i < this.vertices.length - 1; i++) {
-			IntVector vector1 = this.vertices[i+1].minus(this.vertices[i]);
-			IntVector vector2 = this.vertices[i+2].minus(this.vertices[i+1]);
-			int radius = max(this.radius, )
-			
-		}
-		//connecting first and last point
-		
-		return result;
-	}
+	/*
+	 * public String getDrawingCommands() { String result = ""; if
+	 * (this.vertices.length < 3) { return result; }
+	 * 
+	 * for (int i = 0; i < this.vertices.length - 1; i++) { IntVector vector1 =
+	 * this.vertices[i+1].minus(this.vertices[i]); IntVector vector2 =
+	 * this.vertices[i+2].minus(this.vertices[i+1]); int radius = max(this.radius, )
+	 * 
+	 * } //connecting first and last point
+	 * 
+	 * return result; }
+	 */
 	
 	
 	//insert(integer, intPoint)

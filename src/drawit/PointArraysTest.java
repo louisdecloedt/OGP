@@ -1,13 +1,12 @@
 package drawit;
 
 import static org.junit.jupiter.api.Assertions.*;
+import org.junit.*;
 
-import org.junit.jupiter.api.Test;
-
-class PointArraysTest {
+public class PointArraysTest {
 
 	@Test
-	void test() {
+	public void test() {
 		fail("Not yet implemented");
 	}
 

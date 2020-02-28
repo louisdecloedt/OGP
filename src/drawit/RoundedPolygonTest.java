@@ -1,13 +1,14 @@
 package drawit;
 
 import static org.junit.jupiter.api.Assertions.*;
+import org.junit.*;
 
 import org.junit.jupiter.api.Test;
 
-class RoundedPolygonTest {
+public class RoundedPolygonTest {
 
 	@Test
-	void test() {
+	public void test() {
 		fail("Not yet implemented");
 	}
 

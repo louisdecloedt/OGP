@@ -1,13 +1,12 @@
 package drawit;
 
 import static org.junit.jupiter.api.Assertions.*;
+import org.junit.*;
 
-import org.junit.jupiter.api.Test;
-
-class IntVectorTest {
+public class IntVectorTest {
 
 	@Test
-	void test() {
+	public void test() {
 		fail("Not yet implemented");
 	}
 

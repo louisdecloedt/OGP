@@ -71,13 +71,13 @@ public class PointArrays {
 			}
 			//check if one of the vertices lies on an edge
 			for (int j = 0; j < points.length - 1; j++) {
-				if (points[i].isOnlineSegment(points[j], points[j+1])){
+				if (points[i].isOnLineSegment(points[j], points[j+1])){
 					return "At least one vertex lies on an open line segment, defined by two other vertices. \n "
 							+ "So this sequence of points does not define a proper polygon.\n";
 				}
 				
 			}
-			if (points[i].isOnlineSegment(points[0], points[points.length - 1])) {
+			if (points[i].isOnLineSegment(points[0], points[points.length - 1])) {
 				return "At least one vertex lies on an open line segment, defined by two other vertices. \n "
 						+ "So this sequence of points does not define a proper polygon.\n";
 			}

@@ -45,11 +45,11 @@ public class RoundedPolygon {
 		}
 		//point at an edge
 		for (int i = 0; i < this.vertices.length - 1; i++) {
-			if (point.isOnlineSegment(this.vertices[i], this.vertices[i+1])) {
+			if (point.isOnLineSegment(this.vertices[i], this.vertices[i+1])) {
 				return true;
 			}
 		}
-		if (point.isOnlineSegment(this.vertices[0], this.vertices[this.vertices.length-1])) {
+		if (point.isOnLineSegment(this.vertices[0], this.vertices[this.vertices.length-1])) {
 			return true;
 		}
 		//////////////// extra

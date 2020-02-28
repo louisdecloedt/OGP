@@ -53,21 +53,23 @@ public class IntPoint {
 	 */
 	
 	//I guess this is what they mean in the given documentation
-	public Boolean isOnlineSegment(IntPoint pointB, IntPoint pointC) {
-		//scalair product: u*v = |u||v|*cosA
+	public Boolean isOnLineSegment(IntPoint pointB, IntPoint pointC) {
 		IntPoint pointA = new IntPoint(this.xCoordinate, this.yCoordinate);
-		IntVector IntVectorAB = pointB.minus(pointA);
+		IntVector IntVectorBA = pointA.minus(pointB);
 		IntVector IntVectorBC = pointC.minus(pointB);
 		
 		if (pointA.getX() == pointB.getX() || pointA.getX() == pointC.getX()) {
+			System.out.print(pointA.getX());
+			System.out.print(pointB.getX());
+			System.out.print(pointC.getX());
 			return false;
 		}
 
-		if ( ! IntVectorAB.isCollinearWith(IntVectorBC)) {
+		if ( ! IntVectorBA.isCollinearWith(IntVectorBC)) {
 			return false;
 		}
-		if (  IntVectorAB.dotProduct(IntVectorBC) < IntVectorBC.dotProduct(IntVectorBC) 
-				&& IntVectorAB.dotProduct(IntVectorBC) > 0) {
+		if (  IntVectorBA.dotProduct(IntVectorBC) < IntVectorBC.dotProduct(IntVectorBC) 
+				&& IntVectorBA.dotProduct(IntVectorBC) > 0) {
 			return true;
 		}
 		return false;

@@ -87,6 +87,7 @@ public class RoundedPolygon {
 				this.vertices[indexNextVertex])) {
 			countIntersections += 1;
 		}
+		System.out.print(countIntersections);
 		if (countIntersections%2 != 0) {
 			return true;
 		}return false;

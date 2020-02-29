@@ -75,6 +75,10 @@ public class PointArrays {
 				//check for coinciding vertices
 				if (points[i].getX() == points[j].getX()) {
 					if (points[i].getY() == points[j].getY() && j != i) {
+						System.out.print(i);
+						System.out.print("\n");
+						System.out.print(j);
+						System.out.print("\n");
 						return "At least two coinciding points, thus this sequence does not define a proper polygon. \n";
 					}
 				}

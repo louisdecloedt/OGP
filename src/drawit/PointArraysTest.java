@@ -77,6 +77,25 @@ public class PointArraysTest {
 		assertEquals("Not enough points to define a proper polygon.\n", PointArrays.checkDefinesProperPolygon(testArray2));
 		assertEquals("Not enough points to define a proper polygon.\n", PointArrays.checkDefinesProperPolygon(testArray3));
 		assertEquals(null, PointArrays.checkDefinesProperPolygon(testArray4));
+		
+		IntPoint pointA = new IntPoint(0,0);
+		IntPoint pointB = new IntPoint(100,0);
+		IntPoint pointC = new IntPoint(100,100);
+		IntPoint pointD = new IntPoint(0,100);
+		
+		//RoundedPolygon poly1 = new RoundedPolygon();
+		IntPoint[] array1 = new IntPoint[4];
+		array1[0] = pointA;
+		array1[1] = pointB;
+		array1[2] = pointC;
+		array1[3] = pointD;
+		assertEquals(true, array1[0].equals(pointA));
+		assertEquals(true, array1[1].equals(pointB));
+		assertEquals(true, array1[2].equals(pointC));
+		assertEquals(true, array1[3].equals(pointD));
+		assertEquals(null, PointArrays.checkDefinesProperPolygon(array1));
+		
+		
 		//assertEquals(null, PointArrays.checkDefinesProperPolygon(testArray1));
 		
 		

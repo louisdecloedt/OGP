@@ -4,7 +4,7 @@ public class IntPoint {
 	private int xCoordinate;
 	private int yCoordinate;
 	
-	//constructor: IntPoint(int, int)
+	//constructor: IntPoint(integer, integer)
 	public IntPoint(int xCoordinate, int yCoordinate) {
 		this.xCoordinate = xCoordinate;
 		this.yCoordinate = yCoordinate;
@@ -35,33 +35,14 @@ public class IntPoint {
 	}
 
 	
-	
-	//// different approach required, check given documentation
-	//isOnLineSegment(IntPoint, IntPoint)
-	/*
-	 * public Boolean isOnLineSegment(IntPoint point1, IntPoint point2) { if
-	 * (point1.getX() < point2.getX()) { IntPoint temp = new IntPoint(point1.getX(),
-	 * point1.getY()); point1 = point2; point2 = temp; } else if (point1.getX() ==
-	 * point2.getY()) { // to avoid dividing by zero in the next step return false;
-	 * } if (this.xCoordinate > point1.getX() & point2.getX() > this.xCoordinate) {
-	 * int slope = (point2.getY() - point1.getY()) / (point2.getX() -
-	 * point1.getX()); //assumption, because shouldn't be comparing doubles if
-	 * ((this.xCoordinate - point1.getX())*slope + point1.getY() ==
-	 * this.yCoordinate) { return true; } } return false;
-	 * 
-	 * }
-	 */
+
 	
 	//I guess this is what they mean in the given documentation
 	public Boolean isOnLineSegment(IntPoint pointB, IntPoint pointC) {
 		IntPoint pointA = new IntPoint(this.xCoordinate, this.yCoordinate);
 		IntVector IntVectorBA = pointA.minus(pointB);
-		IntVector IntVectorBC = pointC.minus(pointB);
-		
+		IntVector IntVectorBC = pointC.minus(pointB);		
 		if (pointA.getX() == pointB.getX() || pointA.getX() == pointC.getX()) {
-			System.out.print(pointA.getX());
-			System.out.print(pointB.getX());
-			System.out.print(pointC.getX());
 			return false;
 		}
 

@@ -17,12 +17,12 @@ public class IntVector {
 	
 	
 	//dotProduct(IntVector)
-	public int dotProduct(IntVector vector) {
+	public long dotProduct(IntVector vector) {
 		return this.xCoordinate*vector.getX() + this.yCoordinate*vector.getY();
 	}
 	
 	//crossProduct(IntVector)
-	public int crossProduct(IntVector vector) {
+	public long crossProduct(IntVector vector) {
 		return this.xCoordinate*vector.getY() - this.yCoordinate*vector.getX();
 	}
 	

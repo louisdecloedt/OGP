@@ -9,7 +9,8 @@ public class RoundedPolygonTest {
 
 	@Test
 	public void test() {
-		fail("Not yet implemented");
+		RoundedPolygon testPolygon1 = new RoundedPolygon();
+		
 	}
 
 }

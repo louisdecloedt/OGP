@@ -27,12 +27,11 @@ public class IntPointTest {
 		
 		//Errors because of integer Arithmetic?
 		
-		//assertEquals(true, testPoint5.isOnLineSegment(testPoint3, testPoint4));
-		//System.out.print(testPoint5.isOnLineSegment(testPoint3,testPoint4));
-		//assertEquals(false, testPoint6.isOnLineSegment(testPoint3, testPoint4));
-		//assertEquals(false, testPoint7.isOnLineSegment(testPoint3, testPoint4));
-		//assertEquals(false, testPoint8.isOnLineSegment(testPoint3, testPoint4));
-		//assertEquals(false, testPoint9.isOnLineSegment(testPoint3, testPoint4));
+		assertEquals(true, testPoint5.isOnLineSegment(testPoint3, testPoint4));
+		assertEquals(false, testPoint6.isOnLineSegment(testPoint3, testPoint4));
+		assertEquals(false, testPoint7.isOnLineSegment(testPoint3, testPoint4));
+		assertEquals(false, testPoint8.isOnLineSegment(testPoint3, testPoint4));
+		assertEquals(false, testPoint9.isOnLineSegment(testPoint3, testPoint4));
 		
 		
 		IntPoint testPoint10 = new IntPoint(5,5);
@@ -53,8 +52,6 @@ public class IntPointTest {
 		assertEquals(false, IntPoint.lineSegmentsIntersect(testPoint13, testPoint14, testPoint15, testPoint16)); 
 		assertEquals(false, IntPoint.lineSegmentsIntersect(testPoint13, testPoint14, testPoint16, testPoint15));
 		assertEquals(true, IntPoint.lineSegmentsIntersect(testPoint17, testPoint18, testPoint14, testPoint13));
-		
-		
 	}
 
 }

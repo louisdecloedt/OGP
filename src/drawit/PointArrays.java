@@ -22,10 +22,17 @@ public class PointArrays {
 		return result;
 	}
 	
-	//update(IntPoint[], int, IntPoint)
+	//update(IntPoint[], integer, IntPoint)
 	public static IntPoint[] update(IntPoint[] points, int index, IntPoint value) {
 		IntPoint[] result = new IntPoint[points.length];
-		result[index] = value;
+		for (int i = 0; i < points.length; i++) {
+			if (i != index) {
+				result[i] = points[i];
+			}
+			else {
+				result[i] = value;
+			}
+		}
 		return result;
 	}
 	
@@ -42,11 +49,12 @@ public class PointArrays {
 		return result;
 	}
 	
+	
 	//extra function to check if given point is in a given array
 	//this exists for lists
 	public static Boolean in(IntPoint[] points, IntPoint point) {
 		for (int i = 0; i < points.length; i++) {
-			if (point.getX() == points[i].getX()) {
+			if(point.getX() == points[i].getX()) {
 				if( point.getY() == points[i].getY()) {
 					return true;
 				}
@@ -54,6 +62,8 @@ public class PointArrays {
 		}
 		return false;
 	}
+	
+	
 	
 	//checkDefinesProperPolygon(IntPoint[]) - Static method in class drawit.PointArrays
 	public static String checkDefinesProperPolygon(IntPoint[] points) {

@@ -7,6 +7,8 @@ public class RoundedPolygon {
 
 	//constructor: RoundedPolygon()
 	public RoundedPolygon() {
+		this.radius = 0;
+		this.vertices = new IntPoint[0];
 	}
 	
 	//setRadius(integer)
@@ -40,8 +42,10 @@ public class RoundedPolygon {
 	//contains(intPoint)
 	public Boolean contains(IntPoint point) {
 		//point at a vertex
-		if (PointArrays.in(this.vertices, point)) {
-			return true;
+		for (int i = 0; i < this.vertices.length; i++) {
+			if (this.vertices[i].equals(point)) {
+				return true;
+			}
 		}
 		//point at an edge
 		for (int i = 0; i < this.vertices.length - 1; i++) {
@@ -52,8 +56,40 @@ public class RoundedPolygon {
 		if (point.isOnLineSegment(this.vertices[0], this.vertices[this.vertices.length-1])) {
 			return true;
 		}
-		//////////////// extra
-		return false;
+		int largeNumber = 100000;
+		IntPoint exitPoint = new IntPoint(largeNumber*largeNumber,point.getY());
+		int indexFirstVertex = -1;
+		for (int i = 0; i < this.vertices.length; i ++) {
+			if (! this.vertices[i].isOnLineSegment(point, exitPoint) && indexFirstVertex != -1) {
+				indexFirstVertex = i;
+			}
+		}
+		if (indexFirstVertex == -1) {return false;}
+		int countIntersections = 0;
+		//boolean loopFinished = false;
+		int indexCurrentVertex = indexFirstVertex;
+		int indexNextVertex = -1;
+		for (int j = 0; j < this.vertices.length; j++) {
+			for (int i = indexCurrentVertex; i < this.vertices.length; i++) {
+				if (this.vertices[i].isOnLineSegment(point, exitPoint) && indexNextVertex != -1) {
+					indexNextVertex = i;
+				}
+			}
+			if (-1 != indexNextVertex) {
+				if (IntPoint.lineSegmentsIntersect(point, exitPoint, this.vertices[indexCurrentVertex],
+						this.vertices[indexCurrentVertex])) {
+					countIntersections += 1;
+				}
+				indexCurrentVertex = indexNextVertex;
+			}		
+		}
+		if (IntPoint.lineSegmentsIntersect(point, exitPoint, this.vertices[indexFirstVertex],
+				this.vertices[indexNextVertex])) {
+			countIntersections += 1;
+		}
+		if (countIntersections%2 != 0) {
+			return true;
+		}return false;
 	}
 	
 	//getDrawingCommands()

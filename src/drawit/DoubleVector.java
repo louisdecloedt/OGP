@@ -22,8 +22,9 @@ public class DoubleVector {
 	}
 	
 	//asAngle
-	public double asAngle(DoubleVector vector) {
-		return Math.atan2(vector.getY(), vector.getX());
+	//returns angle between -PI/PI
+	public double asAngle() {
+		return Math.atan2(this.getY(), this.getX());
 	}
 	
 	//crossProduct(DoubleVector)
@@ -37,7 +38,7 @@ public class DoubleVector {
 	}
 	
 	//getSize() //lengte??
-	public double getsize() {
+	public double getSize() {
 		return Math.sqrt(Math.pow(this.xCoordinate,2) + Math.pow(this.yCoordinate,2));		
 	}
 	

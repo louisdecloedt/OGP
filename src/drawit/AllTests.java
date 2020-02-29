@@ -14,7 +14,7 @@ import org.junit.runners.Suite.SuiteClasses;
 	RoundedPolygon.class
 })
 */
-@SuiteClasses({DoublePointTest.class, IntPointTest.class})
+@SuiteClasses({DoublePointTest.class, IntPointTest.class, DoubleVectorTest.class,IntVectorTest.class})
 
 
 public class AllTests {

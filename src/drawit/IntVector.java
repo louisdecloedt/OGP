@@ -1,8 +1,8 @@
 package drawit;
 
 public class IntVector {
-	private int xCoordinate;
-	private int yCoordinate;
+	private final int xCoordinate;
+	private final int yCoordinate;
 	
 	//constructor: IntVector(int, int)
 	public IntVector(int xCoordinate, int yCoordinate) {

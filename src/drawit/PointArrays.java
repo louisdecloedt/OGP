@@ -45,7 +45,7 @@ public class PointArrays {
 	//extra function to check if given point is in a given array
 	//this exists for lists
 	public static Boolean in(IntPoint[] points, IntPoint point) {
-		for (int i = 0; i < points.length; i ++) {
+		for (int i = 0; i < points.length; i++) {
 			if (point.getX() == points[i].getX()) {
 				if( point.getY() == points[i].getY()) {
 					return true;

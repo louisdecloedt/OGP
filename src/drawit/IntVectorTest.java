@@ -36,6 +36,17 @@ public class IntVectorTest {
 		assertEquals(-120, testVector4.crossProduct(testVector2));
 		
 		//isCollinearWith
+		IntVector testVector5 = new IntVector(-2,3);
+		IntVector testVector6 = new IntVector(0,0);
+		IntVector testVector7 = new IntVector(-20,30);
+		assertEquals(false, testVector1.isCollinearWith(testVector2));
+		assertEquals(false, testVector2.isCollinearWith(testVector1));
+		assertEquals(false, testVector3.isCollinearWith(testVector4));
+		assertEquals(false, testVector2.isCollinearWith(testVector4));
+		assertEquals(true, testVector1.isCollinearWith(testVector5));
+		assertEquals(false, testVector1.isCollinearWith(testVector6));
+		assertEquals(true, testVector1.isCollinearWith(testVector7));
+		assertEquals(true, testVector7.isCollinearWith(testVector5));
 		
 		//plus
 		assertEquals(12, testVector1.plus(testVector2).getX());

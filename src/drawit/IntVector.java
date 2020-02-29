@@ -38,12 +38,10 @@ public class IntVector {
 	
 	//isCollinearWith(IntVector)
 	public Boolean isCollinearWith(IntVector vector) {
-		int slopeA = this.getY()/this.getX();
-		int slopeB = vector.getY()/vector.getX();
-		if (slopeA == slopeB || slopeA == - slopeB) {
-			return true;
+		if (vector.getX() == 0 && vector.getY() == 0) {
+			return false; //Do not know if required.
 		}
-		return false;
+		return this.crossProduct(vector) == 0;
 	}
 	
 	//plus(IntVector)

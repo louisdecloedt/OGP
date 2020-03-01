@@ -2,7 +2,12 @@ package drawit;
 
 //import java.util.Arrays;
 
-public class PointArrays {
+public class PointArrays{ 
+
+	//class not intended to be instantiated
+	private PointArrays() {
+		
+	}
 	
 	//copy(IntPoint[])
 	public static IntPoint[] copy(IntPoint[] points) {

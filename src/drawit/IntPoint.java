@@ -1,22 +1,61 @@
 package drawit;
 
+/**
+ * Each instance of this class is an abstraction of an immutable 2D integer point.
+ *
+ * @immutable
+ */
 public class IntPoint {
-	private int xCoordinate;
-	private int yCoordinate;
+	private final int xCoordinate;
+	private final int yCoordinate;
 	
-	//constructor: IntPoint(integer, integer)
+	public int getX() { return this.xCoordinate; }	
+	public int getY() { return this.yCoordinate; }
+	
+	/**
+     * Initializes this object with the given coordinates.
+     * 
+     * @mutates | this
+     *
+     * @post This object's X coordinate equal the given X coordinate
+     *    | getX() == xCoordinate
+     * @post This object's Y coordinate equal the given Y coordinate
+     *    | getY() == yCoordinate
+     *
+     */
 	public IntPoint(int xCoordinate, int yCoordinate) {
 		this.xCoordinate = xCoordinate;
 		this.yCoordinate = yCoordinate;
 		
 	}
 	
-	//asDoublePoint
+	/**
+     * Returns the DoublePoint version of the instance.
+     *
+     *@pre Argument {@code this} is not {@code null}.
+     *    | this != null
+     * @post
+     *      The result is a DoublePoint with the same coordinates but of type double.
+     *    | result.getX() == this.getX() 
+     *    | //result.getY() == this.getY()
+     */
 	public DoublePoint asDoublePoint() {
-		return new DoublePoint(this.xCoordinate, this.yCoordinate); // have to be doubles
+		return new DoublePoint(this.xCoordinate, this.yCoordinate);
 	}
 	
-	//equals(IntPoint)
+	/**
+     * Returns whether two IntPoints are equal.
+     *
+     * @pre Argument {@code point} is not {@code null}.
+     *    | point != null
+     * @post
+     *      The result is {@code true} iff this object's coordinates are equal to
+     *      the coordinates of the given point.
+     *    | result == (
+     *    |     getX() == point.getX() &&
+     *    |     getY() == point.getY() )
+     *    | 
+     */
 	public Boolean equals(IntPoint point) {
 		if (point.getX() == this.xCoordinate & point.getY() == this.yCoordinate) {
 			return true;
@@ -24,18 +63,6 @@ public class IntPoint {
 		return false;
 	}
 	
-	//getX()
-	public int getX() {
-		return this.xCoordinate;
-	}
-	
-	//getY()
-	public int getY() {
-		return this.yCoordinate;
-	}
-
-	
-
 	
 	//I guess this is what they mean in the given documentation
 	public Boolean isOnLineSegment(IntPoint pointB, IntPoint pointC) {
@@ -71,7 +98,6 @@ public class IntPoint {
 	}
 	
 	
-	//minus(IntPoint)
 	public IntVector minus(IntPoint point) {
 		return new IntVector(this.xCoordinate - point.getX(), this.yCoordinate - point.getY());
 	}

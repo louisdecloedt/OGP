@@ -1,9 +1,10 @@
 package drawit;
 
+//no formal documentation required
 public class DoublePoint {
 	
-	private double xCoordinate;
-	private double yCoordinate;
+	private final double xCoordinate;
+	private final double yCoordinate;
 	
 	
 	//constructor: DoublePoint(double,double)

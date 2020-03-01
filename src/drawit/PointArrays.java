@@ -4,12 +4,19 @@ package drawit;
 
 public class PointArrays{ 
 
-	//class not intended to be instantiated
+	/**
+     * Prevents that an instance of the class PointArrays gets initialized.
+     */
 	private PointArrays() {
 		
 	}
 	
-	//copy(IntPoint[])
+	/**
+     * Returns the copy of an array of IntPoints.
+     *
+     * @pre Length of the given array is greater than zero.
+     *    | points.length >= 0
+     */
 	public static IntPoint[] copy(IntPoint[] points) {
 		return points; //pass by value
 	}

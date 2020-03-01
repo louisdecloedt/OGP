@@ -5,18 +5,13 @@ import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
 
 @RunWith(Suite.class)
-/*@SuiteClasses({
+@SuiteClasses({
 	DoubleVectorTest.class,
 	DoublePointTest.class,
 	IntVectorTest.class,
 	IntPointTest.class,
 	PointArraysTest.class,
-	RoundedPolygon.class
 })
-*/
-@SuiteClasses({DoublePointTest.class, IntPointTest.class, DoubleVectorTest.class,
-	IntVectorTest.class, PointArraysTest.class})
-
 
 public class AllTests {
 	// the class remains empty,

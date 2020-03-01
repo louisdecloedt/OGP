@@ -32,12 +32,9 @@ public class IntPoint {
 	/**
      * Returns the DoublePoint version of the instance.
      *
-     *@pre Argument {@code this} is not {@code null}.
-     *    | this != null
      * @post
      *      The result is a DoublePoint with the same coordinates but of type double.
-     *    | result.getX() == this.getX() 
-     *    | //result.getY() == this.getY()
+     *    | result.getX() == this.getX() && result.getY() == this.getY()
      */
 	public DoublePoint asDoublePoint() {
 		return new DoublePoint(this.xCoordinate, this.yCoordinate);
@@ -52,9 +49,7 @@ public class IntPoint {
      *      The result is {@code true} iff this object's coordinates are equal to
      *      the coordinates of the given point.
      *    | result == (
-     *    |     getX() == point.getX() &&
-     *    |     getY() == point.getY() )
-     *    | 
+     *    |     this.getX() == point.getX() && this.getY() == point.getY() ) 
      */
 	public Boolean equals(IntPoint point) {
 		if (point.getX() == this.xCoordinate & point.getY() == this.yCoordinate) {
@@ -63,8 +58,6 @@ public class IntPoint {
 		return false;
 	}
 	
-	
-	//I guess this is what they mean in the given documentation
 	public Boolean isOnLineSegment(IntPoint pointB, IntPoint pointC) {
 		IntPoint pointA = new IntPoint(this.xCoordinate, this.yCoordinate);
 		IntVector IntVectorBA = pointA.minus(pointB);
@@ -97,7 +90,17 @@ public class IntPoint {
 		return false;
 	}
 	
-	
+	/**
+     * Returns the displacement from a given point to the instance.
+     *
+     * @pre Argument {@code this} is not {@code null}.
+     *    | this != null
+     * @pre Argument {@code point} is not {@code null}.
+     *    | point != null
+     * @post The result is an IntVector with the displacement from
+     *      the given point to this point as coordinates.
+     *    | result.getX() == this.getX() - point.getX() && result.getY() == this.getY() - point.getY()
+     */
 	public IntVector minus(IntPoint point) {
 		return new IntVector(this.xCoordinate - point.getX(), this.yCoordinate - point.getY());
 	}

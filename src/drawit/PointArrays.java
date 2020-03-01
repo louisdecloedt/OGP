@@ -149,24 +149,6 @@ public class PointArrays{
 		return false;
 	}
 	
-	//IS DIT ZELFS OP EEN DEFTIGE MANIER MOGELIJK??
-	/**
-     * Returns whether a string describing if a given IntPoint array
-     * describes a polygon and if not which requirement was not met.
-     *
-     * @pre The given IntPoint array does not contain any null.
-     *    | Arrays.stream(points).allMatch(e -> e != null)
-     * @post If there are not enough points in the given IntPoint array, 
-     * following string is returned.
-     *    | result == "Not enough points to define a proper polygon.\n"
-     * @post If at least one point occurs twice.
-     *    | result == "At least two coinciding points, thus this sequence does not define a proper polygon. \n"
-     * @post If a given vertex lies on a open line segment defined by two other points.
-     *    | result == "At least one vertex lies on an open line segment, defined by two other vertices. \n "
-							+ "So this sequence of points does not define a proper polygon.\n";
-	 * ????
-     */
-	
 	public static String checkDefinesProperPolygon(IntPoint[] points) {
 		if (points.length < 3) {
 			return "Not enough points to define a proper polygon.\n";

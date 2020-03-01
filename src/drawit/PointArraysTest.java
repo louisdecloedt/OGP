@@ -1,6 +1,9 @@
 package drawit;
 
 import static org.junit.jupiter.api.Assertions.*;
+import java.util.Arrays;
+import java.util.stream.IntStream;
+
 import org.junit.*;
 
 public class PointArraysTest {
@@ -104,6 +107,8 @@ public class PointArraysTest {
 		for (int j = 0; j < testArray5.length; j++) {
 			assertEquals(true,testArray10[j].equals(testArray5[j]));
 		}
+		
+		//System.out.print(IntStream.range(10,10));
 		
 	}
 

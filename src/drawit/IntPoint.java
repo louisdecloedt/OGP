@@ -4,6 +4,8 @@ package drawit;
  * Each instance of this class is an abstraction of an immutable 2D integer point.
  *
  * @immutable
+ * 
+ *
  */
 public class IntPoint {
 	private final int xCoordinate;
@@ -58,6 +60,12 @@ public class IntPoint {
 		return false;
 	}
 	
+	/**
+	 * 
+	 * Returns whether given IntPoint is on the linesegment created by Point B and Point C
+	 * 
+	 *
+	 */
 	public Boolean isOnLineSegment(IntPoint pointB, IntPoint pointC) {
 		IntPoint pointA = new IntPoint(this.xCoordinate, this.yCoordinate);
 		IntVector IntVectorBA = pointA.minus(pointB);
@@ -78,6 +86,10 @@ public class IntPoint {
 	
 	
 	//lineSegmentsIntersect(IntPoint, IntPoint, IntPoint, IntPoint)
+	/**
+	 * Returns whether the linesegment created by points A and B, intersect with the line segment created by points C and D
+	 * 
+	 */
 	public static Boolean lineSegmentsIntersect(IntPoint pointA, IntPoint pointB, IntPoint pointC, IntPoint pointD) {
 		
 		float testA = Math.signum(pointC.minus(pointA).crossProduct(pointB.minus(pointA)))

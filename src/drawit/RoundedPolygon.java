@@ -12,6 +12,17 @@ public class RoundedPolygon {
 	}
 	
 	//setRadius(integer)
+	/**
+     * Initializes this object with the given coordinates.
+     * 
+     * @mutates | this
+     * 
+     * @throws IllegalArgumentException if the given radius is negative
+     *
+     * @post This object's radius equals the given radius
+     *    | getX() == xCoordinate
+     *
+     */
 	public void setRadius(int radius) throws IllegalArgumentException {
 		if (radius < 0) {
 			throw new IllegalArgumentException();
@@ -21,6 +32,12 @@ public class RoundedPolygon {
 	}
 	
 	//setVertices(IntPoint[])
+	/**
+	 * 
+	 * @throws IllegalArgumentException if the given vertices do not form a proper polygon
+	 * 
+	 * @post the vertices of the rounded polygon are now equal to the given array of points
+	 */
 	public void setVertices(IntPoint[] points) throws IllegalArgumentException {
 		if (PointArrays.checkDefinesProperPolygon(points) != null) {
 			throw new IllegalArgumentException();
@@ -30,16 +47,25 @@ public class RoundedPolygon {
 	}
 	
 	//getRadius()
+	//returns the radius of the given object
 	public int getRadius() {
 		return this.radius;
 	}
 	
 	//getVertices()
+	//returns the vertices of the given polygon
 	public IntPoint[] getVertices() {
 		return PointArrays.copy(this.vertices);
 	}
 	
 	//contains(intPoint)
+	/**
+	 * 
+	 * @pre the given array of the points must define a proper polygon
+	 * 
+	 * @return This returns true if the given IntPoint is contained within or on the boundaries of a given array of points which comprise a polygon,
+	 * this function will return true if the given point is thus equal to a vertex on the polygon or on the edge of this polygon
+	 */
 	public Boolean contains(IntPoint point) {
 		//point at a vertex
 		for (int i = 0; i < this.vertices.length; i++) {
@@ -57,40 +83,37 @@ public class RoundedPolygon {
 			return true;
 		}
 		int largeNumber = 100000;
-		IntPoint exitPoint = new IntPoint(largeNumber*largeNumber,point.getY());
-		int indexFirstVertex = -1;
-		for (int i = 0; i < this.vertices.length; i ++) {
-			if (! this.vertices[i].isOnLineSegment(point, exitPoint) && indexFirstVertex != -1) {
-				indexFirstVertex = i;
+		IntPoint exitPoint = new IntPoint(largeNumber,point.getY()); //WARNING: Is plus ook niet al goed genoeg, vermenigvuldiging zal het te groot maken en de volgende for loop te lang laten duren in mijn mening
+		int numberOfLineIntersections = 0;
+		int numberOfVerticesInPath = 0;
+		for (int i = 0; i < this.vertices.length - 1; i ++) {
+			if (this.vertices[i].isOnLineSegment(point, exitPoint)) {
+				numberOfVerticesInPath++;
 			}
 		}
-		if (indexFirstVertex == -1) {return false;}
-		int countIntersections = 0;
-		//boolean loopFinished = false;
-		int indexCurrentVertex = indexFirstVertex;
-		int indexNextVertex = -1;
-		for (int j = 0; j < this.vertices.length; j++) {
-			for (int i = indexCurrentVertex; i < this.vertices.length; i++) {
-				if (this.vertices[i].isOnLineSegment(point, exitPoint) && indexNextVertex != -1) {
-					indexNextVertex = i;
+		if (numberOfVerticesInPath == 2) {return false;}
+		for (int x = 0; x < (largeNumber - point.getX()); x ++) {
+			for (int i = 0; i < this.vertices.length - 1; i ++) {
+				for (int j = 0; j < this.vertices.length - 1; j ++) {
+					IntPoint currentPoint = new IntPoint(x, point.getY());
+					if (currentPoint.isOnLineSegment(this.vertices[i], this.vertices[j]) && i != j) {
+						numberOfLineIntersections++;
+					}
 				}
 			}
-			if (-1 != indexNextVertex) {
-				if (IntPoint.lineSegmentsIntersect(point, exitPoint, this.vertices[indexCurrentVertex],
-						this.vertices[indexCurrentVertex])) {
-					countIntersections += 1;
-				}
-				indexCurrentVertex = indexNextVertex;
-			}		
 		}
-		if (IntPoint.lineSegmentsIntersect(point, exitPoint, this.vertices[indexFirstVertex],
-				this.vertices[indexNextVertex])) {
-			countIntersections += 1;
+		if (numberOfLineIntersections + numberOfVerticesInPath == 1) {return true;} else {return false;}
+	}
+	
+	public String getDrawingCommands() {
+		String result = "";
+		if (this.vertices.length < 3) {return result;}
+		for (int i = 0; i < this.vertices.length - 2; i ++) {
+			double Rico = (this.vertices[i+1].getY() - this.vertices[i].getY())/(this.vertices[i+1].getX() - this.vertices[i].getX());
+			double Alpha = -1/Rico;
+			//KLOPT NOG NIET
 		}
-		System.out.print(countIntersections);
-		if (countIntersections%2 != 0) {
-			return true;
-		}return false;
+		return result;
 	}
 	
 	//getDrawingCommands()
@@ -109,12 +132,22 @@ public class RoundedPolygon {
 	
 	
 	//insert(integer, intPoint)
+	/**
+	 * @mutates this
+	 * 
+	 * @post the given IntPoint is now a vertex in the given polygon
+	 */
 	public void insert(int index, IntPoint point) {
 		this.vertices = PointArrays.insert(this.vertices, index, point);
 	}
 	
 	
 	//remove(IntPoint[], integer)
+	/**
+	 * @mutates this
+	 * 
+	 * @post the point in the polygon at the given index has now been removed from that polygon
+	 */
 	public void remove(int index) {
 		this.vertices = PointArrays.remove(this.vertices, index);
 	}

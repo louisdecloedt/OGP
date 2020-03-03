@@ -157,11 +157,8 @@ public class PointArrays{
 	 * Returns whether a given array of IntPoints forms a proper polygon
 	 * 
 	 * @pre The length of the array is greater than 2
-	 *    | points.length > 2
 	 * @pre No 2 points coincide
-	 * 	  | points[i] != points [j] for i != j and 0 <= i,j < points.length
 	 * @pre None of the vertices lie on an edge created by other vertices
-	 *    | points[i].isOnLineSegment(points[j], points[j+1])
 	 * @pre No 2 edges shall cross/intersect
 	 * 
 	 * @post If the conditions for a proper polygon are not met, the reason as to why the failure is printed out
@@ -175,10 +172,6 @@ public class PointArrays{
 				//check for coinciding vertices
 				if (points[i].getX() == points[j].getX()) {
 					if (points[i].getY() == points[j].getY() && j != i) {
-						System.out.print(i); //WARNING: Moeten deze prints er bijstaan? Staat niks van in documentatie
-						System.out.print("\n");
-						System.out.print(j);
-						System.out.print("\n");
 						return "At least two coinciding points, thus this sequence does not define a proper polygon. \n";
 					}
 				}

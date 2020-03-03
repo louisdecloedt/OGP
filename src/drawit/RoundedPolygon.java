@@ -20,7 +20,7 @@ public class RoundedPolygon {
      * @throws IllegalArgumentException if the given radius is negative
      *
      * @post This object's radius equals the given radius
-     *    | getX() == xCoordinate
+     *    | getRadius() == radius
      *
      */
 	public void setRadius(int radius) throws IllegalArgumentException {
@@ -83,7 +83,7 @@ public class RoundedPolygon {
 			return true;
 		}
 		int largeNumber = 100000;
-		IntPoint exitPoint = new IntPoint(largeNumber,point.getY()); //WARNING: Is plus ook niet al goed genoeg, vermenigvuldiging zal het te groot maken en de volgende for loop te lang laten duren in mijn mening
+		IntPoint exitPoint = new IntPoint(largeNumber,point.getY());
 		int numberOfLineIntersections = 0;
 		int numberOfVerticesInPath = 0;
 		for (int i = 0; i < this.vertices.length - 1; i ++) {
@@ -91,7 +91,7 @@ public class RoundedPolygon {
 				numberOfVerticesInPath++;
 			}
 		}
-		if (numberOfVerticesInPath == 2) {return false;}
+		//if (numberOfVerticesInPath == 2) {return false;}
 		for (int x = 0; x < (largeNumber - point.getX()); x ++) {
 			for (int i = 0; i < this.vertices.length - 1; i ++) {
 				for (int j = 0; j < this.vertices.length - 1; j ++) {
@@ -103,9 +103,9 @@ public class RoundedPolygon {
 			}
 		}
 		if (numberOfLineIntersections + numberOfVerticesInPath == 1) {return true;} else {return false;}
-	}
+	}	
 	
-	public String getDrawingCommands() {
+	/*public String getDrawingCommands() {
 		String result = "";
 		if (this.vertices.length < 3) {return result;}
 		for (int i = 0; i < this.vertices.length - 2; i ++) {
@@ -114,7 +114,7 @@ public class RoundedPolygon {
 			//KLOPT NOG NIET
 		}
 		return result;
-	}
+	}*/
 	
 	//getDrawingCommands()
 	/*

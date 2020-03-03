@@ -11,6 +11,7 @@ import org.junit.runners.Suite.SuiteClasses;
 	IntVectorTest.class,
 	IntPointTest.class,
 	PointArraysTest.class,
+	RoundedPolygonTest.class
 })
 
 public class AllTests {

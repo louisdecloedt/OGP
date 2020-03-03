@@ -60,20 +60,7 @@ public class IntVector {
 	}
 	
 	
-	/**
-     * Returns whether two IntVectors are collinear.
-     *
-     * @pre Argument {@code this} is not {@code null}.
-     *    | this != null
-     * @pre Argument {@code vector} is not {@code null}.
-     *    | vector != null
-     * @post
-     *      The result is {@code false} if one of the vectors is (0,0).
-     * @post 
-     * 		For two non zero vectors {@code true} the method returns true
-     * 		iff the cross product of the two vectors equals zero.
-     * 	  | result == (this.crossProduct(vector) == 0)
-     */
+	//WARNING: documentation: see brol.java
 	public Boolean isCollinearWith(IntVector vector) {
 		if ((vector.getX() == 0 && vector.getY() == 0)
 				|| (this.getX() == 0 && this.getY() == 0)) {

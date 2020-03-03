@@ -106,10 +106,7 @@ public class PointArraysTest {
 		IntPoint[] testArray10 = PointArrays.copy(testArray5);
 		for (int j = 0; j < testArray5.length; j++) {
 			assertEquals(true,testArray10[j].equals(testArray5[j]));
-		}
-		
-		//System.out.print(IntStream.range(10,10));
-		
+		}		
 	}
 
 }

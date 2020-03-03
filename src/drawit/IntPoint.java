@@ -70,11 +70,11 @@ public class IntPoint {
 		IntPoint pointA = new IntPoint(this.xCoordinate, this.yCoordinate);
 		IntVector IntVectorBA = pointA.minus(pointB);
 		IntVector IntVectorBC = pointC.minus(pointB);		
-		if (pointA.getX() == pointB.getX() || pointA.getX() == pointC.getX()) {
+		if ((pointA.getX() == pointB.getX() && pointA.getY() == pointB.getX())
+				|| (pointA.getX() == pointC.getX() && pointA.getY() == pointC.getY())) {
 			return false;
 		}
-
-		if ( ! IntVectorBA.isCollinearWith(IntVectorBC)) {
+		if ( !IntVectorBA.isCollinearWith(IntVectorBC)) {
 			return false;
 		}
 		if (  IntVectorBA.dotProduct(IntVectorBC) < IntVectorBC.dotProduct(IntVectorBC) 

@@ -105,6 +105,124 @@ public class RoundedPolygon {
 		if (numberOfLineIntersections + numberOfVerticesInPath == 1) {return true;} else {return false;}
 	}	
 	
+	
+		public Boolean containsA(IntPoint point) {
+			if (PointArrays.in(this.vertices, point)) { return true; }
+			for (int i=0; i < this.vertices.length-1; i++) {
+				if (point.isOnLineSegment(this.vertices[i], this.vertices[i+1])) {
+					return true;}
+			}
+			if (point.isOnLineSegment(this.vertices[this.vertices.length-1], this.vertices[0])) {
+				return true;}
+			int largeNumber = 100000;
+			IntPoint exitPoint = new IntPoint(largeNumber,point.getY());
+			int countIntersections = 0;
+			IntVector exitVector = exitPoint.minus(point);
+			for (int i=0; i < this.vertices.length-1; i++) {
+				if (IntPoint.lineSegmentsIntersect(point, exitPoint, this.vertices[i], this.vertices[i+1])) {
+					countIntersections++;
+				}
+				IntVector vectorB = this.vertices[i+1].minus(this.vertices[i]);
+				if (!this.vertices[i+1].isOnLineSegment(point, exitPoint) &&
+						this.vertices[i].isOnLineSegment(point, exitPoint) &&
+						!vectorB.isCollinearWith(exitVector))
+				{ countIntersections++; }
+			}
+			if (IntPoint.lineSegmentsIntersect(point, exitPoint, this.vertices[this.vertices.length-1], this.vertices[0])) {
+				countIntersections++; }
+			IntVector vectorC = this.vertices[0].minus(this.vertices[this.vertices.length-1]);
+			if (!this.vertices[0].isOnLineSegment(point, exitPoint) &&
+					this.vertices[this.vertices.length-1].isOnLineSegment(point, exitPoint) 
+					&& !vectorC.isCollinearWith(exitVector)) {countIntersections++;}
+			return (countIntersections%2 != 0 && countIntersections > 0);
+		}
+		
+		
+
+		
+		public static Boolean onSegment(IntPoint p, IntPoint q, IntPoint r) {
+			if (q.getX() <= Math.max(p.getX(), r.getX()) && q.getX() >= Math.min(p.getX(), r.getX())
+	                && q.getY() <= Math.max(p.getY(), r.getY()) && q.getY() >= Math.min(p.getY(), r.getY())) {
+				return true;
+			}
+	        return false;
+		}
+		
+		public static int orientation(IntPoint p, IntPoint q, IntPoint r)
+	    {
+	        int val = (q.getY() - p.getY()) * (r.getX() - q.getX()) - (q.getX() - p.getX()) * (r.getY() - q.getY());
+	        if (val == 0)
+	            return 0;
+	        return (val > 0) ? 1 : 2;
+	    }
+	 
+	    public static boolean doIntersect(IntPoint p1, IntPoint q1, IntPoint p2, IntPoint q2)
+	    {
+	 
+	        int o1 = orientation(p1, q1, p2);
+	        int o2 = orientation(p1, q1, q2);
+	        int o3 = orientation(p2, q2, p1);
+	        int o4 = orientation(p2, q2, q1);
+	        if (o1 != o2 && o3 != o4)
+	            return true;
+	        if (o1 == 0 && onSegment(p1, p2, q1))
+	            return true;
+	        if (o2 == 0 && onSegment(p1, q2, q1))
+	            return true;
+	        if (o3 == 0 && onSegment(p2, p1, q2))
+	            return true;
+	        if (o4 == 0 && onSegment(p2, q1, q2))
+	            return true;
+	        return false;
+	    }
+	 
+		
+		public Boolean contains3(IntPoint p) {
+			int INF = 10000;
+			int n = this.vertices.length;
+			IntPoint[] points = PointArrays.copy(this.vertices);
+			IntPoint extreme = new IntPoint(INF, p.getY());
+	        int count = 0, i = 0;
+	        do
+	        {
+	            int next = (i + 1) % n;
+	            if (doIntersect(points[i], points[next], p, extreme))
+	            {
+	                if (orientation(points[i], p, points[next]) == 0)
+	                    return onSegment(points[i], p, points[next]);
+	 
+	                count++;
+	            }
+	            i = next;
+	        } while (i != 0);
+	 
+	        return (count & 1) == 1 ? true : false;
+	    }
+	 
+//		public Boolean contains4(IntPoint point) {
+//			boolean pHacks = false;
+//			int largeNumber = 100000;
+//			IntPoint exitPoint = new IntPoint(largeNumber, point.getY());
+//			for (int i = 0; i < this.vertices.length-1; i++) {
+//				IntPoint max_y_pt = this.vertices[i].getY() < this.vertices[i+1].getY() ? this.vertices[i+1] : this.vertices[i+1];
+//		        IntPoint min_y_pt = this.vertices[i].getY() < this.vertices[i+1].getY() ? this.vertices[i] : this.vertices[i+1];
+//				if (IntPoint.lineSegmentsIntersect(exitPoint, point, this.vertices[i], this.vertices[i+1])) {
+//					int signedDist = (point.getY() - this.vertices[i].getY())*(this.vertices[i+1].getX()-point.getX())
+//					- (point.getX() - this.vertices[i].getX())*(this.vertices[i+1].getX()-point.getY());
+//					if (signedDist ==0) {
+//						if (point.isOnLineSegment(this.vertices[i], this.vertices[i+1])) {
+//							return true;
+//						}
+//					}
+//					if (signedDist >= 0) {
+//						if (point.equals(oldPoint)) {
+//							pHacks = !pHacks;
+//						}
+//					}
+//				}
+//			}
+//		}
+	
 	/*public String getDrawingCommands() {
 		String result = "";
 		if (this.vertices.length < 3) {return result;}

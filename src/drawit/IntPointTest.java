@@ -33,6 +33,24 @@ public class IntPointTest {
 		assertEquals(false, testPoint8.isOnLineSegment(testPoint3, testPoint4));
 		assertEquals(false, testPoint9.isOnLineSegment(testPoint3, testPoint4));
 		
+		//Error case RoundedPolygon.contains()
+		IntPoint testPointVerticaal = new IntPoint(0,100);
+		IntPoint testPointB = new IntPoint(0,0);
+		IntPoint testPointC = new IntPoint(0,200);
+		assertEquals(true,testPointVerticaal.isOnLineSegment(testPointB, testPointC));
+		
+		//checking if is collinear with is correct for this case.
+		//wrong file I know :)
+		IntVector testVectorA = new IntVector(0,100);
+		IntVector testVectorB = new IntVector(0,200);
+		assertEquals(true, testVectorA.isCollinearWith(testVectorB));
+		//seems to work
+		IntVector BA = testPointVerticaal.minus(testPointB);
+		IntVector BC = testPointC.minus(testPointB);
+		assertEquals(true, BA.isCollinearWith(BC));
+		
+		//false was returned for isOnLineSegment if X coordinate matched x coordinate of one of the end points.
+		
 		
 		IntPoint testPoint10 = new IntPoint(5,5);
 		IntPoint testPoint11 = new IntPoint(2,2);
@@ -44,6 +62,11 @@ public class IntPointTest {
 		IntPoint testPoint17 = new IntPoint(-5,12);
 		IntPoint testPoint18 = new IntPoint(10,-3);
 		
+		IntPoint testPointQ = new IntPoint(0,0);
+		IntPoint testPointR = new IntPoint(100,100);
+		IntPoint testPointS = new IntPoint(-200,100);
+		IntPoint testPointT = new IntPoint(1000,100);
+		assertEquals(false, IntPoint.lineSegmentsIntersect(testPointQ, testPointR, testPointS, testPointT));
 		
 		assertEquals(false, IntPoint.lineSegmentsIntersect(testPoint3, testPoint4, testPoint5, testPoint6)); 
 		assertEquals(false, IntPoint.lineSegmentsIntersect(testPoint3, testPoint4, testPoint6, testPoint5)); 

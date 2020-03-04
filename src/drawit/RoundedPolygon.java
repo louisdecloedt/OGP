@@ -209,7 +209,7 @@ public class RoundedPolygon {
 		        
 				if (bottom.getY() <= point.getY() && top.getY() >= point.getY()) {
 					int dx          = top.getX() - bottom.getX();
-			        int dy          = bottom.getY() - bottom.getY();
+			        int dy          = top.getY() - bottom.getY();
 			        int signedDist = dy * point.getX() - dx * point.getY() +
 			                              top.getX() * bottom.getY() - bottom.getX() * top.getY();
 			        

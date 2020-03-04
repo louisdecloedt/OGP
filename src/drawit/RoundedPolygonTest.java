@@ -7,31 +7,43 @@ import org.junit.jupiter.api.Test;
 
 public class RoundedPolygonTest {
 
-	/*
-	 * @org.junit.Test public void test() { IntPoint point1 = new IntPoint(0,0);
-	 * IntPoint point2 = new IntPoint(100,0); IntPoint point3 = new
-	 * IntPoint(100,100); IntPoint point4 = new IntPoint(0,100);
-	 * 
-	 * RoundedPolygon poly1 = new RoundedPolygon(); IntPoint[] array1 = new
-	 * IntPoint[4]; array1[0] = point1; array1[1] = point2; array1[2] = point3;
-	 * array1[3] = point4; assertEquals(true, array1[0].equals(point1));
-	 * assertEquals(true, array1[1].equals(point2)); assertEquals(true,
-	 * array1[2].equals(point3)); assertEquals(true, array1[3].equals(point4));
-	 * assertEquals(null, PointArrays.checkDefinesProperPolygon(array1));
-	 * 
-	 * poly1.setVertices(array1); IntPoint testPoint1 = new IntPoint(10,10);
-	 * IntPoint testPoint2 = new IntPoint(50,100); IntPoint testPoint3 = new
-	 * IntPoint(100,100); IntPoint testPoint4 = new IntPoint(-10,10); IntPoint
-	 * testPoint5 = new IntPoint(50,-100); IntPoint testPoint6 = new
-	 * IntPoint(101,100); IntPoint testPoint7 = new IntPoint(78, 3);
-	 * //assertEquals(true, poly1.contains(testPoint1)); assertEquals(true,
-	 * poly1.contains3(testPoint2)); assertEquals(true,
-	 * poly1.contains3(testPoint3)); assertEquals(false,
-	 * poly1.contains3(testPoint4)); assertEquals(false,
-	 * poly1.contains3(testPoint5)); assertEquals(false,
-	 * poly1.contains3(testPoint6)); //assertEquals(false,
-	 * poly1.contains3(testPoint7)); }
-	 */
+	
+	@org.junit.Test 
+	public void test() { 
+		IntPoint point1 = new IntPoint(0,0);
+		
+	    IntPoint point2 = new IntPoint(100,0); 
+	    IntPoint point3 = new IntPoint(100,100); 
+	    IntPoint point4 = new IntPoint(0,100);
+	  
+	    RoundedPolygon poly1 = new RoundedPolygon(); 
+	    IntPoint[] array1 = new IntPoint[4]; 
+	    array1[0] = point1; 
+	    array1[1] = point2; 
+	    array1[2] = point3;
+	    array1[3] = point4; 
+	    assertEquals(true, array1[0].equals(point1));
+	    assertEquals(true, array1[1].equals(point2)); 
+	    assertEquals(true, array1[2].equals(point3)); 
+	    assertEquals(true, array1[3].equals(point4));
+	    assertEquals(null, PointArrays.checkDefinesProperPolygon(array1));
+	  
+	    poly1.setVertices(array1); 
+	    IntPoint testPoint1 = new IntPoint(10,10);
+	    IntPoint testPoint2 = new IntPoint(50,100); 
+	    IntPoint testPoint3 = new IntPoint(100,100); 
+	    IntPoint testPoint4 = new IntPoint(-10,10); 
+	    IntPoint testPoint5 = new IntPoint(50,-100); 
+	    IntPoint testPoint6 = new IntPoint(101,100); 
+	    IntPoint testPoint7 = new IntPoint(78, 3);
+	    assertEquals(true, poly1.contains3(testPoint1)); 
+	    assertEquals(true, poly1.contains3(testPoint2)); 
+	    assertEquals(true,poly1.contains3(testPoint3)); 
+	    assertEquals(false,poly1.contains3(testPoint4)); 
+	    assertEquals(false, poly1.contains3(testPoint5)); 
+	    //assertEquals(false,poly1.contains3(testPoint6)); 
+	    assertEquals(true,poly1.contains3(testPoint7));
+	}
 	
 	@Test
 	public void hardCoreTest() {
@@ -104,19 +116,19 @@ public class RoundedPolygonTest {
 		assertEquals(true, hardCorePolygon.contains3(testPoint2)); 
 		assertEquals(true, hardCorePolygon.contains3(testPoint3)); 
 		assertEquals(true, hardCorePolygon.contains3(testPoint4));
-		//assertEquals(true, hardCorePolygon.contains3(testPoint5)); 
+		assertEquals(true, hardCorePolygon.contains3(testPoint5)); 
 		assertEquals(true, hardCorePolygon.contains3(testPoint6)); 
 		assertEquals(true, hardCorePolygon.contains3(testPoint7));
 		assertEquals(true, hardCorePolygon.contains3(testPoint8)); 
 		assertEquals(true, hardCorePolygon.contains3(pieterPoint));
 		assertEquals(true, hardCorePolygon.contains3(pieterPoint2));
 
-		//assertEquals(false, hardCorePolygon.contains3(testPoint9)); //!!
+		assertEquals(false, hardCorePolygon.contains3(testPoint9)); //!!
 		assertEquals(false, hardCorePolygon.contains3(testPoint10)); 
 		assertEquals(false, hardCorePolygon.contains3(testPoint11)); 
-		//assertEquals(false, hardCorePolygon.contains3(testPoint12));
-		//assertEquals(false, hardCorePolygon.contains3(testPoint13)); 
-		//assertEquals(false, hardCorePolygon.contains3(testPoint14));
+		assertEquals(false, hardCorePolygon.contains3(testPoint12));
+		assertEquals(false, hardCorePolygon.contains3(testPoint13)); 
+		assertEquals(false, hardCorePolygon.contains3(testPoint14));
 		
 		IntPoint testPointD = new IntPoint(-200,900);
 		IntPoint testPointE = new IntPoint(-100,900);
@@ -127,14 +139,14 @@ public class RoundedPolygonTest {
 		IntPoint testPointJ = new IntPoint(124,200);
 		IntPoint testPointK = new IntPoint(300,400);
 		
-		//assertEquals(false, hardCorePolygon.contains3(testPointD)); 
+		assertEquals(false, hardCorePolygon.contains3(testPointD)); 
 		assertEquals(true, hardCorePolygon.contains3(testPointE)); 
-		//assertEquals(true, hardCorePolygon.contains3(testPointF));
-		//assertEquals(false, hardCorePolygon.contains3(testPointG)); 
+		assertEquals(true, hardCorePolygon.contains3(testPointF));
+		assertEquals(false, hardCorePolygon.contains3(testPointG)); 
 		assertEquals(false, hardCorePolygon.contains3(testPointH));
-		//assertEquals(false, hardCorePolygon.contains3(testPointI));
-		//assertEquals(false, hardCorePolygon.contains3(testPointJ));
-		//assertEquals(true, hardCorePolygon.contains3(testPointK));
+		assertEquals(false, hardCorePolygon.contains3(testPointI));
+		assertEquals(false, hardCorePolygon.contains3(testPointJ));
+		assertEquals(true, hardCorePolygon.contains3(testPointK));
 		
 		
 		//dissecting testPoint9

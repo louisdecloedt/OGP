@@ -177,7 +177,7 @@ public class RoundedPolygon {
 	    }
 	 
 		
-		public Boolean contains3(IntPoint p) {
+		public Boolean contains35(IntPoint p) {
 			int INF = 10000;
 			int n = this.vertices.length;
 			IntPoint[] points = PointArrays.copy(this.vertices);
@@ -198,6 +198,40 @@ public class RoundedPolygon {
 	 
 	        return (count & 1) == 1 ? true : false;
 	    }
+		
+		public boolean contains3(IntPoint point) {
+			boolean pHacks = false;
+			IntPoint oldPoint = this.vertices[this.vertices.length-1];
+			for (int i = 0; i < this.vertices.length ; i++) {
+	
+				IntPoint top = oldPoint.getY() < this.vertices[i].getY() ? this.vertices[i] : oldPoint;
+		        IntPoint bottom = oldPoint.getY() < this.vertices[i].getY() ? oldPoint : this.vertices[i];
+		        
+				if (bottom.getY() <= point.getY() && top.getY() >= point.getY()) {
+					int dx          = top.getX() - bottom.getX();
+			        int dy          = bottom.getY() - bottom.getY();
+			        int signedDist = dy * point.getX() - dx * point.getY() +
+			                              top.getX() * bottom.getY() - bottom.getX() * top.getY();
+			        
+		            if (signedDist == 0) {
+		            	
+		            	IntPoint xTop = oldPoint.getX() < this.vertices[i].getX() ? this.vertices[i] : oldPoint;
+			            IntPoint xBottom = oldPoint.getX() < this.vertices[i].getX() ? oldPoint : this.vertices[i];
+			            
+		            	if ((point.getY() >= bottom.getY() && point.getY() <= top.getY()) &&
+				                 (point.getX() >= xBottom.getX() && point.getX() <= xTop.getX())) {
+				                  return true; }
+		            }
+		           
+		            if (signedDist >= 0) {
+			                // Count corners only once
+			             if (point.getY() != oldPoint.getY()) {
+			                 pHacks = !pHacks;}
+					}
+				}
+				oldPoint = this.vertices[i];
+			}return pHacks;
+		}
 	 
 //		public Boolean contains4(IntPoint point) {
 //			boolean pHacks = false;

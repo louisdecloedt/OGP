@@ -220,7 +220,8 @@ public class RoundedPolygon {
 			            
 		            	if ((point.getY() >= bottom.getY() && point.getY() <= top.getY()) &&
 				                 (point.getX() >= xBottom.getX() && point.getX() <= xTop.getX())) {
-				                  return true; }
+		            			  return true;
+				        }
 		            }
 		           
 		            if (signedDist >= 0) {

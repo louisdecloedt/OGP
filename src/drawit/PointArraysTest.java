@@ -18,8 +18,6 @@ public class PointArraysTest {
 		
 		IntPoint testPoint5 = new IntPoint(0,2);
 		IntPoint testPoint6 = new IntPoint(0,0);
-		IntPoint testPoint7 = new IntPoint(1,1);
-		IntPoint testPoint8 = new IntPoint(1,1);
 		
 		//insert
 		IntPoint[] testArray2 = PointArrays.insert(testArray1, 0, testPoint1);

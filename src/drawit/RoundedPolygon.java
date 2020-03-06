@@ -39,10 +39,16 @@ public class RoundedPolygon {
     public void setVertices(IntPoint[] points) throws IllegalArgumentException {
         if (PointArrays.checkDefinesProperPolygon(points) != null) {
             throw new IllegalArgumentException();
-        } else {
-            this.vertices = points;
+        } 
+        for (int i = 0; i < this.vertices.length; i++) {
+        	if (this.vertices[i] == null) {
+        		throw new IllegalArgumentException();
+        	}
         }
+        this.vertices = points;
     }
+    
+    
     //getRadius()
     //returns the radius of the given object
     public int getRadius() {
@@ -59,7 +65,7 @@ public class RoundedPolygon {
      * this function will return true if the given point is thus equal to a vertex on the polygon or on the edge of this polygon
      * @pre the given array of the points must define a proper polygon
      */
-    public Boolean onEdgePolygon(IntPoint point) {
+    public boolean onEdgePolygon(IntPoint point) {
         if (PointArrays.in(this.vertices, point)) {
             return true;
         }
@@ -73,6 +79,7 @@ public class RoundedPolygon {
         }
         return false;
     }
+    
     public boolean contains(IntPoint point) {
         if (this.onEdgePolygon(point)) {
             return true;
@@ -121,6 +128,8 @@ public class RoundedPolygon {
             if (i == this.vertices.length - 1) {
                 c = 0;
             }
+            //IntVector vectorAB = new IntVector(0,50);
+            //IntVector vectorBC = new IntVector(0,100);
             IntVector vectorAB = this.vertices[b].minus(this.vertices[a]);
             IntVector vectorBC = this.vertices[c].minus(this.vertices[b]);
             if (vectorAB.isCollinearWith(vectorBC)) {

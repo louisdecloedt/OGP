@@ -63,7 +63,7 @@ public class IntPoint {
      * | result == (
      * |     this.getX() == point.getX() && this.getY() == point.getY() )
      */
-    public Boolean equals(IntPoint point) {
+    public boolean equals(IntPoint point) {
         if (point.getX() == this.xCoordinate & point.getY() == this.yCoordinate) {
             return true;
         }
@@ -73,7 +73,7 @@ public class IntPoint {
     /**
      * Returns whether given IntPoint is on the line segment created by Point B and Point C
      */
-    public Boolean isOnLineSegment(IntPoint pointB, IntPoint pointC) {
+    public boolean isOnLineSegment(IntPoint pointB, IntPoint pointC) {
         IntPoint pointA = new IntPoint(this.xCoordinate, this.yCoordinate);
         IntVector IntVectorBA = pointA.minus(pointB);
         IntVector IntVectorBC = pointC.minus(pointB);
@@ -97,7 +97,7 @@ public class IntPoint {
     /**
      * Returns whether the line segment created by points A and B, intersect with the line segment created by points C and D
      */
-    public static Boolean lineSegmentsIntersect(IntPoint pointA, IntPoint pointB, IntPoint pointC, IntPoint pointD) {
+    public static boolean lineSegmentsIntersect(IntPoint pointA, IntPoint pointB, IntPoint pointC, IntPoint pointD) {
 
         float testA = Math.signum(pointC.minus(pointA).crossProduct(pointB.minus(pointA)))
                 * Math.signum(pointD.minus(pointA).crossProduct(pointB.minus(pointA)));

@@ -92,7 +92,7 @@ public class IntVector {
      * iff the cross product of the two vectors equals zero.
      */
 
-    public Boolean isCollinearWith(IntVector vector) {
+    public boolean isCollinearWith(IntVector vector) {
         if ((vector.getX() == 0 && vector.getY() == 0)
                 || (this.getX() == 0 && this.getY() == 0)) {
             return false;

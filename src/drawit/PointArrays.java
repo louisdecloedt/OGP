@@ -58,7 +58,7 @@ public class PointArrays {
             result[i] = points[i];
         }
         result[index] = point; //double for loop for performance
-        for (int i = index + 1; i < points.length; i++) {
+        for (int i = index + 1; i < points.length+1; i++) { //OG: for (int i = index + 1; i < points.length; i++) {
             result[i] = points[i - 1];
         }
         return result;

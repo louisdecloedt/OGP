@@ -1,10 +1,7 @@
 package drawit;
-
 public class RoundedPolygon {
-
     private int radius;
     private IntPoint[] vertices;
-
     //constructor: RoundedPolygon()
     public RoundedPolygon() {
         this.radius = 10;
@@ -18,9 +15,7 @@ public class RoundedPolygon {
         this.vertices[2] = point2;
         this.vertices[3] = point3;
     }
-
     //setRadius(integer)
-
     /**
      * Initializes this object with the given coordinates.
      *
@@ -36,9 +31,7 @@ public class RoundedPolygon {
             this.radius = radius;
         }
     }
-
     //setVertices(IntPoint[])
-
     /**
      * @throws IllegalArgumentException if the given vertices do not form a proper polygon
      * @post the vertices of the rounded polygon are now equal to the given array of points
@@ -50,28 +43,22 @@ public class RoundedPolygon {
             this.vertices = points;
         }
     }
-
     //getRadius()
     //returns the radius of the given object
     public int getRadius() {
         return this.radius;
     }
-
     //getVertices()
     //returns the vertices of the given polygon
     public IntPoint[] getVertices() {
         return PointArrays.copy(this.vertices);
     }
-
     //contains(intPoint)
-
     /**
      * @return This returns true if the given IntPoint is contained within or on the boundaries of a given array of points which comprise a polygon,
      * this function will return true if the given point is thus equal to a vertex on the polygon or on the edge of this polygon
      * @pre the given array of the points must define a proper polygon
      */
-
-
     public Boolean onEdgePolygon(IntPoint point) {
         if (PointArrays.in(this.vertices, point)) {
             return true;
@@ -86,8 +73,7 @@ public class RoundedPolygon {
         }
         return false;
     }
-
-    public Boolean contains(IntPoint point) {
+    public boolean contains(IntPoint point) {
         if (this.onEdgePolygon(point)) {
             return true;
         }
@@ -121,10 +107,7 @@ public class RoundedPolygon {
         }
         return pHacks;
     }
-
-
     //getDrawingCommands()
-
     public String getDrawingCommands() {
         String result = "";
         if (this.vertices.length < 3) {
@@ -160,7 +143,7 @@ public class RoundedPolygon {
                 DoubleVector BCU = doubleBC.scale(1 / doubleBC.getSize());
                 DoubleVector BS = BAU.plus(BCU);
                 DoubleVector BSU = BS.scale(1 / BS.getSize());
-                double BAUCutOff = BAU.crossProduct(BSU);
+                double BAUCutOff = Math.abs(BAU.dotProduct(BSU));
                 double unitRadius = Math.abs(BAU.crossProduct(BSU));
                 double maxCutOff = Math.min(doubleBA.getSize() / 2, doubleBC.getSize() / 2);
                 double minimumScale = Math.min(this.radius / unitRadius, maxCutOff / BAUCutOff);
@@ -168,15 +151,22 @@ public class RoundedPolygon {
                 DoublePoint doubleB = new DoublePoint(this.vertices[b].getX(), this.vertices[b].getY());
                 DoublePoint actualCenter = doubleB.plus(BSReal);
                 IntPoint actualCenterInt = actualCenter.round();
-                DoublePoint ABEnd = doubleB.plus(BAU.scale(minimumScale * BAUCutOff));
+                //System.out.print(BAUCutOff);
+                //System.out.print(minimumScale);
+                //System.out.print("\n");
+                DoublePoint ABEnd = doubleB.plus(BAU.scale(minimumScale*BAUCutOff));
                 DoublePoint BCBegin = doubleB.plus(BCU.scale(minimumScale * BAUCutOff));
                 IntPoint ABEnd2 = ABEnd.round();
                 IntPoint BCBegin2 = BCBegin.round();
-
                 Double startAngle = ABEnd.minus(actualCenter).asAngle();
                 Double endAngle = BCBegin.minus(actualCenter).asAngle();
                 Double extentAngle = endAngle - startAngle;
-
+                while (extentAngle < -Math.PI ) {
+                	extentAngle += 2*Math.PI;
+                }
+                while (extentAngle > Math.PI) {
+                	extentAngle -= 2*Math.PI;
+                }
                 IntVector vecAB = this.vertices[b].minus(this.vertices[a]);
                 IntVector vecBC = this.vertices[c].minus(this.vertices[b]);
                 result += "line ";
@@ -191,6 +181,7 @@ public class RoundedPolygon {
                 result += Integer.toString(Math.toIntExact(Math.round(unitRadius * minimumScale))) + " ";
                 result += Double.toString(startAngle) + " ";
                 result += Double.toString(extentAngle) + " ";
+                result += "\n";
                 result += "line ";
                 result += Integer.toString(BCBegin2.getX()) + " ";
                 result += Integer.toString(BCBegin2.getY()) + " ";
@@ -201,10 +192,7 @@ public class RoundedPolygon {
         }
         return result;
     }
-
-
     //insert(integer, intPoint)
-
     /**
      * @mutates this
      * @post the given IntPoint is now a vertex in the given polygon
@@ -212,10 +200,7 @@ public class RoundedPolygon {
     public void insert(int index, IntPoint point) {
         this.vertices = PointArrays.insert(this.vertices, index, point);
     }
-
-
     //remove(IntPoint[], integer)
-
     /**
      * @mutates this
      * @post the point in the polygon at the given index has now been removed from that polygon
@@ -223,8 +208,6 @@ public class RoundedPolygon {
     public void remove(int index) {
         this.vertices = PointArrays.remove(this.vertices, index);
     }
-
-
     //update(integer, IntPoint)
     public void update(int index, IntPoint point) {
         this.vertices = PointArrays.update(this.vertices, index, point);

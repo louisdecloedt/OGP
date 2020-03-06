@@ -69,7 +69,7 @@ public class IntPoint {
         }
         return false;
     }
-
+    
     /**
      * Returns whether given IntPoint is on the line segment created by Point B and Point C
      */
@@ -108,7 +108,7 @@ public class IntPoint {
         }
         return false;
     }
-
+    
     /**
      * Returns the displacement from a given point to the instance.
      *
@@ -125,4 +125,10 @@ public class IntPoint {
     public IntVector minus(IntPoint point) {
         return new IntVector(this.xCoordinate - point.getX(), this.yCoordinate - point.getY());
     }
+
+
+	public IntPoint plus(IntVector vector) {
+		return new IntPoint(this.getX()+vector.getX(), this.getY() + vector.getY());
+	}
 }
+

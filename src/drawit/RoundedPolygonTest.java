@@ -163,5 +163,11 @@ public class RoundedPolygonTest {
 		assertEquals(false, IntPoint.lineSegmentsIntersect(testPoint9, exitPoint, point4, point5));
 		assertEquals(true, IntPoint.lineSegmentsIntersect(testPoint9, exitPoint, point10, point11));
 	}
+	
+	@org.junit.Test
+	public void getDrawingCommands() {
+		RoundedPolygon poly1 = new RoundedPolygon();
+		System.out.print(poly1.getDrawingCommands());
+	}
 
 }

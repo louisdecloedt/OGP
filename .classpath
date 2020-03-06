@@ -7,6 +7,6 @@
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/5"/>
-	<classpathentry exported="true" kind="lib" path="drawitgui.jar"/>
+	<classpathentry kind="lib" path="/Users/LouisDecloedt/Documents/drawitgui.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

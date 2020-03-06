@@ -41,7 +41,7 @@ public class IntVector {
         this.xCoordinate = xCoordinate;
         this.yCoordinate = yCoordinate;
     }
-
+    
     /**
      * Returns the DoubleVector version of the instance.
      *
@@ -80,7 +80,7 @@ public class IntVector {
     public long crossProduct(IntVector vector) {
         return this.xCoordinate * vector.getY() - this.yCoordinate * vector.getX();
     }
-
+    
     /**
      * Returns whether two IntVectors are collinear.
      *
@@ -90,7 +90,6 @@ public class IntVector {
      * @post The result is {@code false} if one of the vectors is (0,0).
      * @post For two non zero vectors {@code true} the method returns true
      * iff the cross product of the two vectors equals zero.
-     * | result == (this.crossProduct(vector) == 0)
      */
 
     public Boolean isCollinearWith(IntVector vector) {

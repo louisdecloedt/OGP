@@ -1,8 +1,28 @@
 package drawit;
+
+import java.util.stream.IntStream;
+
+/**
+ * Each instance of this class represents a time of day, at one-minute resolution.
+ *
+ * @invar This object's radius can not be negative.
+ *    | 0 <= getRadius()
+ */
+
 public class RoundedPolygon {
+	
+	/**
+     * @invar | 0 <= radius
+     */
     private int radius;
     private IntPoint[] vertices;
-    //constructor: RoundedPolygon()
+    
+    /**
+     * Initializes this object with default settings that define a proper polygon.
+     * 
+     * @mutates | this
+     *
+     */
     public RoundedPolygon() {
         this.radius = 10;
         this.vertices = new IntPoint[4];
@@ -15,12 +35,14 @@ public class RoundedPolygon {
         this.vertices[2] = point2;
         this.vertices[3] = point3;
     }
-    //setRadius(integer)
+    
     /**
-     * Initializes this object with the given coordinates.
+     * Sets this object's radius.
      *
-     * @throws IllegalArgumentException if the given radius is negative
      * @mutates | this
+     * 
+     * @throws IllegalArgumentException if the given radius is negative
+     * 
      * @post This object's radius equals the given radius
      * | getRadius() == radius
      */
@@ -31,10 +53,19 @@ public class RoundedPolygon {
             this.radius = radius;
         }
     }
-    //setVertices(IntPoint[])
+    
     /**
-     * @throws IllegalArgumentException if the given vertices do not form a proper polygon
+     * 
+     * @inspects| points
+     * 
+     * @mutates | this
+     * 
+     * @throws IllegalArgumentException if the given IntPoint array contains a null.
+     * | !Arrays.stream(points).allMatch(e -> e != null)
+     * @throws IllegalArgumentException if the given given IntPoints do not form a proper polygon.
+     * | PointArrays.checkDefinesProperPolygon(points) != null
      * @post the vertices of the rounded polygon are now equal to the given array of points
+     * | IntStream.range(0, points.length).allMatch(i -> this.getVertices()[i].equals(points[i]))
      */
     public void setVertices(IntPoint[] points) throws IllegalArgumentException {
         if (PointArrays.checkDefinesProperPolygon(points) != null) {
@@ -48,22 +79,36 @@ public class RoundedPolygon {
         this.vertices = points;
     }
     
-    
-    //getRadius()
-    //returns the radius of the given object
+    /**
+     * Returns the radius of the RoundedPolygon.
+     * 
+     * @inspects| this
+     * 
+     * @post Result equals the radius of the RoundedPolygon.
+     * | result == getRadius()
+     */
     public int getRadius() {
         return this.radius;
     }
-    //getVertices()
-    //returns the vertices of the given polygon
+    
+    /**
+     * Returns the vertices of the RoundedPolygon.
+     * 
+     * @inspects| this
+     * 
+     * @creates | result
+     * 
+     * @post Result equals the vertices of the RoundedPolygon.
+     * 
+     */
     public IntPoint[] getVertices() {
         return PointArrays.copy(this.vertices);
     }
-    //contains(intPoint)
+    
     /**
-     * @return This returns true if the given IntPoint is contained within or on the boundaries of a given array of points which comprise a polygon,
-     * this function will return true if the given point is thus equal to a vertex on the polygon or on the edge of this polygon
-     * @pre the given array of the points must define a proper polygon
+     * Returns whether if the given IntPoint is contained on the boundaries of a given RoundedPolygon.
+     * 
+     * @pre the given array of the points must define a proper polygon.
      */
     public boolean onEdgePolygon(IntPoint point) {
         if (PointArrays.in(this.vertices, point)) {
@@ -80,6 +125,12 @@ public class RoundedPolygon {
         return false;
     }
     
+    /**
+     * Returns whether if the given IntPoint is contained within or 
+     * on the boundaries of a given RoundedPolygon.
+     * 
+     * @pre the given array of the points must define a proper polygon.
+     */
     public boolean contains(IntPoint point) {
         if (this.onEdgePolygon(point)) {
             return true;
@@ -114,7 +165,11 @@ public class RoundedPolygon {
         }
         return pHacks;
     }
-    //getDrawingCommands()
+    
+    /**
+     * Returns a string with drawing commands for RoundedPolygon.
+     * 
+     */
     public String getDrawingCommands() {
         String result = "";
         if (this.vertices.length < 3) {
@@ -128,8 +183,7 @@ public class RoundedPolygon {
             if (i == this.vertices.length - 1) {
                 c = 0;
             }
-            //IntVector vectorAB = new IntVector(0,50);
-            //IntVector vectorBC = new IntVector(0,100);
+            
             IntVector vectorAB = this.vertices[b].minus(this.vertices[a]);
             IntVector vectorBC = this.vertices[c].minus(this.vertices[b]);
             if (vectorAB.isCollinearWith(vectorBC)) {
@@ -160,9 +214,6 @@ public class RoundedPolygon {
                 DoublePoint doubleB = new DoublePoint(this.vertices[b].getX(), this.vertices[b].getY());
                 DoublePoint actualCenter = doubleB.plus(BSReal);
                 IntPoint actualCenterInt = actualCenter.round();
-                //System.out.print(BAUCutOff);
-                //System.out.print(minimumScale);
-                //System.out.print("\n");
                 DoublePoint ABEnd = doubleB.plus(BAU.scale(minimumScale*BAUCutOff));
                 DoublePoint BCBegin = doubleB.plus(BCU.scale(minimumScale * BAUCutOff));
                 IntPoint ABEnd2 = ABEnd.round();
@@ -201,23 +252,39 @@ public class RoundedPolygon {
         }
         return result;
     }
-    //insert(integer, intPoint)
+    
     /**
-     * @mutates this
-     * @post the given IntPoint is now a vertex in the given polygon
+     * @mutates | this
+     * 
+     * @pre Argument {@code point} is not {@code null}.
+     * | point != null
+     * 
+     * @post the given IntPoint is now a vertex at the given index in the polygon.
+     * | getVertices()[index].equals(point) 
+     * 
      */
     public void insert(int index, IntPoint point) {
         this.vertices = PointArrays.insert(this.vertices, index, point);
     }
-    //remove(IntPoint[], integer)
+    
     /**
-     * @mutates this
-     * @post the point in the polygon at the given index has now been removed from that polygon
+     * @mutates | this
+     * 
+     * @post the point in the polygon at the given index has now been removed from that polygon.
      */
     public void remove(int index) {
         this.vertices = PointArrays.remove(this.vertices, index);
     }
-    //update(integer, IntPoint)
+    
+    /**
+     * @mutates | this
+     * 
+     * @pre Argument {@code point} is not {@code null}.
+     * | point != null
+     * @post the given IntPoint is now a vertex at the given index in the polygon.
+     * | getVertices()[index].equals(point)
+     * 
+     */
     public void update(int index, IntPoint point) {
         this.vertices = PointArrays.update(this.vertices, index, point);
     }

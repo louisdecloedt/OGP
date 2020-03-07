@@ -73,18 +73,11 @@ public class PointArraysTest {
 		assertEquals(false, PointArrays.in(testArray9, testPoint6));
 		
 		
-		//checkDefineProperPolygon
-		assertEquals("Not enough points to define a proper polygon.\n", PointArrays.checkDefinesProperPolygon(testArray1));
-		assertEquals("Not enough points to define a proper polygon.\n", PointArrays.checkDefinesProperPolygon(testArray2));
-		assertEquals("Not enough points to define a proper polygon.\n", PointArrays.checkDefinesProperPolygon(testArray3));
-		assertEquals(null, PointArrays.checkDefinesProperPolygon(testArray4));
-		
 		IntPoint pointA = new IntPoint(0,0);
 		IntPoint pointB = new IntPoint(100,0);
 		IntPoint pointC = new IntPoint(100,100);
 		IntPoint pointD = new IntPoint(0,100);
 		
-		//RoundedPolygon poly1 = new RoundedPolygon();
 		IntPoint[] array1 = new IntPoint[4];
 		array1[0] = pointA;
 		array1[1] = pointB;
@@ -97,8 +90,25 @@ public class PointArraysTest {
 		assertEquals(null, PointArrays.checkDefinesProperPolygon(array1));
 		
 		
-		//assertEquals(null, PointArrays.checkDefinesProperPolygon(testArray1));
+		//checkDefineProperPolygon
+		assertEquals("Not enough points to define a proper polygon.\n", PointArrays.checkDefinesProperPolygon(testArray1));
+		assertEquals("Not enough points to define a proper polygon.\n", PointArrays.checkDefinesProperPolygon(testArray2));
+		assertEquals("Not enough points to define a proper polygon.\n", PointArrays.checkDefinesProperPolygon(testArray3));
+		assertEquals(null, PointArrays.checkDefinesProperPolygon(testArray4));
 		
+		IntPoint[] array5 = PointArrays.insert(array1, 1, pointA);
+		IntPoint pointE = new IntPoint(50,100);
+		IntPoint[] array6 = PointArrays.insert(array1, 1, pointE);
+		
+		assertEquals("At least two coinciding points.\n", PointArrays.checkDefinesProperPolygon(array5));
+		assertEquals("At least one vertex lies on an other edge.\n", PointArrays.checkDefinesProperPolygon(array6));
+	
+		IntPoint[] crossingEdges = new IntPoint[4];
+		crossingEdges[0] = pointB;
+		crossingEdges[1] = pointD;
+		crossingEdges[2] = pointC;
+		crossingEdges[3] = pointA;
+		assertEquals("Intersecting Edges.\n", PointArrays.checkDefinesProperPolygon(crossingEdges));
 		
 		//copy
 		IntPoint[] testArray10 = PointArrays.copy(testArray5);

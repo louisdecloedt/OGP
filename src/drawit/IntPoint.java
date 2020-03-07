@@ -23,6 +23,7 @@ public class IntPoint {
      * Returns the y coordinate of the point.
      *
      * @inspects | this
+     * 
      */
     public int getY() {
         return this.yCoordinate;
@@ -32,6 +33,7 @@ public class IntPoint {
      * Initializes this object with the given coordinates.
      *
      * @mutates | this
+     * 
      * @post This object's X coordinate equal the given X coordinate
      * | getX() == xCoordinate
      * @post This object's Y coordinate equal the given Y coordinate
@@ -45,6 +47,10 @@ public class IntPoint {
 
     /**
      * Returns the DoublePoint version of the instance.
+     *
+     * @inspects | this
+     * 
+     * @creates  | result
      *
      * @post The result is a DoublePoint with the same coordinates but of type double.
      * | result.getX() == this.getX() && result.getY() == this.getY()
@@ -72,6 +78,8 @@ public class IntPoint {
     
     /**
      * Returns whether given IntPoint is on the line segment created by Point B and Point C
+     * 
+     * @inspects | this
      */
     public boolean isOnLineSegment(IntPoint pointB, IntPoint pointC) {
         IntPoint pointA = new IntPoint(this.xCoordinate, this.yCoordinate);
@@ -92,10 +100,14 @@ public class IntPoint {
     }
 
 
-    //lineSegmentsIntersect(IntPoint, IntPoint, IntPoint, IntPoint)
-
     /**
-     * Returns whether the line segment created by points A and B, intersect with the line segment created by points C and D
+     * Returns whether the line segment created by points A and B, 
+     * intersect with the line segment created by points C and D.
+     * 
+     * @inspects | pointA, pointB, pointC, pointD
+     * 
+     * @pre No null points as arguments. 
+     * 	   | pointA != null && pointB != null && pointC != null && pointD != null
      */
     public static boolean lineSegmentsIntersect(IntPoint pointA, IntPoint pointB, IntPoint pointC, IntPoint pointD) {
 
@@ -113,7 +125,9 @@ public class IntPoint {
      * Returns the displacement from a given point to the instance.
      *
      * @inspects | this
+     * 
      * @creates | result
+     * 
      * @pre Argument {@code this} is not {@code null}.
      * | this != null
      * @pre Argument {@code point} is not {@code null}.
@@ -126,7 +140,21 @@ public class IntPoint {
         return new IntVector(this.xCoordinate - point.getX(), this.yCoordinate - point.getY());
     }
 
-
+    /**
+     * Returns a new point equal to the original point moved by a given vector.
+     *
+     * @inspects | this
+     * 
+     * @creates | result
+     * 
+     * @pre Argument {@code this} is not {@code null}.
+     * | this != null
+     * @pre Argument {@code vector} is not {@code null}.
+     * | vector != null
+     * @post The result is an IntPoint with the coordinates sum of this and
+     * a given vector.
+     * | result.getX() == this.getX() + vector.getX() && result.getY() == this.getY() + vector.getY()
+     */
 	public IntPoint plus(IntVector vector) {
 		return new IntPoint(this.getX()+vector.getX(), this.getY() + vector.getY());
 	}

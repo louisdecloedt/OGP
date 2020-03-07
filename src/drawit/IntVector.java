@@ -32,6 +32,7 @@ public class IntVector {
      * Initializes this object with the given coordinates.
      *
      * @mutates | this
+     * 
      * @post This object's X coordinate equal the given X coordinate
      * | getX() == xCoordinate
      * @post This object's Y coordinate equal the given Y coordinate
@@ -46,7 +47,9 @@ public class IntVector {
      * Returns the DoubleVector version of the instance.
      *
      * @creates | result
+     * 
      * @inspects | this
+     * 
      * @post The result is a DoublePoint with the same coordinates but of type double.
      * | result.getX() == this.getX() && result.getY() == this.getY()
      */
@@ -58,6 +61,7 @@ public class IntVector {
      * Returns the dot product of the instance with a given IntVector as a long.
      *
      * @inspects | this
+     * 
      * @pre Argument {@code vector} is not {@code null}.
      * | vector != null
      * @post The result is an integer containing the calculated dot product.
@@ -72,6 +76,7 @@ public class IntVector {
      * Returns the 2D cross product of the instance with a given IntVector as a long.
      *
      * @inspects | this
+     * 
      * @pre Argument {@code vector} is not {@code null}.
      * | vector != null
      * @post The result is an integer containing the calculated 2D cross product.
@@ -85,6 +90,7 @@ public class IntVector {
      * Returns whether two IntVectors are collinear.
      *
      * @inspects | this
+     * 
      * @pre Argument {@code vector} is not {@code null}.
      * | vector != null
      * @post The result is {@code false} if one of the vectors is (0,0).
@@ -104,7 +110,9 @@ public class IntVector {
      * Returns the sum of two vectors.
      *
      * @creates | result
+     * 
      * @inspects | this
+     * 
      * @pre Argument {@code vector} is not {@code null}.
      * | vector != null
      * @post The result is an integer containing the calculated 2D cross product.

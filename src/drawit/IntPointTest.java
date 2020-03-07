@@ -12,21 +12,23 @@ public class IntPointTest {
         IntPoint testPoint1 = new IntPoint(10, -1221);
         assertEquals(10, testPoint1.getX());
         assertEquals(-1221, testPoint1.getY());
-        DoublePoint testPoint2 = new DoublePoint(10, -1221);
-        assertEquals(testPoint1.getX(), testPoint2.getX());
-        assertEquals(testPoint1.getX(), testPoint2.getX());
+        IntPoint testPoint2 = new IntPoint(10, -1221);
+        assertEquals(true, testPoint1.equals(testPoint2));
+    
 
 
         IntPoint testPoint3 = new IntPoint(2, 2);
         IntPoint testPoint4 = new IntPoint(10, 10);
-
+        assertEquals(testPoint3.minus(testPoint4).getX(), -8);
+        assertEquals(testPoint3.minus(testPoint4).getY(), -8);
+        IntVector testvec34 = new IntVector(8,8);
+        assertEquals(true, testPoint3.plus(testvec34).equals(testPoint4));
+        
         IntPoint testPoint5 = new IntPoint(5, 5);
         IntPoint testPoint6 = new IntPoint(2, 2);
         IntPoint testPoint7 = new IntPoint(5, 6);
         IntPoint testPoint8 = new IntPoint(7, -13);
         IntPoint testPoint9 = new IntPoint(10, 10);
-
-        //Errors because of integer Arithmetic?
 
         assertEquals(true, testPoint5.isOnLineSegment(testPoint3, testPoint4));
         assertEquals(false, testPoint6.isOnLineSegment(testPoint3, testPoint4));

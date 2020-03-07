@@ -167,7 +167,21 @@ public class RoundedPolygonTest {
 	@org.junit.Test
 	public void getDrawingCommands() {
 		RoundedPolygon poly1 = new RoundedPolygon();
-		System.out.print(poly1.getDrawingCommands());
+		//System.out.print(poly1.getDrawingCommands());
+		assertEquals(
+				"line 0 50 0 10 \n" + 
+				"arc 10 10 10 3.141592653589793 1.5707963267948966 \n" +
+				"line 10 0 50 0 \n" +
+				"line 50 0 90 0 \n" +
+				"arc 90 10 10 -1.5707963267948966 1.5707963267948966 \n" +
+				"line 100 10 100 50 \n" +
+				"line 100 50 100 90 \n" +
+				"arc 90 90 10 0.0 1.5707963267948966 \n" +
+				"line 90 100 50 100 \n" +
+				"line 50 100 10 100 \n" +
+				"arc 10 90 10 1.5707963267948966 1.5707963267948966 \n" +
+				"line 0 90 0 50 \n", poly1.getDrawingCommands());
+
 	}
 
 }

@@ -3,6 +3,9 @@ package drawit;
 import java.util.Arrays;
 import java.util.stream.IntStream;
 
+/**
+ * Container class with static methods for IntPoint array operations.
+ */
 public class PointArrays {
 
     /**
@@ -15,6 +18,9 @@ public class PointArrays {
      * Returns the copy of an array of IntPoints.
      *
      * @creates | result
+     * 
+     * @inspects| points
+     * 
      * @pre Length of the given array is greater than zero.
      * | points.length >= 0
      * @pre The given IntPoint array does not contain any null.
@@ -34,6 +40,9 @@ public class PointArrays {
      * Returns a new array with a point inserted on a given index.
      *
      * @creates |result
+     * 
+     * @inspects|point, points
+     * 
      * @pre The given index is greater than or equal to zero
      * and not greater than the length of the current array.
      * | index >= 0 && index < points.length + 1
@@ -57,7 +66,7 @@ public class PointArrays {
         for (int i = 0; i < index; i++) {
             result[i] = points[i];
         }
-        result[index] = point; //double for loop for performance
+        result[index] = point;
         for (int i = index + 1; i < points.length+1; i++) { //OG: for (int i = index + 1; i < points.length; i++) {
             result[i] = points[i - 1];
         }
@@ -69,6 +78,8 @@ public class PointArrays {
      * Returns a new array with an updated IntPoint on a given index.
      *
      * @creates |result
+     * 
+     * @inspects|vale, points
      * 
      * @pre The given index is greater than or equal to zero
      * and smaller than the length of the current array.
@@ -104,6 +115,9 @@ public class PointArrays {
      * Returns a new array with a point deleted on a given index.
      *
      * @creates | result
+     * 
+     * @inspects| points
+     * 
      * @pre The given array is of length greater than or equal to zero.
      * | points.length >= 1
      * @pre The given index is greater than or equal to zero
@@ -136,6 +150,8 @@ public class PointArrays {
     /**
      * Returns whether an given IntPoint is in a given IntPoint array.
      *
+     * @inspects | point, points
+     *
      * @pre Argument {@code point} is not {@code null}.
      * | point != null
      * @pre The given IntPoint array does not contain any null.
@@ -143,7 +159,7 @@ public class PointArrays {
      * @post The given IntPoins is in the given IntPoint array at least one time.
      * | result == Arrays.stream(points).anyMatch(e -> e.equals(point))
      */
-    public static Boolean in(IntPoint[] points, IntPoint point) {
+    public static boolean in(IntPoint[] points, IntPoint point) {
         for (int i = 0; i < points.length; i++) {
             if (point.getX() == points[i].getX()) {
                 if (point.getY() == points[i].getY()) {
@@ -154,19 +170,18 @@ public class PointArrays {
         return false;
     }
 
-    /*False Polygon if:	- Fewer than 3 points
-     * 					- Multiple points at same location
-     * 					- Edges are not the lines between the points
-     * 					- Edges in
+
     /**
-     * Returns whether a given array of IntPoints forms a proper polygon
+     * Checks whether a given array of IntPoints forms a proper polygon.
      *
-     * @pre The length of the array is greater than 2
-     * @pre No 2 points coincide
-     * @pre None of the vertices lie on an edge created by other vertices
-     * @pre No 2 edges shall cross/intersect
+     * @inspects | points
      *
-     * @post If the conditions for a proper polygon are not met, the reason as to why the failure is printed out
+     * @pre The given IntPoint array does not contain any null.
+     * | Arrays.stream(points).allMatch(e -> e != null)
+     * @post If the polygon is proper {@code null} is returned.
+     * 
+     * @post If the conditions for a proper polygon are not met, 
+     * the reason why is returned as a string.
      */
     public static String checkDefinesProperPolygon(IntPoint[] points) {
         if (points.length < 3) {

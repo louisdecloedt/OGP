@@ -1,6 +1,9 @@
-package drawit;
+package drawit.tests;
 
 import org.junit.Test;
+
+import drawit.IntPoint;
+import drawit.IntVector;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 

@@ -1,10 +1,13 @@
-package drawit;
+package drawit.tests;
 
 import static org.junit.jupiter.api.Assertions.*;
 import java.util.Arrays;
 import java.util.stream.IntStream;
 
 import org.junit.*;
+
+import drawit.IntPoint;
+import drawit.PointArrays;
 
 public class PointArraysTest {
 

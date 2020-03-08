@@ -48,7 +48,7 @@ public class RoundedPolygon {
      */
     public void setRadius(int radius) throws IllegalArgumentException {
         if (radius < 0) {
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("Negative radius not valid!");
         } else {
             this.radius = radius;
         }
@@ -69,11 +69,11 @@ public class RoundedPolygon {
      */
     public void setVertices(IntPoint[] points) throws IllegalArgumentException {
         if (PointArrays.checkDefinesProperPolygon(points) != null) {
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException(PointArrays.checkDefinesProperPolygon(points));
         } 
         for (int i = 0; i < this.vertices.length; i++) {
         	if (this.vertices[i] == null) {
-        		throw new IllegalArgumentException();
+        		throw new IllegalArgumentException("NullPointer in setVertices!");
         	}
         }
         this.vertices = points;

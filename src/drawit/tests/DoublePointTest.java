@@ -1,9 +1,13 @@
-package drawit;
+package drawit.tests;
 
 
 import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.*;
+
+import drawit.DoublePoint;
+import drawit.DoubleVector;
+import drawit.IntPoint;
 
 public class DoublePointTest {
 

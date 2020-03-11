@@ -130,76 +130,13 @@ public class RoundedPolygon {
      * 
      * @pre the given array of the points must define a proper polygon.
      */
-    public boolean containsA(IntPoint point) {
-        if (this.onEdgePolygon(point)) {
-            return true;
-        }
-        boolean pHacks = false;
-        int largeNumber = 100000000, firstVertex = -1, lastVertex = -1;
-        IntPoint exitPoint = new IntPoint(largeNumber, point.getY());
-        for (int i = 0; i < this.vertices.length; i++) {
-            if (!this.vertices[i].isOnLineSegment(point, exitPoint)) {
-                if (firstVertex == -1) {
-                    firstVertex = i;
-                }
-                lastVertex = i;
-            }
-        }
-        if (firstVertex == -1) { //if (firstVertex == -1 || firstVertex == lastVertex) {
-            return false;
-        }
-        
-        if ( lastVertex != this.vertices.length - 1 || firstVertex != 0) {
-        	IntVector vecV = this.vertices[lastVertex].minus(point);
-        	IntVector vecW = this.vertices[firstVertex].minus(point);
-        	IntVector exitPath = new IntVector(1,0);
-        	long cross1 = vecV.crossProduct(exitPath);
-        	long cross2 = vecW.crossProduct(exitPath);
-        	System.out.print(cross1);
-        	System.out.print("\n");
-        	System.out.print(cross2);
-        	System.out.print("\n");
-        	if (Math.signum(cross1)*Math.signum(cross2) < 0) {
-        		System.out.print(Math.signum(cross1)*Math.signum(cross2));
-        		System.out.print("\n");
-        		pHacks = !pHacks;
-        	}
-        }
-        else {
-        	if (IntPoint.lineSegmentsIntersect(this.vertices[lastVertex], this.vertices[firstVertex], point, exitPoint)) {
-        		pHacks = !pHacks;
-        	}
-        }
-        lastVertex = firstVertex;
-        for (int i = firstVertex + 1; i < this.vertices.length; i++) { // this.vertices.length - 1???
-            if (!this.vertices[i].isOnLineSegment(point, exitPoint)) {
-                firstVertex = i;
-                if (firstVertex-lastVertex > 1) {
-                	IntVector vecV = this.vertices[lastVertex].minus(point);
-                	IntVector vecW = this.vertices[firstVertex].minus(point);
-                	IntVector exitPath = new IntVector(1,0);
-                	long cross1 = vecV.crossProduct(exitPath);
-                	long cross2 = vecW.crossProduct(exitPath);
-                	if (Math.signum(cross1)*Math.signum(cross2) < 0) {
-                		pHacks = !pHacks;
-                	}
-                }
-                else if (IntPoint.lineSegmentsIntersect(point, exitPoint, this.vertices[firstVertex], this.vertices[lastVertex])) {
-                    pHacks = !pHacks;
-                }
-                lastVertex = firstVertex;
-            }
-        }
-        return pHacks;  
-}
-    
-    
     public boolean contains(IntPoint point) {
     	if (this.onEdgePolygon(point)) {
             return true; }
     	boolean contains = false;
     	int largeNumber = 1000000;
     	IntPoint exitPoint = new IntPoint(largeNumber, point.getY());
+    	IntVector exitDirection = exitPoint.minus(point);
     	IntPoint V = point;
     	int index = 0;
     	while(V.getY()== point.getY() && V.getX()>=point.getX()) {
@@ -225,7 +162,6 @@ public class RoundedPolygon {
     			innerCount++; }
     		IntVector vecPV = V.minus(point);
         	IntVector vecPW = W.minus(point);
-        	IntVector exitDirection = exitPoint.minus(point);
         	long cross1 = vecPV.crossProduct(exitDirection);
         	long cross2 = vecPW.crossProduct(exitDirection);
         	if (innerCount - outerCount == 1 && IntPoint.lineSegmentsIntersect(V, W, point, exitPoint)) {

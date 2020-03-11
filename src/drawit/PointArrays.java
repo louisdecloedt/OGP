@@ -19,8 +19,6 @@ public class PointArrays {
      *
      * @creates | result
      * 
-     * @inspects| points
-     * 
      * @pre Length of the given array is greater than zero.
      * | points.length >= 0
      * @pre The given IntPoint array does not contain any null.
@@ -40,8 +38,6 @@ public class PointArrays {
      * Returns a new array with a point inserted on a given index.
      *
      * @creates |result
-     * 
-     * @inspects|point, points
      * 
      * @pre The given index is greater than or equal to zero
      * and not greater than the length of the current array.
@@ -79,8 +75,6 @@ public class PointArrays {
      *
      * @creates |result
      * 
-     * @inspects|vale, points
-     * 
      * @pre The given index is greater than or equal to zero
      * and smaller than the length of the current array.
      * | index >= 0 && index < points.length
@@ -116,8 +110,6 @@ public class PointArrays {
      *
      * @creates | result
      * 
-     * @inspects| points
-     * 
      * @pre The given array is of length greater than or equal to zero.
      * | points.length >= 1
      * @pre The given index is greater than or equal to zero
@@ -150,8 +142,6 @@ public class PointArrays {
     /**
      * Returns whether an given IntPoint is in a given IntPoint array.
      *
-     * @inspects | point, points
-     *
      * @pre Argument {@code point} is not {@code null}.
      * | point != null
      * @pre The given IntPoint array does not contain any null.
@@ -173,8 +163,6 @@ public class PointArrays {
 
     /**
      * Checks whether a given array of IntPoints forms a proper polygon.
-     *
-     * @inspects | points
      *
      * @pre The given IntPoint array does not contain any null.
      * | Arrays.stream(points).allMatch(e -> e != null)

@@ -13,7 +13,6 @@ public class IntPoint {
     /**
      * Returns the x coordinate of the point.
      *
-     * @inspects | this
      */
     public int getX() {
         return this.xCoordinate;
@@ -22,8 +21,6 @@ public class IntPoint {
     /**
      * Returns the y coordinate of the point.
      *
-     * @inspects | this
-     * 
      */
     public int getY() {
         return this.yCoordinate;
@@ -47,8 +44,6 @@ public class IntPoint {
 
     /**
      * Returns the DoublePoint version of the instance.
-     *
-     * @inspects | this
      * 
      * @creates  | result
      *
@@ -79,7 +74,6 @@ public class IntPoint {
     /**
      * Returns whether given IntPoint is on the line segment created by Point B and Point C
      * 
-     * @inspects | this
      */
     public boolean isOnLineSegment(IntPoint pointB, IntPoint pointC) {
         IntPoint pointA = new IntPoint(this.xCoordinate, this.yCoordinate);
@@ -104,8 +98,6 @@ public class IntPoint {
      * Returns whether the line segment created by points A and B, 
      * intersect with the line segment created by points C and D.
      * 
-     * @inspects | pointA, pointB, pointC, pointD
-     * 
      * @pre No null points as arguments. 
      * 	   | pointA != null && pointB != null && pointC != null && pointD != null
      */
@@ -123,8 +115,6 @@ public class IntPoint {
     
     /**
      * Returns the displacement from a given point to the instance.
-     *
-     * @inspects | this
      * 
      * @creates | result
      * 
@@ -142,8 +132,6 @@ public class IntPoint {
 
     /**
      * Returns a new point equal to the original point moved by a given vector.
-     *
-     * @inspects | this
      * 
      * @creates | result
      * 

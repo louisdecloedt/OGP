@@ -13,7 +13,6 @@ public class IntVector {
     /**
      * Returns the x coordinate of the vector.
      *
-     * @inspects | this
      */
     public int getX() {
         return this.xCoordinate;
@@ -22,7 +21,6 @@ public class IntVector {
     /**
      * Returns the x coordinate of the vector.
      *
-     * @inspects | this
      */
     public int getY() {
         return this.yCoordinate;
@@ -48,8 +46,6 @@ public class IntVector {
      *
      * @creates | result
      * 
-     * @inspects | this
-     * 
      * @post The result is a DoublePoint with the same coordinates but of type double.
      * | result.getX() == this.getX() && result.getY() == this.getY()
      */
@@ -59,8 +55,6 @@ public class IntVector {
 
     /**
      * Returns the dot product of the instance with a given IntVector as a long.
-     *
-     * @inspects | this
      * 
      * @pre Argument {@code vector} is not {@code null}.
      * | vector != null
@@ -74,8 +68,6 @@ public class IntVector {
 
     /**
      * Returns the 2D cross product of the instance with a given IntVector as a long.
-     *
-     * @inspects | this
      * 
      * @pre Argument {@code vector} is not {@code null}.
      * | vector != null
@@ -88,8 +80,6 @@ public class IntVector {
     
     /**
      * Returns whether two IntVectors are collinear.
-     *
-     * @inspects | this
      * 
      * @pre Argument {@code vector} is not {@code null}.
      * | vector != null
@@ -110,8 +100,6 @@ public class IntVector {
      * Returns the sum of two vectors.
      *
      * @creates | result
-     * 
-     * @inspects | this
      * 
      * @pre Argument {@code vector} is not {@code null}.
      * | vector != null

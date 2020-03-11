@@ -42,7 +42,7 @@ public class RoundedPolygon {
      * @mutates | this
      * 
      * @throws IllegalArgumentException if the given radius is negative
-     * 
+     * | radius < 0
      * @post This object's radius equals the given radius
      * | getRadius() == radius
      */
@@ -62,7 +62,7 @@ public class RoundedPolygon {
      * 
      * @throws IllegalArgumentException if the given IntPoint array contains a null.
      * | !Arrays.stream(points).allMatch(e -> e != null)
-     * @throws IllegalArgumentException if the given given IntPoints do not form a proper polygon.
+     * @throws IllegalArgumentException if the given IntPoints do not form a proper polygon.
      * | PointArrays.checkDefinesProperPolygon(points) != null
      * @post the vertices of the rounded polygon are now equal to the given array of points
      * | IntStream.range(0, points.length).allMatch(i -> this.getVertices()[i].equals(points[i]))
@@ -85,7 +85,6 @@ public class RoundedPolygon {
      * @inspects| this
      * 
      * @post Result equals the radius of the RoundedPolygon.
-     * | result == getRadius()
      */
     public int getRadius() {
         return this.radius;
@@ -131,13 +130,12 @@ public class RoundedPolygon {
      * 
      * @pre the given array of the points must define a proper polygon.
      */
-    public boolean contains(IntPoint point) {
+    public boolean containsA(IntPoint point) {
         if (this.onEdgePolygon(point)) {
             return true;
         }
         boolean pHacks = false;
-        int largeNumber = 100000, firstVertex = -1, lastVertex = -1;
-        ;
+        int largeNumber = 100000000, firstVertex = -1, lastVertex = -1;
         IntPoint exitPoint = new IntPoint(largeNumber, point.getY());
         for (int i = 0; i < this.vertices.length; i++) {
             if (!this.vertices[i].isOnLineSegment(point, exitPoint)) {
@@ -147,23 +145,98 @@ public class RoundedPolygon {
                 lastVertex = i;
             }
         }
-        if (firstVertex == -1 || firstVertex == lastVertex) {
+        if (firstVertex == -1) { //if (firstVertex == -1 || firstVertex == lastVertex) {
             return false;
         }
-        if (IntPoint.lineSegmentsIntersect(this.vertices[lastVertex], this.vertices[firstVertex], point, exitPoint)) {
-            pHacks = !pHacks;
+        
+        if ( lastVertex != this.vertices.length - 1 || firstVertex != 0) {
+        	IntVector vecV = this.vertices[lastVertex].minus(point);
+        	IntVector vecW = this.vertices[firstVertex].minus(point);
+        	IntVector exitPath = new IntVector(1,0);
+        	long cross1 = vecV.crossProduct(exitPath);
+        	long cross2 = vecW.crossProduct(exitPath);
+        	System.out.print(cross1);
+        	System.out.print("\n");
+        	System.out.print(cross2);
+        	System.out.print("\n");
+        	if (Math.signum(cross1)*Math.signum(cross2) < 0) {
+        		System.out.print(Math.signum(cross1)*Math.signum(cross2));
+        		System.out.print("\n");
+        		pHacks = !pHacks;
+        	}
+        }
+        else {
+        	if (IntPoint.lineSegmentsIntersect(this.vertices[lastVertex], this.vertices[firstVertex], point, exitPoint)) {
+        		pHacks = !pHacks;
+        	}
         }
         lastVertex = firstVertex;
-        for (int i = firstVertex + 1; i < this.vertices.length - 1; i++) {
+        for (int i = firstVertex + 1; i < this.vertices.length; i++) { // this.vertices.length - 1???
             if (!this.vertices[i].isOnLineSegment(point, exitPoint)) {
                 firstVertex = i;
-                if (IntPoint.lineSegmentsIntersect(point, exitPoint, this.vertices[firstVertex], this.vertices[lastVertex])) {
+                if (firstVertex-lastVertex > 1) {
+                	IntVector vecV = this.vertices[lastVertex].minus(point);
+                	IntVector vecW = this.vertices[firstVertex].minus(point);
+                	IntVector exitPath = new IntVector(1,0);
+                	long cross1 = vecV.crossProduct(exitPath);
+                	long cross2 = vecW.crossProduct(exitPath);
+                	if (Math.signum(cross1)*Math.signum(cross2) < 0) {
+                		pHacks = !pHacks;
+                	}
+                }
+                else if (IntPoint.lineSegmentsIntersect(point, exitPoint, this.vertices[firstVertex], this.vertices[lastVertex])) {
                     pHacks = !pHacks;
                 }
                 lastVertex = firstVertex;
             }
         }
-        return pHacks;
+        return pHacks;  
+}
+    
+    
+    public boolean contains(IntPoint point) {
+    	if (this.onEdgePolygon(point)) {
+            return true; }
+    	boolean contains = false;
+    	int largeNumber = 1000000;
+    	IntPoint exitPoint = new IntPoint(largeNumber, point.getY());
+    	IntPoint V = point;
+    	int index = 0;
+    	while(V.getY()== point.getY() && V.getX()>=point.getX()) {
+    		if (index == this.vertices.length) {
+    			return false; }
+    		V = this.vertices[index];
+    		index ++; }
+    	IntPoint W = point;
+    	int outerCount = index;
+    	IntPoint firstV = V;
+    	outer: while(W.equals(firstV) == false) {
+    		int innerCount = outerCount;
+    		W = point;
+    		while(W.getY() == point.getY() && W.getX() >= point.getX()) {
+    			if (innerCount == this.vertices.length+1) {
+    				break outer; }
+    			if (innerCount == this.vertices.length) {
+    				W = firstV;
+    				innerCount++; }
+    			if (W.equals(firstV)) {
+    				break; }
+    			W = this.vertices[innerCount];
+    			innerCount++; }
+    		IntVector vecPV = V.minus(point);
+        	IntVector vecPW = W.minus(point);
+        	IntVector exitDirection = exitPoint.minus(point);
+        	long cross1 = vecPV.crossProduct(exitDirection);
+        	long cross2 = vecPW.crossProduct(exitDirection);
+        	if (innerCount - outerCount == 1 && IntPoint.lineSegmentsIntersect(V, W, point, exitPoint)) {
+        		contains = !contains; }
+        	if (innerCount-outerCount > 1) {
+        		if (Math.signum(cross1)*Math.signum(cross2) < 0) {
+        			contains = !contains; }	}
+        	outerCount = innerCount;
+        	V = W;
+    	}
+    	return contains;
     }
     
     /**
@@ -258,22 +331,33 @@ public class RoundedPolygon {
      * 
      * @pre Argument {@code point} is not {@code null}.
      * | point != null
+     * @throws IllegalArgumentException if the new vertices would not form a proper polygon.
      * 
      * @post the given IntPoint is now a vertex at the given index in the polygon.
      * | getVertices()[index].equals(point) 
      * 
      */
     public void insert(int index, IntPoint point) {
-        this.vertices = PointArrays.insert(this.vertices, index, point);
+        IntPoint[] testVertices = PointArrays.insert(this.vertices, index, point);
+        if (PointArrays.checkDefinesProperPolygon(testVertices) != null) {
+        	throw new IllegalArgumentException(PointArrays.checkDefinesProperPolygon(testVertices));
+        }
+        this.vertices = testVertices;
     }
     
     /**
      * @mutates | this
      * 
+     * @throws IllegalArgumentException if the new vertices would not form a proper polygon.
+     * 
      * @post the point in the polygon at the given index has now been removed from that polygon.
      */
     public void remove(int index) {
-        this.vertices = PointArrays.remove(this.vertices, index);
+        IntPoint[] testVertices = PointArrays.remove(this.vertices, index);
+        if (PointArrays.checkDefinesProperPolygon(testVertices) != null) {
+        	throw new IllegalArgumentException(PointArrays.checkDefinesProperPolygon(testVertices));
+        }
+        this.vertices = testVertices;
     }
     
     /**
@@ -281,11 +365,19 @@ public class RoundedPolygon {
      * 
      * @pre Argument {@code point} is not {@code null}.
      * | point != null
+     * @throws IllegalArgumentException if the new vertices would not form a proper polygon.
+     * 
      * @post the given IntPoint is now a vertex at the given index in the polygon.
      * | getVertices()[index].equals(point)
      * 
      */
     public void update(int index, IntPoint point) {
-        this.vertices = PointArrays.update(this.vertices, index, point);
+        IntPoint[] testVertices = PointArrays.update(this.vertices, index, point);
+        if (PointArrays.checkDefinesProperPolygon(testVertices) != null) {
+        	throw new IllegalArgumentException(PointArrays.checkDefinesProperPolygon(testVertices));
+        }
+        this.vertices = testVertices;
     }
 }
+
+

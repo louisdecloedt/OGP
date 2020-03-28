@@ -4,16 +4,25 @@ import drawit.IntPoint;
 
 public class Extent {
 	
+	//POSIITVE Y-AXIS POINTS DOWN
+	//SO TOP HAS THE SMALLEST Y-COORDINATE
+	
 	private int left;
 	private int top;
 	private int width;
 	private int height;
 	
+	private Extent(int left, int top, int width, int height) {
+		this.left = left;
+		this.top = top;
+		this.width = width;
+		this.height = height;
+	}
+	
 	public int getLeft() {
 		return left;
 	}
 	
-	//DIFFERENT FROM GIVEN DOCUMENTATION -- CHECK
 	public int getTop() {
 		return top;
 	}
@@ -22,9 +31,8 @@ public class Extent {
 		return left + width;
 	}
 	
-	//DIFFERENT FROM GIVEN DOCUMENTATION -- CHECK
 	public int getBottom() {
-		return top - height;
+		return top + height;
 	}
 	
 	public int getWidth() {
@@ -40,23 +48,13 @@ public class Extent {
 	}
 	
 	public IntPoint getBottomRight() {
-		return new IntPoint(left + width, top - height);
+		return new IntPoint(left + width, top + height);
 	}
 	
 	//THROWS
 	public boolean contains(IntPoint point) {
 		return (point.getX() >= left && point.getX() <= (left + width))
-				&& (point.getY() >= (top - height) && point.getY() <= top);
-	}
-	
-	
-	//CHECK: OGP NOTES: complexity_modularity_abstraction.md, section that discusses Fraction.of()
-	//NO IDEA: if this is necessary or correct
-	private Extent(int left, int top, int width, int height) {
-		this.left = left;
-		this.top = top;
-		this.width = width;
-		this.height = height;
+				&& (point.getY() <= (top + height) && point.getY() >= top);
 	}
 	
 	//CHECK: OGP NOTES: complexity_modularity_abstraction.md, section that discusses Fraction.of()
@@ -65,7 +63,7 @@ public class Extent {
 	}
 	
 	public static Extent ofLeftTopRightBottom(int left, int top, int right, int bottom) {
-		return new Extent(left, top, right - left, top - bottom);
+		return new Extent(left, top, right - left, bottom - top);
 	}
 	
 	public Extent withLeft(int newLeft) {
@@ -73,7 +71,7 @@ public class Extent {
 	}
 	
 	public Extent withTop(int newTop) {
-		return new Extent(this.left, newTop, this.width, this.height + newTop - this.top);
+		return new Extent(this.left, newTop, this.width, this.height + this.top - newTop);
 	}
 	
 	public Extent withRight(int newRight) {
@@ -81,7 +79,7 @@ public class Extent {
 	}
 	
 	public Extent withBottom(int newBottom) {
-		return new Extent(this.left, this.top, this.width, this.top - newBottom);
+		return new Extent(this.left, this.top, this.width, newBottom - this.top);
 	}
 	
 	public Extent withWidth(int newWidth) {

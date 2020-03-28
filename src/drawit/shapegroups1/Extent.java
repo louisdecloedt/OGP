@@ -1,20 +1,20 @@
-package drawit.shapegroups2;
+package drawit.shapegroups1;
 
-import drawit.IntPoint;
+import drawit.*;
+import drawit.shapegroups2.ShapeGroup;
+//import drawit.shapegroups2.Extent;
 
 public class Extent {
-	
-	
 	private int left;
 	private int top;
-	private int width;
-	private int height;
+	private int bottom;
+	private int right;
 	
 	private Extent(int left, int top, int width, int height) {
 		this.left = left;
 		this.top = top;
-		this.width = width;
-		this.height = height;
+		this.bottom = top + height;
+		this.right = left + width;
 	}
 	
 	public int getLeft() {
@@ -26,19 +26,19 @@ public class Extent {
 	}
 	
 	public int getRight() {
-		return left + width;
+		return right;
 	}
 	
 	public int getBottom() {
-		return top + height;
+		return bottom;
 	}
 	
 	public int getWidth() {
-		return width;
+		return right - left;
 	}
 	
 	public int getHeight() {
-		return height;
+		return bottom - top;
 	}
 	
 	public IntPoint getTopLeft() {
@@ -46,15 +46,17 @@ public class Extent {
 	}
 	
 	public IntPoint getBottomRight() {
-		return new IntPoint(left + width, top + height);
+		return new IntPoint(right, bottom);
 	}
 	
-	//THROWS
+	//TODO: uncomment!
+	/*
 	public boolean contains(ShapeGroup shapeGroup) {
 		Extent temp = shapeGroup.getExtent();
 		return (temp.getLeft() >= left && temp.getRight() <= (left + width))
 				&& (temp.getBottom() <= (top + height) && temp.getTop() >= top);
 	}
+	*/
 	
 	//CHECK: OGP NOTES: complexity_modularity_abstraction.md, section that discusses Fraction.of()
 	public static Extent ofLeftTopWidthHeight(int left, int top, int width, int height) {
@@ -66,27 +68,29 @@ public class Extent {
 	}
 	
 	public Extent withLeft(int newLeft) {
-		return new Extent(newLeft, this.top, this.width + this.left - newLeft, this.height);
+		return new Extent(newLeft, this.top, this.right - newLeft, this.bottom - this.top);
 	}
 	
 	public Extent withTop(int newTop) {
-		return new Extent(this.left, newTop, this.width, this.height + this.top - newTop);
+		return new Extent(this.left, newTop, this.right - this.left, this.bottom - newTop);
 	}
 	
 	public Extent withRight(int newRight) {
-		return new Extent(this.left, this.top, newRight - this.left, this.height);
+		return new Extent(this.left, this.top, newRight - this.left, this.bottom - this.top);
 	}
 	
 	public Extent withBottom(int newBottom) {
-		return new Extent(this.left, this.top, this.width, newBottom - this.top);
+		return new Extent(this.left, this.top, this.right - this.left, newBottom - this.top);
 	}
 	
+	//TODO: check this
 	public Extent withWidth(int newWidth) {
-		return new Extent(this.left, this.top, newWidth, this.height);
+		return new Extent(this.left, this.top, newWidth, this.bottom - this.top);
 	}
+	
 	
 	public Extent withHeight(int newHeight) {
-		return new Extent(this.left, this.top, this.width, newHeight);
+		return new Extent(this.left, this.top, this.right - this.left, newHeight);
 	}
 
 }

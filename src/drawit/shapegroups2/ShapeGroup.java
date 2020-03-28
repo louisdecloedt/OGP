@@ -60,16 +60,24 @@ public abstract class ShapeGroup {
 			if (extentI.getTop() < top ) {
 				top = extentI.getTop();
 			}
-			listOfChildren.add(subgroups[i]); 
 			subgroups[i].parent = this;
+			listOfChildren.add(subgroups[i]); 
 		}
-		this.extent = Extent.ofLeftTopRightBottom(left, top, right, bottom);
+		this.subgroups = listOfChildren;
 		this.originalExtent = Extent.ofLeftTopRightBottom(left, top, right, bottom);
-		ShapeGroup temp;
+		this.extent =  Extent.ofLeftTopWidthHeight(0, 0, right - left, bottom - top);
+		
+		Extent outerExtentSubgroups = this.extent;
+		ShapeGroup tempShapeGroup;
+		Extent temp;
+		//Extent tempExtent2;
 		for (int i = 0; i < subgroups.length; i++) {
-			temp = listOfChildren.get(i);
-			temp.extent = this.originalExtent;
-			this.subgroups.set(i,temp);
+			tempShapeGroup = listOfChildren.get(i);
+			temp = tempShapeGroup.getExtent();
+			temp = Extent.ofLeftTopRightBottom(left - temp.getLeft(),
+					top - temp.getTop(), right - temp.getLeft(), bottom - temp.getTop()); //tempExtent2 = ...
+			tempShapeGroup.setExtent(temp);
+			this.subgroups.set(i,tempShapeGroup);
 		}
 	}
 	
@@ -123,7 +131,12 @@ public abstract class ShapeGroup {
 	}
 	
 	public ShapeGroup getSubGroupAt(IntPoint innerCoordinates) {
-		
+		for (int i = 0; i < getSubgroupCount(); i++) {
+			if(this.originalExtent.contains(this.subgroups.get(i))){
+				return this.subgroups.get(i);
+			}
+		}
+		throw new IllegalArgumentException();
 	}
 
 	public void setExtent(Extent newExtent) {

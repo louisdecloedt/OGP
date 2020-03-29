@@ -1,7 +1,7 @@
 package drawit.shapegroups1;
 
 import drawit.*;
-import drawit.shapegroups2.ShapeGroup;
+import drawit.shapegroups1.ShapeGroup;
 //import drawit.shapegroups2.Extent;
 
 public class Extent {
@@ -50,13 +50,13 @@ public class Extent {
 	}
 	
 	//TODO: uncomment!
-	/*
+	
 	public boolean contains(ShapeGroup shapeGroup) {
 		Extent temp = shapeGroup.getExtent();
-		return (temp.getLeft() >= left && temp.getRight() <= (left + width))
-				&& (temp.getBottom() <= (top + height) && temp.getTop() >= top);
+		return (temp.getLeft() >= left && temp.getRight() <= (right))
+				&& (temp.getBottom() <= (bottom) && temp.getTop() >= top);
 	}
-	*/
+	
 	
 	//CHECK: OGP NOTES: complexity_modularity_abstraction.md, section that discusses Fraction.of()
 	public static Extent ofLeftTopWidthHeight(int left, int top, int width, int height) {

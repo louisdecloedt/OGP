@@ -1,5 +1,6 @@
 package drawit;
 
+import java.awt.Color;
 import java.util.stream.IntStream;
 
 /**
@@ -16,6 +17,18 @@ public class RoundedPolygon {
      */
     private int radius;
     private IntPoint[] vertices;
+    private Color color;
+    
+    public java.awt.Color getColor(){
+    	return color;
+    }
+    
+    public void setColor(java.awt.Color color) throws IllegalArgumentException {
+    	if (color == null) {
+    		throw new IllegalArgumentException("Color can't be null!");
+    	}
+    	this.color = color;
+    }
     
     /**
      * Initializes this object with default settings that define a proper polygon.
@@ -34,6 +47,7 @@ public class RoundedPolygon {
         this.vertices[1] = point1;
         this.vertices[2] = point2;
         this.vertices[3] = point3;
+        this.color = Color.yellow;
     }
     
     /**
@@ -259,6 +273,8 @@ public class RoundedPolygon {
                 result += "\n";
             }
         }
+        result += "fill" + " " + Integer.toString(color.getRed()) + " " +
+        Integer.toString(color.getGreen()) + " " + Integer.toString(color.getBlue()) + "\n";
         return result;
     }
     

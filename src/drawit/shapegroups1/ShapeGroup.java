@@ -13,6 +13,8 @@ public class ShapeGroup {
 	private java.util.List<ShapeGroup> subgroups;
 	private Extent extent; //in parent
 	private Extent originalExtent;
+	private Extent extentInnerCoordinates;
+	private Extent extentOuterCoordinates;
 	
 	public ShapeGroup(RoundedPolygon shape) {
 		this.shape = shape;
@@ -35,9 +37,10 @@ public class ShapeGroup {
 				top = vertices[i].getY();
 			}
 		}
+		//extentInnerCoordinates = Extent.ofLeftTopRightBottom(left, top, right, bottom);
+		//extentOuterCoordinates = Extent.ofLeftTopRightBottom(left, top, right, bottom);
 		this.originalExtent = Extent.ofLeftTopRightBottom(left, top, right, bottom);
 		this.extent = this.originalExtent;
-		//this.extent =  Extent.ofLeftTopWidthHeight(0, 0, right - left, bottom - top);
 	}
 	
 	public ShapeGroup(ShapeGroup[] subgroups) {
@@ -50,7 +53,7 @@ public class ShapeGroup {
 		for (int i = 0; i < subgroups.length; i++) {
 			extentI = subgroups[i].getExtent();
 			if (extentI.getRight() > right ) {
-				extentI.getRight();
+				right = extentI.getRight();
 			}
 			if (extentI.getLeft() < left ) {
 				left = extentI.getLeft();
@@ -65,16 +68,20 @@ public class ShapeGroup {
 			listOfChildren.add(subgroups[i]); 
 		}
 		this.subgroups = listOfChildren;
+		//extentInnerCoordinates = Extent.ofLeftTopRightBottom(left, top, right, bottom);
+		//extentOuterCoordinates = Extent.ofLeftTopRightBottom(left, top, right, bottom);
 		this.originalExtent = Extent.ofLeftTopRightBottom(left, top, right, bottom);
-		this.extent =  this.originalExtent;
+		this.extent = this.originalExtent;
 		//this.extent =  Extent.ofLeftTopWidthHeight(0, 0, right - left, bottom - top);
 		ShapeGroup tempShapeGroup;
 		Extent temp;
 		for (int i = 0; i < subgroups.length; i++) {
 			tempShapeGroup = listOfChildren.get(i);
 			temp = tempShapeGroup.getExtent();
-			temp = Extent.ofLeftTopRightBottom(left - temp.getLeft(),
-					top - temp.getTop(), right - temp.getLeft(), bottom - temp.getTop());
+			//temp = Extent.ofLeftTopRightBottom(left - temp.getLeft(),
+			//		top - temp.getTop(), right - temp.getLeft(), bottom - temp.getTop());
+			temp = Extent.ofLeftTopRightBottom(temp.getLeft() - left,
+					temp.getTop() - top, temp.getRight() - left, temp.getTop() - top);
 			tempShapeGroup.setExtent(temp);
 			this.subgroups.set(i,tempShapeGroup);
 		}
@@ -132,9 +139,10 @@ public class ShapeGroup {
 		return new IntVector(0, 0);
 	}
 	
+	//TODO: check this
 	public ShapeGroup getSubGroupAt(IntPoint innerCoordinates) {
 		for (int i = 0; i < getSubgroupCount(); i++) {
-			if(this.originalExtent.contains(this.subgroups.get(i))){
+			if(this.originalExtent.contains(innerCoordinates)){
 				return this.subgroups.get(i);
 			}
 		}
@@ -144,15 +152,6 @@ public class ShapeGroup {
 	public void setExtent(Extent newExtent) {
 		if (subgroups == null) {
 			this.extent = newExtent;
-		}
-		//is this necessary??
-		else {
-			ShapeGroup temp;
-			for (int i = 0; i < subgroups.size(); i++) {
-				temp = subgroups.get(i);
-				temp.extent = newExtent;
-				subgroups.set(i, temp);
-			}
 		}
 	}
 	
@@ -182,34 +181,45 @@ public class ShapeGroup {
 		this.parent.subgroups = newParentSubgroups;
 	}
 	
+	
+	//TO BUILD A NESTED SHAPEGROUP:
+	//TWO SHAPES (SHIFT + G)
+	//SELECT ONE + HOLD SHIFT, CLICK ON OTHER ONE, SHIFT G (JUST HOLD SHIFT DURING THIS PROCESS)
 	public java.lang.String getDrawingCommands(){
 		String result = "";
 		if (subgroups == null) {
-			//TODO: if?
-			result += "pushTranslate" + " " + Integer.toString(- extent.getLeft()) +
-					" " + Integer.toString( - extent.getTop()) + "\n"; // - & -
+			Extent origE = this.originalExtent;
+			Extent newE = this.extent;
+			result += "pushTranslate" + " " + Integer.toString(newE.getLeft()) +
+					" " + Integer.toString(newE.getTop()) + "\n"; 
 			result += "pushScale" + " " + Double.toString((double)extent.getWidth()/originalExtent.getWidth()) +
 					" " + Double.toString((double)extent.getHeight()/originalExtent.getHeight()) + "\n";
-			result +=
+			result += "pushTranslate" + " " + Integer.toString(-origE.getLeft()) +
+					" " + Integer.toString(-origE.getTop()) + "\n";
 			result += shape.getDrawingCommands();
 			result += "popTransform" + "\n";
 			result += "popTransform" + "\n";
+			result += "popTransform" + "\n";		
 			return result;
-		}
-		ShapeGroup temp;
-		for (int i = 0; i < subgroups.size(); i++) {
-			temp = subgroups.get(i);
-			result += "pushTranslate" + " " + Integer.toString(temp.extent.getLeft()) +
-					" " + Integer.toString(temp.extent.getTop()) + "\n";
-			result += "pushScale" + " " + Double.toString((double)temp.extent.getWidth()/temp.originalExtent.getWidth()) +
-					" " + Double.toString((double)temp.extent.getHeight()/temp.originalExtent.getHeight()) + "\n";
-			result += "pushTranslate" + " " + "implement_further" + " " + "\n";
-			result += subgroups.get(i).getDrawingCommands();
+		} else {
+			Extent origE = this.originalExtent;
+			Extent newE = this.extent;
+			result += "pushTranslate" + " " + Integer.toString(newE.getLeft()) +
+					" " + Integer.toString(newE.getTop()) + "\n"; 
+			result += "pushScale" + " " + Double.toString((double)extent.getWidth()/originalExtent.getWidth()) +
+					" " + Double.toString((double)extent.getHeight()/originalExtent.getHeight()) + "\n";
+			result += "pushTranslate" + " " + Integer.toString(-origE.getLeft()) +
+					" " + Integer.toString(-origE.getTop()) + "\n";
+			for (int i = 0; i < this.subgroups.size(); i++) {
+				
+				result += subgroups.get(i).getDrawingCommands();
+			}
 			result += "popTransform" + "\n";
 			result += "popTransform" + "\n";
-			
+			result += "popTransform" + "\n";
 		}
 		return result;
+		
 	}
 }
 

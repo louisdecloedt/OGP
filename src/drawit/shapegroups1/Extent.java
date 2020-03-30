@@ -49,14 +49,12 @@ public class Extent {
 		return new IntPoint(right, bottom);
 	}
 	
-	//TODO: uncomment!
 	
-	public boolean contains(ShapeGroup shapeGroup) {
-		Extent temp = shapeGroup.getExtent();
-		return (temp.getLeft() >= left && temp.getRight() <= (right))
-				&& (temp.getBottom() <= (bottom) && temp.getTop() >= top);
+	//TODO: fix in shapegroups2
+	public boolean contains(IntPoint point) {
+		return (point.getX() >= left && point.getX() <= (right))
+				&& (point.getY() <= (bottom) && point.getY() >= top);
 	}
-	
 	
 	//CHECK: OGP NOTES: complexity_modularity_abstraction.md, section that discusses Fraction.of()
 	public static Extent ofLeftTopWidthHeight(int left, int top, int width, int height) {

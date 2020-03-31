@@ -4,12 +4,42 @@ import drawit.*;
 import drawit.shapegroups1.ShapeGroup;
 //import drawit.shapegroups2.Extent;
 
+/**
+ * An instance of this class stores an extent of a ShapeGroup.
+ * 
+ * @invar The left of an extent is nonnegative.
+ *      | 0 <= getLeft();
+ * @invar The right of an extent is nonnegative.
+ *      | 0 <= getRight();
+ * @invar The top of an extent is nonnegative.
+ *      | 0 <= getTop();
+ * @invar The bottom of an extent is nonnegative.
+ *      | 0 <= getBottom();
+ * @invar The height of an extent is nonnegative.
+ *      | 0 <= getHeight();
+ * @invar The width of an extent is nonnegative.
+ *      | 0 <= getWidth();
+ */
 public class Extent {
+	
+	
+	
+	/**
+	 * @invar The left of an extent is nonnegative.
+	 *      | 0 <= left();
+	 * @invar The right of an extent is nonnegative.
+	 *      | 0 <= right();
+	 * @invar The top of an extent is nonnegative.
+	 *      | 0 <= top();
+	 * @invar The bottom of an extent is nonnegative.
+	 *      | 0 <= bottom();
+	 */
 	private int left;
 	private int top;
 	private int bottom;
 	private int right;
 	
+	//PRIVATE - so no documentation needed
 	private Extent(int left, int top, int width, int height) {
 		this.left = left;
 		this.top = top;
@@ -40,6 +70,7 @@ public class Extent {
 	public int getHeight() {
 		return bottom - top;
 	}
+	
 	
 	public IntPoint getTopLeft() {
 		return new IntPoint(left,top);

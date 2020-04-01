@@ -70,7 +70,6 @@ public class ShapeGroup {
 		this.originalExtent = Extent.ofLeftTopRightBottom(left, top, right, bottom);
 		this.extent = this.originalExtent;
 		ShapeGroup tempShapeGroup;
-		//Extent extentI;
 		for (int i = 0; i < listOfChildren.size(); i++) {
 			tempShapeGroup = listOfChildren.get(i);
 			extentI = tempShapeGroup.getExtent();
@@ -116,10 +115,7 @@ public class ShapeGroup {
 		return subgroups.size();
 	}
 	
-	//TODO:
 	public IntPoint toInnerCoordinates(IntPoint globalCoordinates) {
-		return new IntPoint(0,0);
-		/*
 		if (parent == null) {
 			Extent temp = this.extent;
 			IntPoint result = new IntPoint(globalCoordinates.getX() - temp.getLeft(), globalCoordinates.getY() - temp.getTop());
@@ -127,35 +123,36 @@ public class ShapeGroup {
 		} 
 		IntVector vector = new IntVector( - this.extent.getLeft(), - this.extent.getTop());
 		return parent.toInnerCoordinates(globalCoordinates).plus(vector);
-		*/
 	}
 	
-	//TODO: make function
 	public IntPoint toGlobalCoordinates(IntPoint innerCoordinates) {
-		return new IntPoint(0,0);
-		/*
 		if (parent == null) {
-			return innerCoordinates;
+			IntPoint result = new IntPoint(innerCoordinates.getX() + this.extent.getLeft(), innerCoordinates.getY() + this.extent.getTop());
+			return result;
 		} 
 		IntVector vector = new IntVector( this.extent.getLeft(), this.extent.getTop());
-		return this.parent.toGlobalCoordinates(innerCoordinates).plus(vector);
-		*/
+		return this.parent.toGlobalCoordinates(innerCoordinates.plus(vector));
 	}
 	
-	//TODO: make function
 	public IntVector toInnerCoordinates(IntVector relativeGlobalCoordinates) {
-		return new IntVector(0, 0);
+		/*
+		if (parent == null) {
+			Extent temp = this.extent;
+			IntVector result = new IntVector(globalCoordinates.getX() - temp.getLeft(), globalCoordinates.getY() - temp.getTop());
+			return result;
+		} 
+		IntVector vector = new IntVector( - this.extent.getLeft(), - this.extent.getTop());
+		return parent.toInnerCoordinates(globalCoordinates).plus(vector);
+		*/
+		return new IntVector(1, 1);
 	}
 	
-	//TODO: check this
 	public ShapeGroup getSubgroupAt(IntPoint innerCoordinates) {
 		for (int i = 0; i < getSubgroupCount(); i++) {
 			if(this.subgroups.get(i).extent.contains(innerCoordinates)){
 				return this.subgroups.get(i);
 			}
 		}
-		//throws not catched for this function!!
-		//throw new IllegalArgumentException();
 		return null;
 	}
 
@@ -170,9 +167,8 @@ public class ShapeGroup {
 		List<ShapeGroup> tempParentSubgroups = this.parent.getSubGroups();
 		int index = tempParentSubgroups.indexOf(this);
 		List<ShapeGroup> newParentSubgroups = tempParentSubgroups;
-		newParentSubgroups.remove(index);
 		newParentSubgroups.add(0, tempParentSubgroups.get(index));
-		//TODO: does this work?
+		newParentSubgroups.remove(index + 1);
 		this.parent.subgroups = newParentSubgroups;
 	}
 	
@@ -185,7 +181,6 @@ public class ShapeGroup {
 		List<ShapeGroup> newParentSubgroups = tempParentSubgroups;
 		newParentSubgroups.add(tempParentSubgroups.get(index));
 		newParentSubgroups.remove(index);
-		//TODO: does this work?
 		this.parent.subgroups = newParentSubgroups;
 	}
 	
@@ -219,8 +214,6 @@ public class ShapeGroup {
 			result += "popTransform" + "\n";
 			result += "popTransform" + "\n";
 		}
-		//System.out.print("total group: print \n");
-		//System.out.print(result);
 		return result;
 		
 	}

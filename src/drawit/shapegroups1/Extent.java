@@ -5,20 +5,20 @@ import drawit.shapegroups1.ShapeGroup;
 //import drawit.shapegroups2.Extent;
 
 /**
- * An instance of this class stores an extent of a ShapeGroup.
+ * An instance of this class stores the extent of a ShapeGroup.
  * 
  * @invar The left of an extent is nonnegative.
- *      | 0 <= getLeft();
+ *      | 0 <= getLeft()
  * @invar The right of an extent is nonnegative.
- *      | 0 <= getRight();
+ *      | 0 <= getRight()
  * @invar The top of an extent is nonnegative.
- *      | 0 <= getTop();
+ *      | 0 <= getTop()
  * @invar The bottom of an extent is nonnegative.
- *      | 0 <= getBottom();
+ *      | 0 <= getBottom()
  * @invar The height of an extent is nonnegative.
- *      | 0 <= getHeight();
+ *      | 0 <= getHeight()
  * @invar The width of an extent is nonnegative.
- *      | 0 <= getWidth();
+ *      | 0 <= getWidth()
  */
 public class Extent {
 	
@@ -26,20 +26,23 @@ public class Extent {
 	
 	/**
 	 * @invar The left of an extent is nonnegative.
-	 *      | 0 <= left();
+	 *      | 0 <= left
 	 * @invar The right of an extent is nonnegative.
-	 *      | 0 <= right();
+	 *      | 0 <= right
 	 * @invar The top of an extent is nonnegative.
-	 *      | 0 <= top();
+	 *      | 0 <= top
 	 * @invar The bottom of an extent is nonnegative.
-	 *      | 0 <= bottom();
+	 *      | 0 <= bottom
+	 * @invar The bottom of an extent is greater than the top.
+	 *      | bottom >= top
+	 * @invar The right of an extent is greater than the left.
+	 *      | right >= left
 	 */
 	private int left;
 	private int top;
 	private int bottom;
 	private int right;
 	
-	//PRIVATE - so no documentation needed
 	private Extent(int left, int top, int width, int height) {
 		this.left = left;
 		this.top = top;
@@ -47,41 +50,75 @@ public class Extent {
 		this.right = left + width;
 	}
 	
+	/**
+	 * Returns the left of the extent.
+	 */
 	public int getLeft() {
 		return left;
 	}
 	
+	/**
+	 * Returns the top of the extent.
+	 */
 	public int getTop() {
 		return top;
 	}
 	
+	/**
+	 * Returns the right of the extent.
+	 */
 	public int getRight() {
 		return right;
 	}
 	
+	/**
+	 * Returns the bottom of the extent.
+	 */
 	public int getBottom() {
 		return bottom;
 	}
 	
+	/**
+	 * Returns the width of the extent.
+	 */
 	public int getWidth() {
 		return right - left;
 	}
 	
+	/**
+	 * Returns the height of the extent.
+	 */
 	public int getHeight() {
 		return bottom - top;
 	}
 	
-	
+	/**
+	 * Returns the TopLeft corner of the extent.
+	 * 
+	 * @post 
+	 *    | result == new IntPoint(getLeft(), getTop())
+	 */
 	public IntPoint getTopLeft() {
 		return new IntPoint(left,top);
 	}
 	
+	/**
+	 * Returns the BottomRight corner of the extent.
+	 * 
+	 * @post 
+	 *    | result == new IntPoint(getRight(), getBottom())
+	 */
 	public IntPoint getBottomRight() {
 		return new IntPoint(right, bottom);
 	}
 	
-	
-	//TODO: fix in shapegroups2
+	/**
+	 * Returns whether an given IntPoint is contained by this extent.
+	 * 
+	 * @post
+	 * 	  | result == (point.getX() >= getLeft() && point.getX() <= getRight())
+		  |		&& (point.getY() <= getBottom() && point.getY() >= getTop())
+	 */
 	public boolean contains(IntPoint point) {
 		return (point.getX() >= left && point.getX() <= (right))
 				&& (point.getY() <= (bottom) && point.getY() >= top);

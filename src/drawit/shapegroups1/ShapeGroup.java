@@ -57,6 +57,7 @@ public class ShapeGroup {
 	 *
 	 */
 	public ShapeGroup(RoundedPolygon shape) {
+		//System.out.print("ShapeGroup/LeafGroup()\n");
 		if (PointArrays.checkDefinesProperPolygon(shape.getVertices()) != null) {
 			throw new IllegalArgumentException();
 		}
@@ -102,6 +103,7 @@ public class ShapeGroup {
 	 *
 	 */
 	public ShapeGroup(ShapeGroup[] subgroups) {
+		//System.out.print("ShapeGroupWithSubgroups()\n");
 		List<ShapeGroup> listOfChildren = new ArrayList<ShapeGroup>();
 		//this.shape = null; //redundant because default	
 		//this.parent = null; //redundant because default	
@@ -148,6 +150,7 @@ public class ShapeGroup {
 	 * 	  | result != null
 	 */
 	public Extent getExtent() {
+		//System.out.print("getExtent()\n");
 		return this.extent;
 	}
 	
@@ -160,7 +163,7 @@ public class ShapeGroup {
 	 * 	  | result != null
 	 */
 	public Extent getOriginalExtent() {
-		System.out.print("getOriginalExtent()\n");
+		//System.out.print("getOriginalExtent()\n");
 		return this.originalExtent;
 	}
 	
@@ -171,6 +174,7 @@ public class ShapeGroup {
 	 * 
 	 */
 	public ShapeGroup getParentGroup() {
+		//System.out.print("getParentGroup()\n");
 		return parent;
 	}
 	
@@ -181,6 +185,10 @@ public class ShapeGroup {
 	 * 
 	 */
 	public RoundedPolygon getShape() {
+		//System.out.print("getShape()\n");
+		if (shape == null) {
+			System.out.print("getShape()==null\n");
+		}
 		return shape;
 	}
 	
@@ -195,6 +203,7 @@ public class ShapeGroup {
 	 * 
 	 */
 	public ShapeGroup getSubgroup(int index) {
+		//System.out.print("getSubgroup(index)\n");
 		if (subgroups == null) {
 			throw new IllegalArgumentException("No subgroups!");
 		}
@@ -212,6 +221,7 @@ public class ShapeGroup {
 	 * 
 	 */
 	public java.util.List<ShapeGroup> getSubgroups() {
+		//System.out.print("getAllSubgroups()\n");
 		return subgroups;
 	}
 	
@@ -224,6 +234,7 @@ public class ShapeGroup {
 	 * 			 | result >= 0
 	 */
 	public int getSubgroupCount() {
+		//System.out.print("getSubgroupCount()\n");
 		if (subgroups == null) {
 			return 0;
 		}
@@ -232,67 +243,76 @@ public class ShapeGroup {
 	
 	public IntPoint toInnerCoordinates(IntPoint globalCoordinates) {
 		//throw if globalCoordinates are not contained by getExtent()
-		System.out.print("toInnerCoordinates()\n");
+		//System.out.print("toInnerCoordinates()\n");
+		/*
 		double innerX = ((globalCoordinates.getX() - extent.getLeft())/(double)extent.getWidth())
 				*originalExtent.getWidth();
 		double innerY = ((globalCoordinates.getY() - extent.getTop())/(double)extent.getHeight())
 				*originalExtent.getHeight();
 		return new IntPoint((int)Math.round(innerX), (int)Math.round(innerY));
-		/*
-		double scaleX = ((double)extent.getRight() - (double)globalCoordinates.getX())/extent.getWidth();
-		double scaleY = ((double)extent.getBottom() - (double)globalCoordinates.getY())/extent.getHeight();
-		double innerX = (double)originalExtent.getRight() - scaleX*originalExtent.getWidth();
-		double innerY = (double)originalExtent.getBottom() - scaleY*originalExtent.getHeight();
-		return new IntPoint( (int)Math.round(innerX), (int)Math.round(innerY));
 		*/
-		/*
+		// /*
 		if (parent == null) {
-			Extent temp = this.extent;
-			IntPoint result = new IntPoint(globalCoordinates.getX() - temp.getLeft(), globalCoordinates.getY() - temp.getTop());
-			return result;
+			double innerX = ((globalCoordinates.getX() - extent.getLeft())/(double)extent.getWidth())
+					*originalExtent.getWidth();
+			double innerY = ((globalCoordinates.getY() - extent.getTop())/(double)extent.getHeight())
+					*originalExtent.getHeight();
+			return new IntPoint((int)Math.round(innerX), (int)Math.round(innerY));
 		} 
-		IntVector vector = new IntVector( - this.extent.getLeft(), - this.extent.getTop());
-		return parent.toInnerCoordinates(globalCoordinates).plus(vector);
-		*/
+		globalCoordinates = parent.toInnerCoordinates(globalCoordinates);
+		double innerX = ((globalCoordinates.getX() - extent.getLeft())/(double)extent.getWidth())
+				*originalExtent.getWidth();
+		double innerY = ((globalCoordinates.getY() - extent.getTop())/(double)extent.getHeight())
+				*originalExtent.getHeight();
+		return new IntPoint((int)Math.round(innerX), (int)Math.round(innerY));
+		// */
 	}
 	
 	public IntPoint toGlobalCoordinates(IntPoint innerCoordinates) {
-		System.out.print("toGlobalCoordinates()\n");
+		//System.out.print("toGlobalCoordinates()\n");
+		/*
 		double relativeX = (double)innerCoordinates.getX()/this.originalExtent.getWidth();
 		double relativeY = (double)innerCoordinates.getY()/this.originalExtent.getHeight();
 		double outerX = extent.getLeft() + relativeX*extent.getWidth();
 		double outerY = extent.getTop() + relativeY*extent.getHeight();
 		return new IntPoint( (int)Math.round(outerX), (int)Math.round(outerY));
-		/*
-		if (parent == null) {
-			IntPoint result = new IntPoint(innerCoordinates.getX() + this.extent.getLeft(), innerCoordinates.getY() + this.extent.getTop());
-			return result;
-		} 
-		IntVector vector = new IntVector( this.extent.getLeft(), this.extent.getTop());
-		return this.parent.toGlobalCoordinates(innerCoordinates.plus(vector));
 		*/
+		
+		// /*
+		if (parent == null) {
+			double relativeX = (double)innerCoordinates.getX()/this.originalExtent.getWidth();
+			double relativeY = (double)innerCoordinates.getY()/this.originalExtent.getHeight();
+			double outerX = extent.getLeft() + relativeX*extent.getWidth();
+			double outerY = extent.getTop() + relativeY*extent.getHeight();
+			return new IntPoint( (int)Math.round(outerX), (int)Math.round(outerY));
+		}
+		
+		double relativeX = (double)innerCoordinates.getX()/this.originalExtent.getWidth();
+		double relativeY = (double)innerCoordinates.getY()/this.originalExtent.getHeight();
+		double outerX = extent.getLeft() + relativeX*extent.getWidth();
+		double outerY = extent.getTop() + relativeY*extent.getHeight();
+		
+		IntPoint newInnerCoordinates = new IntPoint( (int)Math.round(outerX), (int)Math.round(outerY));
+		return parent.toGlobalCoordinates(newInnerCoordinates);
+		// */
 	}
 	
 	public IntVector toInnerCoordinates(IntVector relativeGlobalCoordinates) {
-		System.out.print("toInnerCoordinates_vec()\n");
-		/*
-		if (parent == null) {
-			Extent temp = this.extent;
-			IntVector result = new IntVector(globalCoordinates.getX() - temp.getLeft(), globalCoordinates.getY() - temp.getTop());
-			return result;
-		} 
-		IntVector vector = new IntVector( - this.extent.getLeft(), - this.extent.getTop());
-		return parent.toInnerCoordinates(globalCoordinates).plus(vector);
-		*/
-		return new IntVector(1, 1);
+		//System.out.print("toInnerCoordinates_vec()\n");
+		return new IntVector(relativeGlobalCoordinates.getX()*extent.getWidth()/originalExtent.getWidth(),
+				relativeGlobalCoordinates.getY()*extent.getHeight()/originalExtent.getHeight());
 	}
 	
 	public ShapeGroup getSubgroupAt(IntPoint innerCoordinates) {
+		//System.out.print("getSubgroupAt(innerCoordinates)\n");
 		for (int i = 0; i < getSubgroupCount(); i++) {
-			if(this.subgroups.get(i).extent.contains(innerCoordinates)){
+			if(subgroups.get(i).getExtent().contains(innerCoordinates)){
 				return this.subgroups.get(i);
 			}
 		}
+		//System.out.print(Integer.toString(innerCoordinates.getX())
+		//		+ " " + Integer.toString(innerCoordinates.getY()) + "\n");
+		//System.out.print("getSubgroupAt(innerCoordinates)==null\n");
 		return null;
 	}
 	
@@ -307,6 +327,7 @@ public class ShapeGroup {
 	 * 	  | getExtent() == newExtent
 	 */
 	public void setExtent(Extent newExtent) {
+		//System.out.print("setExtent()\n");
 		this.extent = newExtent;
 	}
 	
@@ -369,6 +390,7 @@ public class ShapeGroup {
 	public java.lang.String getDrawingCommands(){
 		String result = "";
 		if (subgroups == null) {
+			//TODO: reduce allocations
 			Extent origE = this.originalExtent;
 			Extent newE = this.extent;
 			result += "pushTranslate" + " " + Integer.toString(newE.getLeft()) +
@@ -383,14 +405,12 @@ public class ShapeGroup {
 			result += "popTransform" + "\n";	
 			return result;
 		} else {
-			Extent origE = this.originalExtent;
-			Extent newE = this.extent;
-			result += "pushTranslate" + " " + Integer.toString(newE.getLeft()) +
-					" " + Integer.toString(newE.getTop()) + "\n"; 
+			result += "pushTranslate" + " " + Integer.toString(extent.getLeft()) +
+					" " + Integer.toString(extent.getTop()) + "\n"; 
 			result += "pushScale" + " " + Double.toString((double)extent.getWidth()/originalExtent.getWidth()) +
 					" " + Double.toString((double)extent.getHeight()/originalExtent.getHeight()) + "\n";
-			for (int i = 0; i < this.subgroups.size(); i++) {
-				
+			for (int i = subgroups.size()-1; i >= 0; i--) {
+			//for (int i = 0; i < this.subgroups.size(); i++) {
 				result += subgroups.get(i).getDrawingCommands();
 			}
 			result += "popTransform" + "\n";

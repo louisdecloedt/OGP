@@ -160,6 +160,7 @@ public class ShapeGroup {
 	 * 	  | result != null
 	 */
 	public Extent getOriginalExtent() {
+		System.out.print("getOriginalExtent()\n");
 		return this.originalExtent;
 	}
 	
@@ -230,7 +231,13 @@ public class ShapeGroup {
 	}
 	
 	public IntPoint toInnerCoordinates(IntPoint globalCoordinates) {
+		//throw if globalCoordinates are not contained by getExtent()
 		System.out.print("toInnerCoordinates()\n");
+		double innerX = ((globalCoordinates.getX() - extent.getLeft())/(double)extent.getWidth())
+				*originalExtent.getWidth();
+		double innerY = ((globalCoordinates.getY() - extent.getTop())/(double)extent.getHeight())
+				*originalExtent.getHeight();
+		return new IntPoint((int)Math.round(innerX), (int)Math.round(innerY));
 		/*
 		double scaleX = ((double)extent.getRight() - (double)globalCoordinates.getX())/extent.getWidth();
 		double scaleY = ((double)extent.getBottom() - (double)globalCoordinates.getY())/extent.getHeight();
@@ -238,7 +245,7 @@ public class ShapeGroup {
 		double innerY = (double)originalExtent.getBottom() - scaleY*originalExtent.getHeight();
 		return new IntPoint( (int)Math.round(innerX), (int)Math.round(innerY));
 		*/
-		// /*
+		/*
 		if (parent == null) {
 			Extent temp = this.extent;
 			IntPoint result = new IntPoint(globalCoordinates.getX() - temp.getLeft(), globalCoordinates.getY() - temp.getTop());
@@ -246,17 +253,24 @@ public class ShapeGroup {
 		} 
 		IntVector vector = new IntVector( - this.extent.getLeft(), - this.extent.getTop());
 		return parent.toInnerCoordinates(globalCoordinates).plus(vector);
-		// */
+		*/
 	}
 	
 	public IntPoint toGlobalCoordinates(IntPoint innerCoordinates) {
 		System.out.print("toGlobalCoordinates()\n");
+		double relativeX = (double)innerCoordinates.getX()/this.originalExtent.getWidth();
+		double relativeY = (double)innerCoordinates.getY()/this.originalExtent.getHeight();
+		double outerX = extent.getLeft() + relativeX*extent.getWidth();
+		double outerY = extent.getTop() + relativeY*extent.getHeight();
+		return new IntPoint( (int)Math.round(outerX), (int)Math.round(outerY));
+		/*
 		if (parent == null) {
 			IntPoint result = new IntPoint(innerCoordinates.getX() + this.extent.getLeft(), innerCoordinates.getY() + this.extent.getTop());
 			return result;
 		} 
 		IntVector vector = new IntVector( this.extent.getLeft(), this.extent.getTop());
 		return this.parent.toGlobalCoordinates(innerCoordinates.plus(vector));
+		*/
 	}
 	
 	public IntVector toInnerCoordinates(IntVector relativeGlobalCoordinates) {

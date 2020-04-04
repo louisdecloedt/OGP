@@ -186,9 +186,9 @@ public class ShapeGroup {
 	 */
 	public RoundedPolygon getShape() {
 		//System.out.print("getShape()\n");
-		if (shape == null) {
-			System.out.print("getShape()==null\n");
-		}
+		//if (shape == null) {
+			//System.out.print("getShape()==null\n");
+		//}
 		return shape;
 	}
 	
@@ -251,7 +251,9 @@ public class ShapeGroup {
 				*originalExtent.getHeight();
 		return new IntPoint((int)Math.round(innerX), (int)Math.round(innerY));
 		*/
-		// /*
+		
+		
+		/*
 		if (parent == null) {
 			double innerX = ((globalCoordinates.getX() - extent.getLeft())/(double)extent.getWidth())
 					*originalExtent.getWidth();
@@ -264,6 +266,27 @@ public class ShapeGroup {
 				*originalExtent.getWidth();
 		double innerY = ((globalCoordinates.getY() - extent.getTop())/(double)extent.getHeight())
 				*originalExtent.getHeight();
+		return new IntPoint((int)Math.round(innerX), (int)Math.round(innerY));
+		*/
+		
+		
+		/// /*
+		if (parent == null) {
+			double innerX = ((globalCoordinates.getX() - extent.getLeft())/(double)extent.getWidth())
+					*originalExtent.getWidth();
+			innerX += (double)originalExtent.getLeft();
+			double innerY = ((globalCoordinates.getY() - extent.getTop())/(double)extent.getHeight())
+					*originalExtent.getHeight();
+			innerY += (double)originalExtent.getTop();
+			return new IntPoint((int)Math.round(innerX), (int)Math.round(innerY));
+		} 
+		globalCoordinates = parent.toInnerCoordinates(globalCoordinates);
+		double innerX = ((globalCoordinates.getX() - extent.getLeft())/(double)extent.getWidth())
+				*originalExtent.getWidth();
+		innerX += (double)originalExtent.getLeft();
+		double innerY = ((globalCoordinates.getY() - extent.getTop())/(double)extent.getHeight())
+				*originalExtent.getHeight();
+		innerY += (double)originalExtent.getTop();
 		return new IntPoint((int)Math.round(innerX), (int)Math.round(innerY));
 		// */
 	}
@@ -278,7 +301,7 @@ public class ShapeGroup {
 		return new IntPoint( (int)Math.round(outerX), (int)Math.round(outerY));
 		*/
 		
-		// /*
+		/*
 		if (parent == null) {
 			double relativeX = (double)innerCoordinates.getX()/this.originalExtent.getWidth();
 			double relativeY = (double)innerCoordinates.getY()/this.originalExtent.getHeight();
@@ -294,13 +317,43 @@ public class ShapeGroup {
 		
 		IntPoint newInnerCoordinates = new IntPoint( (int)Math.round(outerX), (int)Math.round(outerY));
 		return parent.toGlobalCoordinates(newInnerCoordinates);
-		// */
+		*/
+		
+		if (parent == null) {
+			double x = innerCoordinates.getX(), y = innerCoordinates.getY();
+			x -= originalExtent.getLeft();
+			y -= originalExtent.getTop();
+			x = x*((double)extent.getWidth()/(double)originalExtent.getWidth()) + extent.getLeft();
+			y = y*((double)extent.getHeight()/(double)originalExtent.getHeight()) + extent.getTop();
+			return new IntPoint( (int)Math.round(x), (int)Math.round(y));
+		}
+		double x = innerCoordinates.getX(), y = innerCoordinates.getY();
+		x -= originalExtent.getLeft();
+		y -= originalExtent.getTop();
+		x = x*((double)extent.getWidth()/(double)originalExtent.getWidth()) + extent.getLeft();
+		y = y*((double)extent.getHeight()/(double)originalExtent.getHeight()) + extent.getTop();
+		IntPoint newInnerCoordinates = new IntPoint( (int)Math.round(x), (int)Math.round(y));
+		return parent.toGlobalCoordinates(newInnerCoordinates);
 	}
 	
 	public IntVector toInnerCoordinates(IntVector relativeGlobalCoordinates) {
 		//System.out.print("toInnerCoordinates_vec()\n");
-		return new IntVector(relativeGlobalCoordinates.getX()*extent.getWidth()/originalExtent.getWidth(),
-				relativeGlobalCoordinates.getY()*extent.getHeight()/originalExtent.getHeight());
+		if (parent == null) {
+			double innerX = ((relativeGlobalCoordinates.getX())/(double)extent.getWidth())
+					*originalExtent.getWidth();
+			double innerY = ((relativeGlobalCoordinates.getY())/(double)extent.getHeight())
+					*originalExtent.getHeight();
+			return new IntVector((int)Math.round(innerX), (int)Math.round(innerY));
+		} 
+		relativeGlobalCoordinates = parent.toInnerCoordinates(relativeGlobalCoordinates);
+		double innerX = ((relativeGlobalCoordinates.getX())/(double)extent.getWidth())
+				*originalExtent.getWidth();
+		double innerY = ((relativeGlobalCoordinates.getY())/(double)extent.getHeight())
+				*originalExtent.getHeight();
+		return new IntVector((int)Math.round(innerX), (int)Math.round(innerY));
+		//
+		//return new IntVector(relativeGlobalCoordinates.getX()*extent.getWidth()/originalExtent.getWidth(),
+		//		relativeGlobalCoordinates.getY()*extent.getHeight()/originalExtent.getHeight());
 	}
 	
 	public ShapeGroup getSubgroupAt(IntPoint innerCoordinates) {

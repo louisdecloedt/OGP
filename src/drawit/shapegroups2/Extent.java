@@ -49,11 +49,17 @@ public class Extent {
 		return new IntPoint(left + width, top + height);
 	}
 	
-	//THROWS
-	public boolean contains(ShapeGroup shapeGroup) {
-		Extent temp = shapeGroup.getExtent();
-		return (temp.getLeft() >= left && temp.getRight() <= (left + width))
-				&& (temp.getBottom() <= (top + height) && temp.getTop() >= top);
+	/**
+	 * Returns whether an given IntPoint is contained by this extent.
+	 * 
+	 * @post
+	 * 	  | result == (point.getX() >= getLeft() && point.getX() <= getRight())
+		  |		&& (point.getY() <= getBottom() && point.getY() >= getTop())
+	 */
+	public boolean contains(IntPoint point) {
+		
+		return (point.getX() >= left && point.getX() <= (left + width))
+				&& ((point.getY()) <= (top + height) && point.getY() >= top);
 	}
 	
 	//CHECK: OGP NOTES: complexity_modularity_abstraction.md, section that discusses Fraction.of()

@@ -96,7 +96,7 @@ public class Extent {
 	 * Returns the TopLeft corner of the extent.
 	 * 
 	 * @post 
-	 *    | result == new IntPoint(getLeft(), getTop())
+	 *    | result.getX() == getLeft() && result.getY() == getTop()
 	 */
 	public IntPoint getTopLeft() {
 		return new IntPoint(left,top);
@@ -106,7 +106,7 @@ public class Extent {
 	 * Returns the BottomRight corner of the extent.
 	 * 
 	 * @post 
-	 *    | result == new IntPoint(getRight(), getBottom())
+	 *    | result.getX() == getRight() && result.getY() == getBottom()
 	 */
 	public IntPoint getBottomRight() {
 		return new IntPoint(right, bottom);

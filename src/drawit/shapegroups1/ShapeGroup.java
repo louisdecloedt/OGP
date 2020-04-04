@@ -151,7 +151,20 @@ public class ShapeGroup {
 	 */
 	public Extent getExtent() {
 		//System.out.print("getExtent()\n");
-		return this.extent;
+		
+		return extent;
+		
+		/*
+		if (parent == null) {
+			return this.extent;
+		}
+		Extent extentInOuterCoordinates = extent;
+		extentInOuterCoordinates = Extent.ofLeftTopRightBottom(extentInOuterCoordinates.getLeft() + parent.getOriginalExtent().getLeft(),
+				extentInOuterCoordinates.getTop() + parent.getOriginalExtent().getTop(),
+				extentInOuterCoordinates.getRight() + parent.getOriginalExtent().getLeft(), 
+				extentInOuterCoordinates.getBottom() + parent.getOriginalExtent().getTop());
+		return extentInOuterCoordinates;
+		*/
 	}
 	
 	/**
@@ -207,6 +220,7 @@ public class ShapeGroup {
 		if (subgroups == null) {
 			throw new IllegalArgumentException("No subgroups!");
 		}
+		//or must this be null
 		if (subgroups.size() >= index) {
 			throw new IllegalArgumentException("Index out of bound!");
 		}
@@ -245,15 +259,6 @@ public class ShapeGroup {
 		//throw if globalCoordinates are not contained by getExtent()
 		//System.out.print("toInnerCoordinates()\n");
 		/*
-		double innerX = ((globalCoordinates.getX() - extent.getLeft())/(double)extent.getWidth())
-				*originalExtent.getWidth();
-		double innerY = ((globalCoordinates.getY() - extent.getTop())/(double)extent.getHeight())
-				*originalExtent.getHeight();
-		return new IntPoint((int)Math.round(innerX), (int)Math.round(innerY));
-		*/
-		
-		
-		/*
 		if (parent == null) {
 			double innerX = ((globalCoordinates.getX() - extent.getLeft())/(double)extent.getWidth())
 					*originalExtent.getWidth();
@@ -270,7 +275,7 @@ public class ShapeGroup {
 		*/
 		
 		
-		/// /*
+		// /*
 		if (parent == null) {
 			double innerX = ((globalCoordinates.getX() - extent.getLeft())/(double)extent.getWidth())
 					*originalExtent.getWidth();
@@ -293,14 +298,7 @@ public class ShapeGroup {
 	
 	public IntPoint toGlobalCoordinates(IntPoint innerCoordinates) {
 		//System.out.print("toGlobalCoordinates()\n");
-		/*
-		double relativeX = (double)innerCoordinates.getX()/this.originalExtent.getWidth();
-		double relativeY = (double)innerCoordinates.getY()/this.originalExtent.getHeight();
-		double outerX = extent.getLeft() + relativeX*extent.getWidth();
-		double outerY = extent.getTop() + relativeY*extent.getHeight();
-		return new IntPoint( (int)Math.round(outerX), (int)Math.round(outerY));
-		*/
-		
+			
 		/*
 		if (parent == null) {
 			double relativeX = (double)innerCoordinates.getX()/this.originalExtent.getWidth();
@@ -319,6 +317,7 @@ public class ShapeGroup {
 		return parent.toGlobalCoordinates(newInnerCoordinates);
 		*/
 		
+		// /*
 		if (parent == null) {
 			double x = innerCoordinates.getX(), y = innerCoordinates.getY();
 			x -= originalExtent.getLeft();
@@ -334,6 +333,7 @@ public class ShapeGroup {
 		y = y*((double)extent.getHeight()/(double)originalExtent.getHeight()) + extent.getTop();
 		IntPoint newInnerCoordinates = new IntPoint( (int)Math.round(x), (int)Math.round(y));
 		return parent.toGlobalCoordinates(newInnerCoordinates);
+		// */
 	}
 	
 	public IntVector toInnerCoordinates(IntVector relativeGlobalCoordinates) {
@@ -358,11 +358,28 @@ public class ShapeGroup {
 	
 	public ShapeGroup getSubgroupAt(IntPoint innerCoordinates) {
 		//System.out.print("getSubgroupAt(innerCoordinates)\n");
+		// /*
 		for (int i = 0; i < getSubgroupCount(); i++) {
+			//TODO: check this
 			if(subgroups.get(i).getExtent().contains(innerCoordinates)){
 				return this.subgroups.get(i);
 			}
 		}
+		// */
+		
+		/*
+		IntPoint globalCoordinates = this.toGlobalCoordinates(innerCoordinates);
+		IntPoint newInnerCoordinates;
+		ShapeGroup tempSubgroup;
+		for (int i = 0; i < getSubgroupCount(); i++) {
+			tempSubgroup = subgroups.get(i);
+			newInnerCoordinates = tempSubgroup.toInnerCoordinates(globalCoordinates);
+			if(tempSubgroup.getOriginalExtent().contains(newInnerCoordinates)){
+				return this.subgroups.get(i);
+			}
+		}
+		*/
+		
 		//System.out.print(Integer.toString(innerCoordinates.getX())
 		//		+ " " + Integer.toString(innerCoordinates.getY()) + "\n");
 		//System.out.print("getSubgroupAt(innerCoordinates)==null\n");
@@ -470,7 +487,6 @@ public class ShapeGroup {
 			result += "popTransform" + "\n";
 		}
 		return result;
-		
 	}
 }
 

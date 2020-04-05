@@ -59,7 +59,6 @@ public class ShapeGroup {
 	 *
 	 */
 	public ShapeGroup(RoundedPolygon shape) {
-		//System.out.print("ShapeGroup/LeafGroup()\n");
 		if (PointArrays.checkDefinesProperPolygon(shape.getVertices()) != null) {
 			throw new IllegalArgumentException();
 		}
@@ -238,10 +237,14 @@ public class ShapeGroup {
 	 * 
 	 * @inspects | this, getParentGroup()
 	 * 
-	 * @post
-	 * 			 | result.getX() >= 0 && result.getY() >= 0
+	 * @throws IllegalArgumentException
+	 *    | globalCoordinates == null
+	 * 
 	 */
-	public IntPoint toInnerCoordinates(IntPoint globalCoordinates) {
+	public IntPoint toInnerCoordinates(IntPoint globalCoordinates) throws IllegalArgumentException {
+		if (globalCoordinates == null) {
+			throw new IllegalArgumentException();
+		}
 		if (parent == null) {
 			double innerX = ((globalCoordinates.getX() - extent.getLeft())/(double)extent.getWidth())
 					*originalExtent.getWidth();
@@ -267,10 +270,13 @@ public class ShapeGroup {
 	 * 
 	 * @inspects | this, getParentGroup()
 	 *
-	 * @post
-	 * 			 | result.getX() >= 0 && result.getY() >= 0
+	 * @throws IllegalArgumentException
+	 *    | innerCoordinates == null
 	 */
-	public IntPoint toGlobalCoordinates(IntPoint innerCoordinates) {
+	public IntPoint toGlobalCoordinates(IntPoint innerCoordinates) throws IllegalArgumentException {
+		if (innerCoordinates == null) {
+			throw new IllegalArgumentException();
+		}
 		if (parent == null) {
 			double x = innerCoordinates.getX(), y = innerCoordinates.getY();
 			x -= originalExtent.getLeft();
@@ -295,10 +301,13 @@ public class ShapeGroup {
 	 * 
 	 * @inspects | this, getParentGroup()
 	 * 
-	 * @post
-	 * 			 | result.getX() >= 0 && result.getY() >= 0
+	 * @throws IllegalArgumentException
+	 *    | relativeGlobalCoordinates == null
 	 */
-	public IntVector toInnerCoordinates(IntVector relativeGlobalCoordinates) {
+	public IntVector toInnerCoordinates(IntVector relativeGlobalCoordinates) throws IllegalArgumentException {
+		if (relativeGlobalCoordinates == null) {
+			throw new IllegalArgumentException();
+		}
 		if (parent == null) {
 			double innerX = ((relativeGlobalCoordinates.getX())/(double)extent.getWidth())
 					*originalExtent.getWidth();
@@ -319,10 +328,15 @@ public class ShapeGroup {
 	 * 
 	 * @inspects | this, getSubgroups()
 	 * 
+	 * @throws IllegalArgumentException
+	 *    | innerCoordinates == null
 	 * @post
 	 * 			 | result == null || result.getExtent().contains(innerCoordinates)
 	 */
-	public ShapeGroup getSubgroupAt(IntPoint innerCoordinates) {
+	public ShapeGroup getSubgroupAt(IntPoint innerCoordinates) throws IllegalArgumentException {
+		if (innerCoordinates == null) {
+			throw new IllegalArgumentException();
+		}
 		for (int i = 0; i < getSubgroupCount(); i++) {
 			if(subgroups.get(i).getExtent().contains(innerCoordinates)){
 				return this.subgroups.get(i);
@@ -337,10 +351,15 @@ public class ShapeGroup {
 	 * 
 	 * @mutates  | this
 	 * 
+	 * @throws IllegalArgumentException
+	 *    | newExtent == null
 	 * @post
 	 * 	  | getExtent() == newExtent
 	 */
-	public void setExtent(Extent newExtent) {
+	public void setExtent(Extent newExtent) throws IllegalArgumentException {
+		if (newExtent == null) {
+			throw new IllegalArgumentException();
+		}
 		this.extent = newExtent;
 	}
 	

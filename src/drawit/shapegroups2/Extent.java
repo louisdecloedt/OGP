@@ -25,7 +25,7 @@ public class Extent {
 	 * @invar The left of an extent is nonnegative.
 	 *      | 0 <= left
 	 * @invar The right of an extent is nonnegative.
-	 *      | 0 <= right
+	 *      | 0 <= top
 	 * @invar The width of an extent is nonnegative.
 	 *      | 0 <= width
 	 * @invar The height of an extent is nonnegative.
@@ -135,8 +135,8 @@ public class Extent {
 	 * Returns whether an given IntPoint is contained by this extent.
 	 * 
 	 * @post
-	 * 	  | result == (point.getX() >= getLeft() && point.getX() <= getRight())
-		  |		&& (point.getY() <= getBottom() && point.getY() >= getTop())
+	 * 	  | result == ((point.getX() >= getLeft() && point.getX() <= getRight())
+	 *	  |		&& (point.getY() <= getBottom() && point.getY() >= getTop()))
 	 */
 	public boolean contains(IntPoint point) {
 		

@@ -142,8 +142,8 @@ public class Extent {
 	 * Returns whether an given IntPoint is contained by this extent.
 	 * 
 	 * @post
-	 * 	  | result == (point.getX() >= getLeft() && point.getX() <= getRight())
-		  |		&& (point.getY() <= getBottom() && point.getY() >= getTop())
+	 * 	  | result == ((point.getX() >= getLeft() && point.getX() <= getRight())
+		  |		&& (point.getY() <= getBottom() && point.getY() >= getTop()))
 	 */
 	public boolean contains(IntPoint point) {
 		return (point.getX() >= left && point.getX() <= (right))

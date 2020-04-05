@@ -74,8 +74,6 @@ public class RoundedPolygon {
      * 
      * @mutates | this
      * 
-     * @throws IllegalArgumentException if the given IntPoint array contains a null.
-     * | !Arrays.stream(points).allMatch(e -> e != null)
      * @throws IllegalArgumentException if the given IntPoints do not form a proper polygon.
      * | PointArrays.checkDefinesProperPolygon(points) != null
      * @post the vertices of the rounded polygon are now equal to the given array of points

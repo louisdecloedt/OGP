@@ -1,8 +1,7 @@
 package drawit.shapegroups1;
 
 import drawit.*;
-import drawit.shapegroups1.ShapeGroup;
-//import drawit.shapegroups2.Extent;
+
 
 /**
  * An instance of this class stores the extent of a ShapeGroup.

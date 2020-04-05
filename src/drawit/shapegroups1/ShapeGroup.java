@@ -43,7 +43,6 @@ public class ShapeGroup {
 	
 	/**
 	 * Initializes a ShapeGroup as having no subgroups or parent.
-	 * @creates this
 	 * 
 	 * @mutates this
 	 * 
@@ -89,8 +88,6 @@ public class ShapeGroup {
 	/**
 	 * Initializes a ShapeGroup with the given subgroups, 
 	 * 		the subgroups get this new ShapeGroup assigned as parent.
-	 * 
-	 * @creates this
 	 * 
 	 * @mutates this, subgroups
 	 * 
@@ -141,6 +138,8 @@ public class ShapeGroup {
 	 * 
 	 * @inspects | this
 	 * 
+	 * @basic
+	 * 
 	 * @post
 	 * 	  | result != null
 	 */
@@ -152,6 +151,8 @@ public class ShapeGroup {
 	 * Returns the original extent of the ShapeGroup expressed.
 	 * 
 	 * @inspects | this
+	 * 
+	 * @basic
 	 * 
 	 * @post
 	 * 	  | result != null
@@ -165,6 +166,8 @@ public class ShapeGroup {
 	 * 
 	 * @inspects | this
 	 * 
+	 * @basic
+	 * 
 	 */
 	public ShapeGroup getParentGroup() {
 		return parent;
@@ -174,6 +177,8 @@ public class ShapeGroup {
 	 * Returns returns the shape it contains or null otherwise.
 	 * 
 	 * @inspects | this
+	 * 
+	 * @basic
 	 * 
 	 */
 	public RoundedPolygon getShape() {
@@ -205,6 +210,8 @@ public class ShapeGroup {
 	 * or null if the ShapeGroup doesn't have any.
 	 * 
 	 * @inspects | this
+	 * 
+	 * @basic
 	 * 
 	 */
 	public java.util.List<ShapeGroup> getSubgroups() {

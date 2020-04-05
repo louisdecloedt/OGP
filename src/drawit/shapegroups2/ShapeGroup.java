@@ -2,6 +2,8 @@ package drawit.shapegroups2;
 
 import java.util.ArrayList;
 import java.util.List;
+//import logicalcollections.LogicalList;
+
 
 
 import drawit.*;
@@ -9,24 +11,21 @@ import drawit.*;
 /**
  * Trees of instances of this class can be built to represent ShapeGroups.
  * 
- * @invar This ShapeGroup does not have the same ShapeGroup as a subgroup twice.
- *    | LogicalList.distinct(getSubGroups())
  * @invar If this ShapeGroup has subgroups, these subgroups have this ShapeGroup as parent.
- *    | getSubgroups == null || getSubgroups().stream().allMatch(subgroup -> subgroup.getParentGroup() == this)
+ *    | getSubgroups() == null || getSubgroups().stream().allMatch(subgroup -> subgroup.getParentGroup() == this)
  * @invar This node is either a leaf group or else it has subgroups.
  *    | (getShape() == null) != (getSubgroups() == null)
  * @invar This ShapeGroup does not have itself as parent.
- *    | getParent() != this
+ *    | getParentGroup() != this
  */
 public class ShapeGroup {
 	
 	
 	/**
 	 * 
-	 * @invar | LogicalList.distinct(subgroups)
 	 * @invar | subgroups == null || subgroups.stream().allMatch(subgroup -> subgroup.getParentGroup() == this)
 	 * @invar | (shape == null) != (subgroups == null)
-	 * @invar | getParent() != this
+	 * @invar | getParentGroup() != this
 	 * 
 	 */
 	private RoundedPolygon shape;
@@ -39,10 +38,12 @@ public class ShapeGroup {
 	 */
 	private java.util.List<ShapeGroup> subgroups;
 	private Extent extent;
-	private Extent originalExtent;
+	private final Extent originalExtent;
 	
 	/**
 	 * Initializes a ShapeGroup as having no subgroups or parent.
+	 * 
+	 * @mutates this
 	 * 
 	 * @throws IllegalArgumentException
 	 *    | PointArrays.checkDefinesProperPolygon(shape.getVertices()) != null
@@ -87,6 +88,10 @@ public class ShapeGroup {
 	 * Initializes a ShapeGroup with the given subgroups, 
 	 * 		the subgroups get this new ShapeGroup assigned as parent.
 	 * 
+	 * @mutates this, subgroups
+	 * 
+	 * @inspects subgroups
+	 * 
 	 * @post The new ShapeGroup has no parent.
 	 *    | getParentGroup() == null
 	 * @post This ShapeGroup does not contain a shape.
@@ -125,17 +130,6 @@ public class ShapeGroup {
 		this.subgroups = listOfChildren;
 		this.originalExtent = Extent.ofLeftTopRightBottom(left, top, right, bottom);
 		this.extent = this.originalExtent;
-		//ShapeGroup tempShapeGroup;
-		/*
-		for (int i = 0; i < listOfChildren.size(); i++) {
-			tempShapeGroup = listOfChildren.get(i);
-			extentI = tempShapeGroup.getExtent();
-			extentI = Extent.ofLeftTopRightBottom(extentI.getLeft() - left,
-					extentI.getTop() - top, extentI.getRight() - left, extentI.getBottom() - top);
-			tempShapeGroup.setExtent(extentI);
-			this.subgroups.set(i,tempShapeGroup);
-		}
-		*/
 	}
 	
 	/**
@@ -143,11 +137,12 @@ public class ShapeGroup {
 	 * 
 	 * @inspects | this
 	 * 
+	 * @basic
+	 * 
 	 * @post
 	 * 	  | result != null
 	 */
 	public Extent getExtent() {
-		//System.out.print("getExtent()\n");
 		return extent;
 	}
 	
@@ -156,11 +151,12 @@ public class ShapeGroup {
 	 * 
 	 * @inspects | this
 	 * 
+	 * @basic
+	 * 
 	 * @post
 	 * 	  | result != null
 	 */
 	public Extent getOriginalExtent() {
-		//System.out.print("getOriginalExtent()\n");
 		return this.originalExtent;
 	}
 	
@@ -169,9 +165,10 @@ public class ShapeGroup {
 	 * 
 	 * @inspects | this
 	 * 
+	 * @basic
+	 * 
 	 */
 	public ShapeGroup getParentGroup() {
-		//System.out.print("getParentGroup()\n");
 		return parent;
 	}
 	
@@ -180,12 +177,10 @@ public class ShapeGroup {
 	 * 
 	 * @inspects | this
 	 * 
+	 * @basic
+	 * 
 	 */
 	public RoundedPolygon getShape() {
-		//System.out.print("getShape()\n");
-		//if (shape == null) {
-			//System.out.print("getShape()==null\n");
-		//}
 		return shape;
 	}
 	
@@ -200,11 +195,9 @@ public class ShapeGroup {
 	 * 
 	 */
 	public ShapeGroup getSubgroup(int index) {
-		//System.out.print("getSubgroup(index)\n");
 		if (subgroups == null) {
-			throw new IllegalArgumentException("No subgroups!");
+			throw new IllegalArgumentException("This ShapeGroup has no subgroups!");
 		}
-		//or must this be null
 		if (subgroups.size() <= index) {
 			throw new IllegalArgumentException("Index out of bound!");
 		}
@@ -217,9 +210,10 @@ public class ShapeGroup {
 	 * 
 	 * @inspects | this
 	 * 
+	 * @basic
+	 * 
 	 */
 	public java.util.List<ShapeGroup> getSubgroups() {
-		//System.out.print("getAllSubgroups()\n");
 		return subgroups;
 	}
 	
@@ -232,17 +226,21 @@ public class ShapeGroup {
 	 * 			 | result >= 0
 	 */
 	public int getSubgroupCount() {
-		//System.out.print("getSubgroupCount()\n");
 		if (subgroups == null) {
 			return 0;
 		}
 		return subgroups.size();
 	}
 	
+	/**
+	 * Converses the given global coordinates to this ShapeGroups inner coordinate system.
+	 * 
+	 * @inspects | this, getParentGroup()
+	 * 
+	 * @post
+	 * 			 | result.getX() >= 0 && result.getY() >= 0
+	 */
 	public IntPoint toInnerCoordinates(IntPoint globalCoordinates) {
-		
-		
-		// /*
 		if (parent == null) {
 			double innerX = ((globalCoordinates.getX() - extent.getLeft())/(double)extent.getWidth())
 					*originalExtent.getWidth();
@@ -260,13 +258,18 @@ public class ShapeGroup {
 				*originalExtent.getHeight();
 		innerY += (double)originalExtent.getTop();
 		return new IntPoint((int)Math.round(innerX), (int)Math.round(innerY));
-		// */
 	}
 	
+	/**
+	 * Converses the given inner coordinates in this ShapeGroups inner coordinate system to 
+	 * global coordinates (outer coordinate system of this ShapeGroups ancestor).
+	 * 
+	 * @inspects | this, getParentGroup()
+	 *
+	 * @post
+	 * 			 | result.getX() >= 0 && result.getY() >= 0
+	 */
 	public IntPoint toGlobalCoordinates(IntPoint innerCoordinates) {
-		//System.out.print("toGlobalCoordinates()\n");
-		
-		// /*
 		if (parent == null) {
 			double x = innerCoordinates.getX(), y = innerCoordinates.getY();
 			x -= originalExtent.getLeft();
@@ -285,8 +288,16 @@ public class ShapeGroup {
 		// */
 	}
 	
+	/**
+	 * Converses the given relative global coordinates to relative inner coordinates.
+	 * This means that translations of the extent relative to the original extent are ignored.
+	 * 
+	 * @inspects | this, getParentGroup()
+	 * 
+	 * @post
+	 * 			 | result.getX() >= 0 && result.getY() >= 0
+	 */
 	public IntVector toInnerCoordinates(IntVector relativeGlobalCoordinates) {
-		//System.out.print("toInnerCoordinates_vec()\n");
 		if (parent == null) {
 			double innerX = ((relativeGlobalCoordinates.getX())/(double)extent.getWidth())
 					*originalExtent.getWidth();
@@ -300,28 +311,28 @@ public class ShapeGroup {
 		double innerY = ((relativeGlobalCoordinates.getY())/(double)extent.getHeight())
 				*originalExtent.getHeight();
 		return new IntVector((int)Math.round(innerX), (int)Math.round(innerY));
-		//
-		//return new IntVector(relativeGlobalCoordinates.getX()*extent.getWidth()/originalExtent.getWidth(),
-		//		relativeGlobalCoordinates.getY()*extent.getHeight()/originalExtent.getHeight());
 	}
 	
+	/**
+	 * Returns the first subgroup that contains the given innerCoordinates.
+	 * 
+	 * @inspects | this, getSubgroups()
+	 * 
+	 * @post
+	 * 			 | result == null || result.getExtent().contains(innerCoordinates)
+	 */
 	public ShapeGroup getSubgroupAt(IntPoint innerCoordinates) {
-		//System.out.print("getSubgroupAt(innerCoordinates)\n");
-		// /*
 		for (int i = 0; i < getSubgroupCount(); i++) {
-			//TODO: check this
 			if(subgroups.get(i).getExtent().contains(innerCoordinates)){
 				return this.subgroups.get(i);
 			}
 		}
-		// */
+		//TODO: return null or throw?
 		return null;
 	}
 	
 	/**
 	 * Replaces the current extent by a new extent in outer coordinates.
-	 * 
-	 * @inspects | this
 	 * 
 	 * @mutates  | this
 	 * 
@@ -329,7 +340,6 @@ public class ShapeGroup {
 	 * 	  | getExtent() == newExtent
 	 */
 	public void setExtent(Extent newExtent) {
-		//System.out.print("setExtent()\n");
 		this.extent = newExtent;
 	}
 	
@@ -338,7 +348,6 @@ public class ShapeGroup {
 	 * 
 	 * @throws IllegalArgumentException if this ShapeGroup has no parent.
 	 *    | getParentGroup() == null
-	 *    
 	 * @inspects | this
 	 * 
 	 * @mutates  | this.getParentGroup()
@@ -362,8 +371,7 @@ public class ShapeGroup {
 	 * Brings this ShapeGroup to the back of its parents subgroup list.
 	 * 
 	 * @throws IllegalArgumentException if this ShapeGroup has no parent.
-	 *    | getParentGroup() == null
-	 *    
+	 *    | getParentGroup() == null   
 	 * @inspects | this
 	 * 
 	 * @mutates  | this.getParentGroup()
@@ -425,6 +433,5 @@ public class ShapeGroup {
 		return result;
 	}
 }
-
 
 

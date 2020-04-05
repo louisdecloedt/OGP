@@ -5,10 +5,10 @@ import drawit.IntPoint;
 public class Extent {
 	
 	
-	private int left;
-	private int top;
-	private int width;
-	private int height;
+	private final int left;
+	private final int top;
+	private final int width;
+	private final int height;
 	
 	private Extent(int left, int top, int width, int height) {
 		this.left = left;

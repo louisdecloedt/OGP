@@ -6,6 +6,7 @@ import drawit.shapegroups1.ShapeGroup;
 
 /**
  * An instance of this class stores the extent of a ShapeGroup.
+ * @immutable
  * 
  * @invar The left of an extent is nonnegative.
  *      | 0 <= getLeft()
@@ -38,10 +39,10 @@ public class Extent {
 	 * @invar The right of an extent is greater than the left.
 	 *      | right >= left
 	 */
-	private int left;
-	private int top;
-	private int bottom;
-	private int right;
+	private final int left;
+	private final int top;
+	private final int bottom;
+	private final int right;
 	
 	private Extent(int left, int top, int width, int height) {
 		this.left = left;
@@ -52,6 +53,11 @@ public class Extent {
 	
 	/**
 	 * Returns the left of the extent.
+	 * 
+	 * @basic 
+	 * 
+	 * @post
+	 *    | result >= 0
 	 */
 	public int getLeft() {
 		return left;
@@ -59,6 +65,11 @@ public class Extent {
 	
 	/**
 	 * Returns the top of the extent.
+	 * 
+	 * @basic 
+	 * 
+	 * @post
+	 *    | result >= 0
 	 */
 	public int getTop() {
 		return top;
@@ -66,6 +77,11 @@ public class Extent {
 	
 	/**
 	 * Returns the right of the extent.
+	 * 
+	 * @basic 
+	 * 
+	 * @post
+	 *    | result >= 0
 	 */
 	public int getRight() {
 		return right;
@@ -73,6 +89,11 @@ public class Extent {
 	
 	/**
 	 * Returns the bottom of the extent.
+	 * 
+	 * @basic 
+	 * 
+	 * @post
+	 *    | result >= 0
 	 */
 	public int getBottom() {
 		return bottom;
@@ -80,6 +101,9 @@ public class Extent {
 	
 	/**
 	 * Returns the width of the extent.
+	 * 
+	 * @post
+	 *    | result >= 0
 	 */
 	public int getWidth() {
 		return right - left;
@@ -87,6 +111,9 @@ public class Extent {
 	
 	/**
 	 * Returns the height of the extent.
+	 * 
+	 * @post
+	 *    | result >= 0
 	 */
 	public int getHeight() {
 		return bottom - top;
@@ -124,38 +151,158 @@ public class Extent {
 				&& (point.getY() <= (bottom) && point.getY() >= top);
 	}
 	
-	//CHECK: OGP NOTES: complexity_modularity_abstraction.md, section that discusses Fraction.of()
+	/**
+	 * Returns an extent with given properties.
+	 * 
+	 * @throws IllegalArgumentException if would not result in proper extent.
+	 *    | 0 > width || 0 > height
+	 * @throws IllegalArgumentException if would not result in proper extent.
+	 *    | 0 > left || 0 > top
+	 * @post
+	 * 	  | result.getLeft() == left && result.getTop() == top
+	 * @post
+	 *    | result.getWidth() == width && result.getHeight() == height 
+	 * 
+	 */
 	public static Extent ofLeftTopWidthHeight(int left, int top, int width, int height) {
+		if (0 > width || 0 > height) {
+			throw new IllegalArgumentException();
+		}
+		if (0 > left || 0 > top) {
+			throw new IllegalArgumentException();
+		}
 		return new Extent(left, top, width, height);
 	}
 	
+	/**
+	 * Returns an extent with given properties.
+	 * 
+	 * @throws IllegalArgumentException if would not result in proper extent.
+	 *    | left > right || top > bottom
+	 * @throws IllegalArgumentException if would not result in proper extent.
+	 *    | 0 > left || 0 > top
+	 * @post
+	 * 	  | result.getLeft() == left && result.getTop() == top
+	 * @post
+	 *    | result.getRight() == right && result.getBottom() == bottom 
+	 * 
+	 */
 	public static Extent ofLeftTopRightBottom(int left, int top, int right, int bottom) {
+		if (left > right || top > bottom) {
+			throw new IllegalArgumentException();
+		}
+		if (0 > left || 0 > top) {
+			throw new IllegalArgumentException();
+		}
 		return new Extent(left, top, right - left, bottom - top);
 	}
 	
+	/**
+	 * Returns a new extent with a new left coordinate.
+	 * 
+	 * @throws IllegalArgumentException if would not result in proper extent.
+	 *    | newLeft > getRight()
+	 * @post
+	 * 	  | result.getLeft() == newLeft && result.getTop() == getTop()
+	 * @post
+	 *    | result.getRight() == getRight() && result.getBottom() == getBottom() 
+	 * 
+	 */
 	public Extent withLeft(int newLeft) {
+		if (newLeft > right) {
+			throw new IllegalArgumentException();
+		}
 		return new Extent(newLeft, this.top, this.right - newLeft, this.bottom - this.top);
 	}
 	
+	/**
+	 * Returns a new extent with a new top coordinate.
+	 * 
+	 * @throws IllegalArgumentException if would not result in proper extent.
+	 *    | newTop > getBottom()
+	 * @post
+	 * 	  | result.getLeft() == getLeft() && result.getTop() == newTop
+	 * @post
+	 *    | result.getRight() == getRight() && result.getBottom() == getBottom() 
+	 * 
+	 */
 	public Extent withTop(int newTop) {
+		if (newTop > bottom) {
+			throw new IllegalArgumentException();
+		}
 		return new Extent(this.left, newTop, this.right - this.left, this.bottom - newTop);
 	}
 	
+	/**
+	 * Returns a new extent with a new right coordinate.
+	 * 
+	 * @throws IllegalArgumentException if would not result in proper extent.
+	 *    | newRight < getLeft()
+	 * @post
+	 * 	  | result.getLeft() == getLeft() && result.getTop() == getTop()
+	 * @post
+	 *    | result.getRight() == newRight && result.getBottom() == getBottom() 
+	 * 
+	 */
 	public Extent withRight(int newRight) {
+		if (newRight < left) {
+			throw new IllegalArgumentException();
+		}
 		return new Extent(this.left, this.top, newRight - this.left, this.bottom - this.top);
 	}
 	
+	/**
+	 * Returns a new extent with a new bottom coordinate.
+	 * 
+	 * @throws IllegalArgumentException if would not result in proper extent.
+	 *    | newBottom < getTop()
+	 * @post
+	 * 	  | result.getLeft() == getLeft() && result.getTop() == getTop()
+	 * @post
+	 *    | result.getRight() == getRight() && result.getBottom() == newBottom 
+	 */
 	public Extent withBottom(int newBottom) {
+		if (newBottom < top) {
+			throw new IllegalArgumentException();
+		}
 		return new Extent(this.left, this.top, this.right - this.left, newBottom - this.top);
 	}
 	
-	//TODO: check this
+	/**
+	 * Returns a new extent with the same left, top and height
+	 * but a new width.
+	 * 
+	 * @throws IllegalArgumentException if would not result in proper extent.
+	 *    | newWidth < 0
+	 * @post
+	 * 	  | result.getLeft() == getLeft() && result.getTop() == getTop()
+	 * @post
+	 *    | result.getHeight() == getHeight() && result.getWidth() == newWidth 
+	 * 
+	 */
 	public Extent withWidth(int newWidth) {
+		if (newWidth < 0) {
+			throw new IllegalArgumentException();
+		}
 		return new Extent(this.left, this.top, newWidth, this.bottom - this.top);
 	}
 	
-	
-	public Extent withHeight(int newHeight) {
+	/**
+	 * Returns a new extent with the same left, top and width
+	 * but a new height.
+	 * 
+	 * @throws IllegalArgumentException if would not result in proper extent.
+	 *    | newHeight < 0
+	 * @post
+	 * 	  | result.getLeft() == getLeft() && result.getTop() == getTop()
+	 * @post
+	 *    | result.getHeight() == newHeight && result.getWidth() == getWidth() 
+	 * 
+	 */
+	public Extent withHeight(int newHeight) throws IllegalArgumentException {
+		if (newHeight < 0) {
+			throw new IllegalArgumentException();
+		}
 		return new Extent(this.left, this.top, this.right - this.left, newHeight);
 	}
 

@@ -205,7 +205,7 @@ public class ShapeGroup {
 			throw new IllegalArgumentException("No subgroups!");
 		}
 		//or must this be null
-		if (subgroups.size() >= index) {
+		if (subgroups.size() <= index) {
 			throw new IllegalArgumentException("Index out of bound!");
 		}
 		return this.subgroups.get(index);

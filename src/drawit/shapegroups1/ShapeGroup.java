@@ -1,7 +1,10 @@
 package drawit.shapegroups1;
 
+
 import java.util.ArrayList;
 import java.util.List;
+//import logicalcollections.LogicalList;
+
 
 
 import drawit.*;
@@ -9,24 +12,21 @@ import drawit.*;
 /**
  * Trees of instances of this class can be built to represent ShapeGroups.
  * 
- * @invar This ShapeGroup does not have the same ShapeGroup as a subgroup twice.
- *    | LogicalList.distinct(getSubGroups())
  * @invar If this ShapeGroup has subgroups, these subgroups have this ShapeGroup as parent.
- *    | getSubgroups == null || getSubgroups().stream().allMatch(subgroup -> subgroup.getParentGroup() == this)
+ *    | getSubgroups() == null || getSubgroups().stream().allMatch(subgroup -> subgroup.getParentGroup() == this)
  * @invar This node is either a leaf group or else it has subgroups.
  *    | (getShape() == null) != (getSubgroups() == null)
  * @invar This ShapeGroup does not have itself as parent.
- *    | getParent() != this
+ *    | getParentGroup() != this
  */
 public class ShapeGroup {
 	
 	
 	/**
 	 * 
-	 * @invar | LogicalList.distinct(subgroups)
 	 * @invar | subgroups == null || subgroups.stream().allMatch(subgroup -> subgroup.getParentGroup() == this)
 	 * @invar | (shape == null) != (subgroups == null)
-	 * @invar | getParent() != this
+	 * @invar | getParentGroup() != this
 	 * 
 	 */
 	private RoundedPolygon shape;
@@ -39,10 +39,13 @@ public class ShapeGroup {
 	 */
 	private java.util.List<ShapeGroup> subgroups;
 	private Extent extent;
-	private Extent originalExtent;
+	private final Extent originalExtent;
 	
 	/**
 	 * Initializes a ShapeGroup as having no subgroups or parent.
+	 * @creates this
+	 * 
+	 * @mutates this
 	 * 
 	 * @throws IllegalArgumentException
 	 *    | PointArrays.checkDefinesProperPolygon(shape.getVertices()) != null
@@ -61,9 +64,7 @@ public class ShapeGroup {
 		if (PointArrays.checkDefinesProperPolygon(shape.getVertices()) != null) {
 			throw new IllegalArgumentException();
 		}
-		this.shape = shape;
-		//this.parent = null; //redundant because default	
-		//this.subgroups = null; //redundant because default	
+		this.shape = shape;	
 		IntPoint[] vertices = shape.getVertices();
 		int left = vertices[0].getX(), top = vertices[0].getY();
 		int right = left, bottom = top;
@@ -89,6 +90,12 @@ public class ShapeGroup {
 	 * Initializes a ShapeGroup with the given subgroups, 
 	 * 		the subgroups get this new ShapeGroup assigned as parent.
 	 * 
+	 * @creates this
+	 * 
+	 * @mutates this, subgroups
+	 * 
+	 * @inspects subgroups
+	 * 
 	 * @post The new ShapeGroup has no parent.
 	 *    | getParentGroup() == null
 	 * @post This ShapeGroup does not contain a shape.
@@ -103,11 +110,8 @@ public class ShapeGroup {
 	 *
 	 */
 	public ShapeGroup(ShapeGroup[] subgroups) {
-		//System.out.print("ShapeGroupWithSubgroups()\n");
 		List<ShapeGroup> listOfChildren = new ArrayList<ShapeGroup>();
-		//this.shape = null; //redundant because default	
-		//this.parent = null; //redundant because default	
-		Extent extentI; // = subgroups[0].getExtent();
+		Extent extentI;
 		int left = 1000000000, top = 100000000;
 		int right = 0, bottom = 0;
 		for (int i = 0; i < subgroups.length; i++) { //i = 0
@@ -130,15 +134,6 @@ public class ShapeGroup {
 		this.subgroups = listOfChildren;
 		this.originalExtent = Extent.ofLeftTopRightBottom(left, top, right, bottom);
 		this.extent = this.originalExtent;
-		ShapeGroup tempShapeGroup;
-		for (int i = 0; i < listOfChildren.size(); i++) {
-			tempShapeGroup = listOfChildren.get(i);
-			extentI = tempShapeGroup.getExtent();
-			extentI = Extent.ofLeftTopRightBottom(extentI.getLeft() - left,
-					extentI.getTop() - top, extentI.getRight() - left, extentI.getBottom() - top);
-			tempShapeGroup.setExtent(extentI);
-			this.subgroups.set(i,tempShapeGroup);
-		}
 	}
 	
 	/**
@@ -150,21 +145,7 @@ public class ShapeGroup {
 	 * 	  | result != null
 	 */
 	public Extent getExtent() {
-		//System.out.print("getExtent()\n");
-		
 		return extent;
-		
-		/*
-		if (parent == null) {
-			return this.extent;
-		}
-		Extent extentInOuterCoordinates = extent;
-		extentInOuterCoordinates = Extent.ofLeftTopRightBottom(extentInOuterCoordinates.getLeft() + parent.getOriginalExtent().getLeft(),
-				extentInOuterCoordinates.getTop() + parent.getOriginalExtent().getTop(),
-				extentInOuterCoordinates.getRight() + parent.getOriginalExtent().getLeft(), 
-				extentInOuterCoordinates.getBottom() + parent.getOriginalExtent().getTop());
-		return extentInOuterCoordinates;
-		*/
 	}
 	
 	/**
@@ -176,7 +157,6 @@ public class ShapeGroup {
 	 * 	  | result != null
 	 */
 	public Extent getOriginalExtent() {
-		//System.out.print("getOriginalExtent()\n");
 		return this.originalExtent;
 	}
 	
@@ -187,7 +167,6 @@ public class ShapeGroup {
 	 * 
 	 */
 	public ShapeGroup getParentGroup() {
-		//System.out.print("getParentGroup()\n");
 		return parent;
 	}
 	
@@ -198,10 +177,6 @@ public class ShapeGroup {
 	 * 
 	 */
 	public RoundedPolygon getShape() {
-		//System.out.print("getShape()\n");
-		//if (shape == null) {
-			//System.out.print("getShape()==null\n");
-		//}
 		return shape;
 	}
 	
@@ -216,12 +191,10 @@ public class ShapeGroup {
 	 * 
 	 */
 	public ShapeGroup getSubgroup(int index) {
-		//System.out.print("getSubgroup(index)\n");
 		if (subgroups == null) {
-			throw new IllegalArgumentException("No subgroups!");
+			throw new IllegalArgumentException("This ShapeGroup has no subgroups!");
 		}
-		//or must this be null
-		if (subgroups.size() >= index) {
+		if (subgroups.size() <= index) {
 			throw new IllegalArgumentException("Index out of bound!");
 		}
 		return this.subgroups.get(index);
@@ -235,7 +208,6 @@ public class ShapeGroup {
 	 * 
 	 */
 	public java.util.List<ShapeGroup> getSubgroups() {
-		//System.out.print("getAllSubgroups()\n");
 		return subgroups;
 	}
 	
@@ -248,34 +220,21 @@ public class ShapeGroup {
 	 * 			 | result >= 0
 	 */
 	public int getSubgroupCount() {
-		//System.out.print("getSubgroupCount()\n");
 		if (subgroups == null) {
 			return 0;
 		}
 		return subgroups.size();
 	}
 	
+	/**
+	 * Converses the given global coordinates to this ShapeGroups inner coordinate system.
+	 * 
+	 * @inspects | this, getParentGroup()
+	 * 
+	 * @post
+	 * 			 | result.getX() >= 0 && result.getY() >= 0
+	 */
 	public IntPoint toInnerCoordinates(IntPoint globalCoordinates) {
-		//throw if globalCoordinates are not contained by getExtent()
-		//System.out.print("toInnerCoordinates()\n");
-		/*
-		if (parent == null) {
-			double innerX = ((globalCoordinates.getX() - extent.getLeft())/(double)extent.getWidth())
-					*originalExtent.getWidth();
-			double innerY = ((globalCoordinates.getY() - extent.getTop())/(double)extent.getHeight())
-					*originalExtent.getHeight();
-			return new IntPoint((int)Math.round(innerX), (int)Math.round(innerY));
-		} 
-		globalCoordinates = parent.toInnerCoordinates(globalCoordinates);
-		double innerX = ((globalCoordinates.getX() - extent.getLeft())/(double)extent.getWidth())
-				*originalExtent.getWidth();
-		double innerY = ((globalCoordinates.getY() - extent.getTop())/(double)extent.getHeight())
-				*originalExtent.getHeight();
-		return new IntPoint((int)Math.round(innerX), (int)Math.round(innerY));
-		*/
-		
-		
-		// /*
 		if (parent == null) {
 			double innerX = ((globalCoordinates.getX() - extent.getLeft())/(double)extent.getWidth())
 					*originalExtent.getWidth();
@@ -293,31 +252,18 @@ public class ShapeGroup {
 				*originalExtent.getHeight();
 		innerY += (double)originalExtent.getTop();
 		return new IntPoint((int)Math.round(innerX), (int)Math.round(innerY));
-		// */
 	}
 	
+	/**
+	 * Converses the given inner coordinates in this ShapeGroups inner coordinate system to 
+	 * global coordinates (outer coordinate system of this ShapeGroups ancestor).
+	 * 
+	 * @inspects | this, getParentGroup()
+	 *
+	 * @post
+	 * 			 | result.getX() >= 0 && result.getY() >= 0
+	 */
 	public IntPoint toGlobalCoordinates(IntPoint innerCoordinates) {
-		//System.out.print("toGlobalCoordinates()\n");
-			
-		/*
-		if (parent == null) {
-			double relativeX = (double)innerCoordinates.getX()/this.originalExtent.getWidth();
-			double relativeY = (double)innerCoordinates.getY()/this.originalExtent.getHeight();
-			double outerX = extent.getLeft() + relativeX*extent.getWidth();
-			double outerY = extent.getTop() + relativeY*extent.getHeight();
-			return new IntPoint( (int)Math.round(outerX), (int)Math.round(outerY));
-		}
-		
-		double relativeX = (double)innerCoordinates.getX()/this.originalExtent.getWidth();
-		double relativeY = (double)innerCoordinates.getY()/this.originalExtent.getHeight();
-		double outerX = extent.getLeft() + relativeX*extent.getWidth();
-		double outerY = extent.getTop() + relativeY*extent.getHeight();
-		
-		IntPoint newInnerCoordinates = new IntPoint( (int)Math.round(outerX), (int)Math.round(outerY));
-		return parent.toGlobalCoordinates(newInnerCoordinates);
-		*/
-		
-		// /*
 		if (parent == null) {
 			double x = innerCoordinates.getX(), y = innerCoordinates.getY();
 			x -= originalExtent.getLeft();
@@ -336,8 +282,16 @@ public class ShapeGroup {
 		// */
 	}
 	
+	/**
+	 * Converses the given relative global coordinates to relative inner coordinates.
+	 * This means that translations of the extent relative to the original extent are ignored.
+	 * 
+	 * @inspects | this, getParentGroup()
+	 * 
+	 * @post
+	 * 			 | result.getX() >= 0 && result.getY() >= 0
+	 */
 	public IntVector toInnerCoordinates(IntVector relativeGlobalCoordinates) {
-		//System.out.print("toInnerCoordinates_vec()\n");
 		if (parent == null) {
 			double innerX = ((relativeGlobalCoordinates.getX())/(double)extent.getWidth())
 					*originalExtent.getWidth();
@@ -351,45 +305,28 @@ public class ShapeGroup {
 		double innerY = ((relativeGlobalCoordinates.getY())/(double)extent.getHeight())
 				*originalExtent.getHeight();
 		return new IntVector((int)Math.round(innerX), (int)Math.round(innerY));
-		//
-		//return new IntVector(relativeGlobalCoordinates.getX()*extent.getWidth()/originalExtent.getWidth(),
-		//		relativeGlobalCoordinates.getY()*extent.getHeight()/originalExtent.getHeight());
 	}
 	
+	/**
+	 * Returns the first subgroup that contains the given innerCoordinates.
+	 * 
+	 * @inspects | this, getSubgroups()
+	 * 
+	 * @post
+	 * 			 | result == null || result.getExtent().contains(innerCoordinates)
+	 */
 	public ShapeGroup getSubgroupAt(IntPoint innerCoordinates) {
-		//System.out.print("getSubgroupAt(innerCoordinates)\n");
-		// /*
 		for (int i = 0; i < getSubgroupCount(); i++) {
-			//TODO: check this
 			if(subgroups.get(i).getExtent().contains(innerCoordinates)){
 				return this.subgroups.get(i);
 			}
 		}
-		// */
-		
-		/*
-		IntPoint globalCoordinates = this.toGlobalCoordinates(innerCoordinates);
-		IntPoint newInnerCoordinates;
-		ShapeGroup tempSubgroup;
-		for (int i = 0; i < getSubgroupCount(); i++) {
-			tempSubgroup = subgroups.get(i);
-			newInnerCoordinates = tempSubgroup.toInnerCoordinates(globalCoordinates);
-			if(tempSubgroup.getOriginalExtent().contains(newInnerCoordinates)){
-				return this.subgroups.get(i);
-			}
-		}
-		*/
-		
-		//System.out.print(Integer.toString(innerCoordinates.getX())
-		//		+ " " + Integer.toString(innerCoordinates.getY()) + "\n");
-		//System.out.print("getSubgroupAt(innerCoordinates)==null\n");
+		//TODO: return null or throw?
 		return null;
 	}
 	
 	/**
 	 * Replaces the current extent by a new extent in outer coordinates.
-	 * 
-	 * @inspects | this
 	 * 
 	 * @mutates  | this
 	 * 
@@ -397,7 +334,6 @@ public class ShapeGroup {
 	 * 	  | getExtent() == newExtent
 	 */
 	public void setExtent(Extent newExtent) {
-		//System.out.print("setExtent()\n");
 		this.extent = newExtent;
 	}
 	
@@ -406,7 +342,6 @@ public class ShapeGroup {
 	 * 
 	 * @throws IllegalArgumentException if this ShapeGroup has no parent.
 	 *    | getParentGroup() == null
-	 *    
 	 * @inspects | this
 	 * 
 	 * @mutates  | this.getParentGroup()
@@ -430,8 +365,7 @@ public class ShapeGroup {
 	 * Brings this ShapeGroup to the back of its parents subgroup list.
 	 * 
 	 * @throws IllegalArgumentException if this ShapeGroup has no parent.
-	 *    | getParentGroup() == null
-	 *    
+	 *    | getParentGroup() == null   
 	 * @inspects | this
 	 * 
 	 * @mutates  | this.getParentGroup()
@@ -462,9 +396,9 @@ public class ShapeGroup {
 		if (subgroups == null) {
 			//TODO: reduce allocations
 			Extent origE = this.originalExtent;
-			Extent newE = this.extent;
-			result += "pushTranslate" + " " + Integer.toString(newE.getLeft()) +
-					" " + Integer.toString(newE.getTop()) + "\n"; 
+			Extent currentE = this.extent;
+			result += "pushTranslate" + " " + Integer.toString(currentE.getLeft()) +
+					" " + Integer.toString(currentE.getTop()) + "\n"; 
 			result += "pushScale" + " " + Double.toString((double)extent.getWidth()/originalExtent.getWidth()) +
 					" " + Double.toString((double)extent.getHeight()/originalExtent.getHeight()) + "\n";
 			result += "pushTranslate" + " " + Integer.toString(-origE.getLeft()) +
@@ -475,20 +409,26 @@ public class ShapeGroup {
 			result += "popTransform" + "\n";	
 			return result;
 		} else {
+			Extent origE = this.originalExtent;
 			result += "pushTranslate" + " " + Integer.toString(extent.getLeft()) +
 					" " + Integer.toString(extent.getTop()) + "\n"; 
 			result += "pushScale" + " " + Double.toString((double)extent.getWidth()/originalExtent.getWidth()) +
 					" " + Double.toString((double)extent.getHeight()/originalExtent.getHeight()) + "\n";
+			result += "pushTranslate" + " " + Integer.toString(-origE.getLeft()) +
+					" " + Integer.toString(-origE.getTop()) + "\n";
 			for (int i = subgroups.size()-1; i >= 0; i--) {
 			//for (int i = 0; i < this.subgroups.size(); i++) {
 				result += subgroups.get(i).getDrawingCommands();
 			}
 			result += "popTransform" + "\n";
 			result += "popTransform" + "\n";
+			result += "popTransform" + "\n";
 		}
 		return result;
 	}
 }
+
+
 
 
 

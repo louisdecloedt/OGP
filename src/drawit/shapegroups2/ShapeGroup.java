@@ -187,6 +187,8 @@ public class ShapeGroup {
 	/**
 	 * Returns returns the subgroup at the given index.
 	 * 
+	 * @inspects | this
+	 * 
 	 * @throws IllegalArgumentException
 	 *           | getSubgroups() == null
 	 * @throws IllegalArgumentException
@@ -414,13 +416,12 @@ public class ShapeGroup {
 	/**
 	 * Returns returns a textual representation of the ShapeGroup and its subgroups.
 	 * 
-	 * @inspects | this
+	 * @inspects | this, getSubgroups()
 	 * 
 	 */
 	public java.lang.String getDrawingCommands(){
 		String result = "";
 		if (subgroups == null) {
-			//TODO: reduce allocations
 			Extent origE = this.originalExtent;
 			Extent currentE = this.extent;
 			result += "pushTranslate" + " " + Integer.toString(currentE.getLeft()) +
@@ -443,7 +444,6 @@ public class ShapeGroup {
 			result += "pushTranslate" + " " + Integer.toString(-origE.getLeft()) +
 					" " + Integer.toString(-origE.getTop()) + "\n";
 			for (int i = subgroups.size()-1; i >= 0; i--) {
-			//for (int i = 0; i < this.subgroups.size(); i++) {
 				result += subgroups.get(i).getDrawingCommands();
 			}
 			result += "popTransform" + "\n";

@@ -304,5 +304,43 @@ public class Extent {
 		}
 		return new Extent(this.left, this.top, this.right - this.left, newHeight);
 	}
+	
+	@Override
+	public int hashCode() {
+		final int prime = 61;
+		int result = 1;
+		result = prime * result + getTop();
+		result = prime * result + getLeft();
+		result = prime * result + getBottom();
+		result = prime * result + getRight();
+		return result;
+	}
+	
+	@Override
+	public boolean equals(Object other) {
+		if (this == other)
+			return true;
+		if (other == null)
+			return false;
+		if (getClass() != other.getClass())
+			return false;
+		Extent otherAsExtent = (Extent) other;
+		if (getBottom() != otherAsExtent.getBottom())
+			return false;
+		if (getRight() != otherAsExtent.getRight())
+			return false;
+		if (getTop() != otherAsExtent.getTop())
+			return false;
+		if (getLeft() != otherAsExtent.getLeft())
+			return false;
+		return true;
+	}
+
+	@Override
+	public String toString() {
+		return "Extent [Left = " + Integer.toString(getLeft()) + ", Top = " 
+	+ Integer.toString(getTop()) + ", " + "Right = " + Integer.toString(getRight()) 
+	+ ", Bottom = " + Integer.toString(getBottom()) + "]";
+	}
 
 }

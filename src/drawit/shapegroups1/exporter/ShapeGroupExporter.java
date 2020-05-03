@@ -9,10 +9,10 @@ import drawit.shapegroups1.LeafShapeGroup;
 import drawit.shapegroups1.NonLeafShapeGroup;
 import drawit.shapegroups1.ShapeGroup;
 
+//Assignment does not require documentation.
 abstract class ShapeGroupExporter {
 	
-	public static Object toPlainData(ShapeGroup shapeGroup) {
-		
+	public static Object toPlainData(ShapeGroup shapeGroup) {	
 		if(shapeGroup instanceof LeafShapeGroup) {	
 			IntPoint[] arrayOfVertices = ((LeafShapeGroup) shapeGroup).getShape().getVertices();
 			Color color = ((LeafShapeGroup) shapeGroup).getShape().getColor();
@@ -38,7 +38,6 @@ abstract class ShapeGroupExporter {
 									"blue", color.getBlue()))); 
 			return result;
 		}
-		
 		else{
 			
 			ArrayList<Map> subgroupMapsAsList = new ArrayList<Map>();

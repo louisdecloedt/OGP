@@ -3,6 +3,8 @@ package drawit;
 import java.awt.Color;
 import java.util.stream.IntStream;
 
+import drawit.shapegroups1.Extent;
+
 /**
  * Each instance of this class represents a time of day, at one-minute resolution.
  *
@@ -18,6 +20,7 @@ public class RoundedPolygon {
     private int radius;
     private IntPoint[] vertices;
     private Color color;
+    private Extent extent;
     
     public java.awt.Color getColor(){
     	return color;
@@ -48,6 +51,7 @@ public class RoundedPolygon {
         this.vertices[2] = point2;
         this.vertices[3] = point3;
         this.color = Color.yellow;
+        this.extent = Extent.ofLeftTopRightBottom(0, 0, 100, 100);
     }
     
     /**
@@ -89,6 +93,23 @@ public class RoundedPolygon {
         	}
         }
         this.vertices = points;
+        int left = vertices[0].getX(), top = vertices[0].getY();
+		int right = left, bottom = top;
+		for (int i = 1; i < vertices.length; i++) {
+			if (vertices[i].getX() > right ) {
+				right = vertices[i].getX();
+			}
+			if (vertices[i].getX() < left ) {
+				left = vertices[i].getX();
+			}
+			if (vertices[i].getY() > bottom ) {
+				bottom = vertices[i].getY();
+			}
+			if (vertices[i].getY() < top ) {
+				top = vertices[i].getY();
+			}
+		}
+		this.extent = Extent.ofLeftTopRightBottom(left, top, right, bottom);
     }
     
     /**
@@ -100,6 +121,17 @@ public class RoundedPolygon {
      */
     public int getRadius() {
         return this.radius;
+    }
+    
+    /**
+     * Returns the Extent of the RoundedPolygon.
+     * 
+     * @inspects| this
+     * 
+     * @post Result equals the Extent of the RoundedPolygon.
+     */
+    public Extent getExtent() {
+        return this.extent;
     }
     
     /**

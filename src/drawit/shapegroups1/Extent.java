@@ -305,6 +305,7 @@ public class Extent {
 		return new Extent(this.left, this.top, this.right - this.left, newHeight);
 	}
 	
+	//Assignment does not require documentation.
 	@Override
 	public int hashCode() {
 		final int prime = 61;
@@ -316,6 +317,7 @@ public class Extent {
 		return result;
 	}
 	
+	//Assignment does not require documentation.
 	@Override
 	public boolean equals(Object other) {
 		if (this == other)
@@ -336,6 +338,7 @@ public class Extent {
 		return true;
 	}
 
+	//Assignment does not require documentation.
 	@Override
 	public String toString() {
 		return "Extent [Left = " + Integer.toString(getLeft()) + ", Top = " 

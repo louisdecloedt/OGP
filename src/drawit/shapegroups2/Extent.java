@@ -268,5 +268,47 @@ public class Extent {
 	public Extent withHeight(int newHeight) {
 		return new Extent(this.left, this.top, this.width, newHeight);
 	}
+	
+	//Assignment does not require documentation.
+		@Override
+		public int hashCode() {
+			final int prime = 61;
+			int result = 1;
+			result = prime * result + getTop();
+			result = prime * result + getLeft();
+			result = prime * result + getBottom();
+			result = prime * result + getRight();
+			return result;
+		}
+		
+		//Assignment does not require documentation.
+		@Override
+		public boolean equals(Object other) {
+			if (this == other)
+				return true;
+			if (other == null)
+				return false;
+			if (getClass() != other.getClass())
+				return false;
+			Extent otherAsExtent = (Extent) other;
+			if (getBottom() != otherAsExtent.getBottom())
+				return false;
+			if (getRight() != otherAsExtent.getRight())
+				return false;
+			if (getTop() != otherAsExtent.getTop())
+				return false;
+			if (getLeft() != otherAsExtent.getLeft())
+				return false;
+			return true;
+		}
+
+		//Assignment does not require documentation.
+		@Override
+		public String toString() {
+			return "Extent [Left = " + Integer.toString(getLeft()) + ", Top = " 
+		+ Integer.toString(getTop()) + ", " + "Right = " + Integer.toString(getRight()) 
+		+ ", Bottom = " + Integer.toString(getBottom()) + "]";
+		}
+
 
 }

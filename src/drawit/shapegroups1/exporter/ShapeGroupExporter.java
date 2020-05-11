@@ -9,7 +9,7 @@ import drawit.shapegroups1.LeafShapeGroup;
 import drawit.shapegroups1.NonLeafShapeGroup;
 import drawit.shapegroups1.ShapeGroup;
 
-//Assignment does not require documentation.
+//Assignment does not require documentation for this package or its contents.
 abstract class ShapeGroupExporter {
 	
 	public static Object toPlainData(ShapeGroup shapeGroup) {	

@@ -12,8 +12,6 @@ import drawit.shapegroups1.Extent;
  * 
  * @invar The subgroups of this NonLeafShapeGroup all have this object as parent.
  *    | getSubgroups().stream().allMatch(subgroup -> subgroup.getParentGroup() == this)
- * @invar This ShapeGroup does not have itself as parent.
- *    | getParentGroup() != this
  */
 public class NonleafShapeGroup extends ShapeGroup {
 	

@@ -11,8 +11,6 @@ import drawit.shapegroups1.Extent;
  * 
  * @invar A LeafShapeGroup has no subgroups.
  *    | getSubgroups() == null
- * @invar This LeafShapeGroup does not have itself as parent.
- *    | getParentGroup() != this
  */
 public class LeafShapeGroup extends ShapeGroup {
 	

@@ -10,7 +10,7 @@ import drawit.shapegroups1.NonleafShapeGroup;
 import drawit.shapegroups1.ShapeGroup;
 
 //Assignment does not require documentation for this package or its contents.
-abstract class ShapeGroupExporter {
+public class ShapeGroupExporter {
 	
 	public static Object toPlainData(ShapeGroup shapeGroup) {	
 		if(shapeGroup instanceof LeafShapeGroup) {	
@@ -44,6 +44,7 @@ abstract class ShapeGroupExporter {
 			java.util.List<ShapeGroup> subGroups = shapeGroup.getSubgroups();
 			for (int i = 0; i < ((NonleafShapeGroup) shapeGroup).getSubgroupCount(); i++) {
 				subgroupMapsAsList.add((Map) ShapeGroupExporter.toPlainData(subGroups.get(i)));
+				//Is this line the problem?
 			}
 			Map result = Map.of(
 					"originalExtent", Map.of("left", shapeGroup.getOriginalExtent().getLeft(),

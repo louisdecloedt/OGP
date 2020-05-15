@@ -13,7 +13,7 @@ import drawit.IntPoint;
 import drawit.RoundedPolygon;
 import drawit.shapegroups1.Extent;
 import drawit.shapegroups1.LeafShapeGroup;
-import drawit.shapegroups1.NonLeafShapeGroup;
+import drawit.shapegroups1.NonleafShapeGroup;
 import drawit.shapegroups1.ShapeGroup;
 
 class ShapeGroupExporterTest {
@@ -95,7 +95,7 @@ class ShapeGroupExporterTest {
 		assertEquals(((Map) ((Map)plainData2).get("shape")).get("vertices"), 
 				testVertices);
 		
-		ShapeGroup shape3 = new NonLeafShapeGroup(new ShapeGroup[]{shape1,shape2});
+		ShapeGroup shape3 = new NonleafShapeGroup(new ShapeGroup[]{shape1,shape2});
 		Object plainData3 = ShapeGroupExporter.toPlainData(shape3);
 		assertEquals( ((Map)plainData3).get("originalExtent"), 
 				Map.of("left", 0, "top", 0, "right", 200, "bottom", 200));

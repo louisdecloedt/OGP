@@ -17,7 +17,7 @@ class ShapeGroupTest {
 		leaf.setExtent(Extent.ofLeftTopWidthHeight(0, 0, 20, 10));
 
 		// For simplicity, we here ignore the constraint that a non-leaf ShapeGroup shall have at least two subgroups.
-		ShapeGroup nonLeaf = new NonLeafShapeGroup(new ShapeGroup[] {leaf});
+		ShapeGroup nonLeaf = new NonleafShapeGroup(new ShapeGroup[] {leaf});
 		assert nonLeaf.getExtent().getTopLeft().equals(new IntPoint(0, 0)) && nonLeaf.getExtent().getBottomRight().equals(new IntPoint(20, 10));
 		nonLeaf.setExtent(Extent.ofLeftTopWidthHeight(0, 0, 10, 5));
 		

@@ -18,7 +18,7 @@ public class LeafShapeGroup extends ShapeGroup {
 	
 	/**
 	 * 
-	 * @invar | !shape == null
+	 * @invar | shape != null
 	 * 
 	 */
 	private RoundedPolygon shape;

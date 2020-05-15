@@ -5,29 +5,22 @@ import drawit.IntPoint;
 import drawit.IntVector;
 import drawit.shapegroups1.Extent;
 
-
 /**
  * ShapeGroup is an abstract superclass for Leaf- and NonLeafShapeGroups.
  * 
  * @invar If a ShapeGroup has subgroups then it is a NonLeafShapeGroup 
  *   and these subgroups have the given NonLeafShapeGroup as parent.
  *    | getSubgroups() == null || getSubgroups().stream().allMatch(subgroup -> subgroup.getParentGroup() == this)
- * @invar This ShapeGroup does not have itself as parent.
- *    | getParentGroup() != this
  */
 public abstract class ShapeGroup {
 	
-	/**
-	 * 
-	 * @invar | getParentGroup() != this
-	 * 
-	 */
+	
 	protected Extent extent;
 	protected Extent originalExtent;
 	/**
 	 * @peerObject
 	 */
-	protected NonLeafShapeGroup parent;
+	protected NonleafShapeGroup parent;
 	
 	/**
 	 * Returns the extent of the ShapeGroup expressed in its outer coordinate system.
@@ -65,7 +58,7 @@ public abstract class ShapeGroup {
 	 * @basic
 	 * 
 	 */
-	public ShapeGroup getParentGroup() {
+	public NonleafShapeGroup getParentGroup() {
 		return parent;
 	}
 	

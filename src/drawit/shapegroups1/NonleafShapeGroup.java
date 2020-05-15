@@ -15,7 +15,7 @@ import drawit.shapegroups1.Extent;
  * @invar This ShapeGroup does not have itself as parent.
  *    | getParentGroup() != this
  */
-public class NonLeafShapeGroup extends ShapeGroup {
+public class NonleafShapeGroup extends ShapeGroup {
 	
 	/**
 	 * 
@@ -45,7 +45,7 @@ public class NonLeafShapeGroup extends ShapeGroup {
 	 *    | this.getSubgroups().stream().allMatch(subgroup -> subgroup.getParentGroup() == this)
 	 *
 	 */
-	public NonLeafShapeGroup(ShapeGroup[] subgroups) {
+	public NonleafShapeGroup(ShapeGroup[] subgroups) {
 		List<ShapeGroup> listOfChildren = new ArrayList<ShapeGroup>();
 		Extent extentI;
 		int left = 1000000000, top = 100000000;

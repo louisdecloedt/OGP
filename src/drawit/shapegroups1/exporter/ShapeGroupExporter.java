@@ -6,7 +6,7 @@ import java.util.Map;
 
 import drawit.IntPoint;
 import drawit.shapegroups1.LeafShapeGroup;
-import drawit.shapegroups1.NonLeafShapeGroup;
+import drawit.shapegroups1.NonleafShapeGroup;
 import drawit.shapegroups1.ShapeGroup;
 
 //Assignment does not require documentation for this package or its contents.
@@ -42,7 +42,7 @@ abstract class ShapeGroupExporter {
 			
 			ArrayList<Map> subgroupMapsAsList = new ArrayList<Map>();
 			java.util.List<ShapeGroup> subGroups = shapeGroup.getSubgroups();
-			for (int i = 0; i < ((NonLeafShapeGroup) shapeGroup).getSubgroupCount(); i++) {
+			for (int i = 0; i < ((NonleafShapeGroup) shapeGroup).getSubgroupCount(); i++) {
 				subgroupMapsAsList.add((Map) ShapeGroupExporter.toPlainData(subGroups.get(i)));
 			}
 			Map result = Map.of(

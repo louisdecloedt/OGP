@@ -24,7 +24,7 @@ public class PreciseRoundedPolygonContainsTestStrategy
      */
 	@Override
 	public boolean contains(RoundedPolygon polygon, IntPoint point) {
-		if (point != null || polygon != null) {
+		if (point == null || polygon == null) {
 			throw new IllegalArgumentException();
 		}
 		return polygon.contains(point);

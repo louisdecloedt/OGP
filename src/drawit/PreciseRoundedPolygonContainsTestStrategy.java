@@ -15,7 +15,7 @@ public class PreciseRoundedPolygonContainsTestStrategy
      * Checks if the given point is contained by the given RoundedPolygon.
      * This method is a wrapper around the contains method of the RoundedPolygon class.
      *
-     * @inspects | polygon
+     * @inspects | polygon 
      *
      * @throws If given point or polygon are {@code null}.
      *    | point == null || polygon == null

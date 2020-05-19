@@ -2,21 +2,48 @@ package drawit.shapegroups2;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import drawit.IntPoint;
-import drawit.shapegroups1.Extent;
+import drawit.shapegroups2.Extent;
 
 
-
-
-
-
-public class NonLeafShapeGroup extends ShapeGroup {
+/**
+ * NonLeafShapeGroup extends ShapeGroup, and implements ShapeGroups
+ * with subgroups.
+ * 
+ * @invar The subgroups of this NonLeafShapeGroup all have this object as parent.
+ *    | getSubgroups().stream().allMatch(subgroup -> subgroup.getParentGroup() == this)
+ */
+public class NonleafShapeGroup extends ShapeGroup {
 	
-	
+	/**
+	 * 
+	 * @invar | subgroups.stream().allMatch(subgroup -> subgroup.getParentGroup() == this)
+	 * 
+	 */
+	/**
+	 * @peerObjects
+	 */
 	protected java.util.List<ShapeGroup> subgroups;
 	
-	public NonLeafShapeGroup(ShapeGroup[] subgroups) {
+	/**
+	 * Initializes a NonLeafShapeGroup with the given subgroups, 
+	 * 		the subgroups get this new NonLeafShapeGroup assigned as parent.
+	 * 
+	 * @mutates this, subgroups
+	 * 
+	 * @inspects subgroups
+	 * 
+	 * @post The new ShapeGroup has no parent.
+	 *    | getParentGroup() == null
+	 * @post This ShapeGroup does have subgroups.
+	 *    | getSubgroups() != null
+	 * @post Extent defined in inner and outer coordinates.
+	 *    | getExtent() != null && getOriginalExtent() != null
+	 * @post The subgroups have this ShapeGroup as parent. 
+	 *    | this.getSubgroups().stream().allMatch(subgroup -> subgroup.getParentGroup() == this)
+	 *
+	 */
+	public NonleafShapeGroup(ShapeGroup[] subgroups) {
 		List<ShapeGroup> listOfChildren = new ArrayList<ShapeGroup>();
 		Extent extentI;
 		int left = 1000000000, top = 100000000;
@@ -52,7 +79,7 @@ public class NonLeafShapeGroup extends ShapeGroup {
 	 * @throws IllegalArgumentException
 	 *           | getSubgroups() == null
 	 * @throws IllegalArgumentException
-	 *           | index >= getSubgroups().size()
+	 *           | index >= getSubgroups().size() || index < 0
 	 * @inspects | this
 	 * 
 	 */
@@ -60,19 +87,21 @@ public class NonLeafShapeGroup extends ShapeGroup {
 		if (subgroups == null) {
 			throw new IllegalArgumentException("This ShapeGroup has no subgroups!");
 		}
-		if (subgroups.size() <= index) {
+		if (subgroups.size() <= index || index < 0) {
 			throw new IllegalArgumentException("Index out of bound!");
 		}
 		return this.subgroups.get(index);
 	}
 	
 	/**
-	 * Returns returns the list of subgroups
-	 * or null if the ShapeGroup doesn't have any.
+	 * Returns returns the list of subgroups.
 	 * 
 	 * @inspects | this
 	 * 
 	 * @basic
+	 * 
+	 * @post
+	 *    | result != null
 	 * 
 	 */
 	public java.util.List<ShapeGroup> getSubgroups() {
@@ -118,9 +147,12 @@ public class NonLeafShapeGroup extends ShapeGroup {
 	}
 	
 	/**
-	 * Returns returns a textual representation of the ShapeGroup and its subgroups.
+	 * Returns returns a textual representation of the NonLeafShapeGroup and its subgroups.
 	 * 
 	 * @inspects | this, getSubgroups()
+	 * 
+	 * @post
+	 *    | result != null
 	 * 
 	 */
 	public java.lang.String getDrawingCommands(){
@@ -140,16 +172,5 @@ public class NonLeafShapeGroup extends ShapeGroup {
 		result += "popTransform" + "\n";
 		return result;
 	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 	
 }

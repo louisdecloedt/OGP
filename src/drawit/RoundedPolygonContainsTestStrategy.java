@@ -13,8 +13,6 @@ public interface RoundedPolygonContainsTestStrategy {
      *
      * @inspects | polygon
      *
-     * @throws If the given point is {@code null}.
-     *    | point == null
      */
 	abstract boolean contains(RoundedPolygon polygon, IntPoint point);
 }

@@ -3,15 +3,41 @@ package drawit.shapegroups2;
 import drawit.IntPoint;
 import drawit.PointArrays;
 import drawit.RoundedPolygon;
-import drawit.shapegroups1.Extent;
+import drawit.shapegroups2.Extent;
 
 
-
+/**
+ * LeafShapeGroup extends ShapeGroup and represents objects without subgroups.
+ * 
+ * @invar A LeafShapeGroup has no subgroups.
+ *    | getSubgroups() == null
+ */
 public class LeafShapeGroup extends ShapeGroup {
 	
+	/**
+	 * 
+	 * @invar | shape != null
+	 * 
+	 */
 	private RoundedPolygon shape;
 	
-	
+	/**
+	 * Initializes a LeafGroupShapeGroup as having no parent.
+	 * 
+	 * @mutates this
+	 * 
+	 * @throws IllegalArgumentException
+	 *    | PointArrays.checkDefinesProperPolygon(shape.getVertices()) != null
+	 * @post ShapeGroup has no parent.
+	 *    | getParentGroup() == null
+	 * @post This leaf contains a shape.
+	 *    | getShape() != null
+	 * @post This ShapeGroup does not have subgroups.
+	 *    | getSubgroups() == null
+	 * @post Extent defined in inner and outer coordinates.
+	 *    | getExtent() != null && getOriginalExtent() != null
+	 *
+	 */
 	public LeafShapeGroup(RoundedPolygon shape) {
 		if (PointArrays.checkDefinesProperPolygon(shape.getVertices()) != null) {
 			throw new IllegalArgumentException();
@@ -40,12 +66,10 @@ public class LeafShapeGroup extends ShapeGroup {
 	}
 	
 	/**
-	 * Returns returns the list of subgroups
-	 * or null if the ShapeGroup doesn't have any.
+	 * Returns null.
 	 * 
-	 * @inspects | this
-	 * 
-	 * @basic
+	 * @post
+	 *    | result == null
 	 * 
 	 */
 	public java.util.List<ShapeGroup> getSubgroups() {
@@ -53,11 +77,14 @@ public class LeafShapeGroup extends ShapeGroup {
 	}
 	
 	/**
-	 * Returns returns the shape it contains or null otherwise.
+	 * Returns the shape of the LeafShapeGroup.
 	 * 
 	 * @inspects | this
 	 * 
 	 * @basic
+	 * 
+	 * @post
+	 *    | result != null
 	 * 
 	 */
 	public RoundedPolygon getShape() {
@@ -65,9 +92,12 @@ public class LeafShapeGroup extends ShapeGroup {
 	}
 	
 	/**
-	 * Returns returns a textual representation of the ShapeGroup and its subgroups.
+	 * Returns returns a textual representation of the LeafShapeGroup.
 	 * 
 	 * @inspects | this, getSubgroups()
+	 * 
+	 * @post 
+	 *    | result != null
 	 * 
 	 */
 	public java.lang.String getDrawingCommands(){

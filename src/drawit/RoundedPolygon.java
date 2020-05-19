@@ -6,7 +6,8 @@ import java.util.stream.IntStream;
 import drawit.shapegroups1.Extent;
 
 /**
- * Each instance of this class represents a time of day, at one-minute resolution.
+ * Each instance of this class represent a rounded polygon, with a given shape,
+ *  radius and color.
  *
  * @invar This object's radius can not be negative.
  *    | 0 <= getRadius()
@@ -22,6 +23,11 @@ public class RoundedPolygon {
     private Color color;
     private Extent extent;
     
+    /**
+     * 
+     * @basic
+     *
+     */
     public java.awt.Color getColor(){
     	return color;
     }
@@ -117,6 +123,8 @@ public class RoundedPolygon {
      * 
      * @inspects| this
      * 
+     * @basic
+     * 
      * @post Result equals the radius of the RoundedPolygon.
      */
     public int getRadius() {
@@ -128,6 +136,8 @@ public class RoundedPolygon {
      * 
      * @inspects| this
      * 
+     * @basic
+     * 
      * @post Result equals the Extent of the RoundedPolygon.
      */
     public Extent getExtent() {
@@ -138,6 +148,8 @@ public class RoundedPolygon {
      * Returns the vertices of the RoundedPolygon.
      * 
      * @inspects| this
+     * 
+     * @basic
      * 
      * @creates | result
      * 

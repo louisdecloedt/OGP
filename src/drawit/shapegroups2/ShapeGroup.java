@@ -3,14 +3,24 @@ package drawit.shapegroups2;
 import java.util.List;
 import drawit.IntPoint;
 import drawit.IntVector;
-import drawit.shapegroups1.Extent;
+import drawit.shapegroups2.Extent;
 
-
-
+/**
+ * ShapeGroup is an abstract superclass for Leaf- and NonLeafShapeGroups.
+ * 
+ * @invar If a ShapeGroup has subgroups then it is a NonLeafShapeGroup 
+ *   and these subgroups have the given NonLeafShapeGroup as parent.
+ *    | getSubgroups() == null || getSubgroups().stream().allMatch(subgroup -> subgroup.getParentGroup() == this)
+ */
 public abstract class ShapeGroup {
+	
+	
 	protected Extent extent;
 	protected Extent originalExtent;
-	protected NonLeafShapeGroup parent;
+	/**
+	 * @peerObject
+	 */
+	protected NonleafShapeGroup parent;
 	
 	/**
 	 * Returns the extent of the ShapeGroup expressed in its outer coordinate system.
@@ -41,14 +51,14 @@ public abstract class ShapeGroup {
 	}
 	
 	/**
-	 * Returns returns the parentGroup or null otherwise.
+	 * Returns returns the ParentGroup or null otherwise.
 	 * 
 	 * @inspects | this
 	 * 
 	 * @basic
 	 * 
 	 */
-	public ShapeGroup getParentGroup() {
+	public NonleafShapeGroup getParentGroup() {
 		return parent;
 	}
 	
@@ -207,7 +217,24 @@ public abstract class ShapeGroup {
 		this.parent.subgroups = newParentSubgroups;
 	}
 
+	
+	/**
+	 * Returns returns a textual representation of the ShapeGroup.
+	 * 
+	 * @inspects | this, getSubgroups()
+	 * 
+	 */
 	public abstract String getDrawingCommands();
 	
+	
+	/**
+	 * Returns returns null if the object is a LeafShapeGroup and
+	 * the list of subgroups if it is a NonLeafShapeGroup.
+	 * 
+	 * @inspects | this
+	 * 
+	 * @basic
+	 * 
+	 */
 	public abstract java.util.List<ShapeGroup> getSubgroups();
 }

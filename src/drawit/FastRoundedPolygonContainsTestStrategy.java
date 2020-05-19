@@ -18,16 +18,13 @@ public class FastRoundedPolygonContainsTestStrategy
      *
      * @inspects | polygon
      *
-     * @throws If the given point is {@code null}.
-     *    | point == null
+     * @pre The given point and polygon are not {@code null}.
+     *    | point != null && polygon != null
      * @post
      *    | result == polygon.getExtent().contains(point)
      */
 	@Override
 	public boolean contains(RoundedPolygon polygon, IntPoint point) {
-		if (point == null) {
-			throw new IllegalArgumentException();
-		}
 		return polygon.getExtent().contains(point);
 	}
 }
